@@ -1,6 +1,8 @@
 import React from 'react'
 import { Typography,TextField,Box,Grid
 , MenuItem, FormControl, Select, Button
+, Dialog, DialogActions, DialogContent
+, DialogContentText, DialogTitle
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,6 +11,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 
 export default function UpdateItem() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
     const navigate = useNavigate();
 
     const {id} = useParams();
@@ -97,6 +109,10 @@ export default function UpdateItem() {
       return "/upload/"+img
     }
 
+    const back = () => {
+      navigate("/")
+    }
+
   return (
     <div > 
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
@@ -107,8 +123,8 @@ export default function UpdateItem() {
         <Grid container direction="column" alignItems="center" >
           <Grid item>
             {photo === true 
-            ?<img src={ourImage(image)} width="125px" height="100px" border={2} borderColor="black"></img>
-            :<img src={image} width="125px" height="100px" border={2} borderColor="black"></img>  
+            ?<img src={ourImage(image)} width="125px" height="100px" border={2} borderColor="black" onClick={handleClickOpen}></img>
+            :<img src={image} width="125px" height="100px" border={2} borderColor="black" onClick={handleClickOpen} ></img>  
             }
           </Grid>
           <Grid item>
@@ -163,8 +179,26 @@ export default function UpdateItem() {
       </Grid>
     </Grid>
   </Box>
-  <Button size='large' variant="contained" onClick={(e) => updateItem(e)}><Typography variant='h5'>SAVE</Typography></Button>
+  <Button size='large' variant="contained" onClick={back}>
+  <Typography variant='h5'>BACK</Typography>
+</Button>
+<Button size='large' variant="contained" onClick={(e) => updateItem(e)} style={{marginLeft: '10px'}}>
+  <Typography variant='h5'>SAVE</Typography>
+</Button>
+
 </Box>
+
+<Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+          {photo === true 
+            ?<img src={ourImage(image)} width="100%" height="100%" border={2} borderColor="black" onClick={handleClose}></img>
+            :<img src={image} width="100%" height="100%" border={2} borderColor="black" onClick={handleClose}></img>  
+            }
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Back</Button>
+        </DialogActions>
+      </Dialog>
 
     </div>
   )
