@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ReceiptController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,6 @@ Route::post('/add-item',[ItemController::class, 'addItem']);
 Route::get('/view-items',[ItemController::class, 'viewItems']);
 Route::get('/get-item/{id}',[ItemController::class, 'getItem']);
 Route::post('/update-item/{id}',[ItemController::class, 'updateItem']);
+
+Route::post('/add-receipt',[ReceiptController::class, 'addReceipt']);
+Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);

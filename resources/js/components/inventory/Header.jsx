@@ -11,7 +11,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
 const pages = ['View Items', 'Add Item', 'View Receipts', 'Add Receipt', 'Archieve'];
@@ -39,6 +38,12 @@ function Header() {
     else if (e === 'Add Item') {
         navigate("/add-item")
     }
+    else if (e === 'Add Receipt') {
+      navigate("/add-receipt")
+    }
+    else if (e === 'View Receipts') {
+      navigate("/view-receipts")
+    }
   };
 
   const handleCloseUserMenu = () => {
@@ -49,7 +54,6 @@ function Header() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -104,7 +108,6 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap

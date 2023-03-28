@@ -54,7 +54,7 @@ export default function AddItem() {
         formData.append('measurement', measurement)
         formData.append('price', price)
 
-        await axios.post("/api/Add_Item/",formData)
+        await axios.post("/api/add-item/",formData)
         .then(({data}) =>{
             toast.fire({
                 icon:"success",
