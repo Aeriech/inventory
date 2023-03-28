@@ -20,5 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/Add_Item',[ItemController::class, 'Add_Item']);
-Route::get('/View_Items',[ItemController::class, 'View_Items']);
+Route::post('/add-item',[ItemController::class, 'addItem']);
+Route::get('/view-items',[ItemController::class, 'viewItems']);
+Route::get('/get-item/{id}',[ItemController::class, 'getItem']);
+Route::post('/update-item/{id}',[ItemController::class, 'updateItem']);

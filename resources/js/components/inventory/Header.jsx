@@ -37,7 +37,7 @@ function Header() {
         navigate("/")
     }
     else if (e === 'Add Item') {
-        navigate("/Add_Item")
+        navigate("/add-item")
     }
   };
 
