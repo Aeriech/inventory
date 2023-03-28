@@ -75,7 +75,7 @@ export default function AddItem() {
       <Grid item xs={2} sm={4} md={4}>
         <Grid container direction="column" alignItems="center" >
           <Grid item>
-            <img src={image} width="125px" height="100px" border={2} borderColor="black"></img>
+            <img src={image} width="125px" height="100px" border={2} ></img>
           </Grid>
           <Grid item>
             <form className="image_item-form">

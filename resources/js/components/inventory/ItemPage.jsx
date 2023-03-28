@@ -113,7 +113,7 @@ export default function ItemPage() {
 
             <Box sx={{ marginTop: 5 }}>
                 <Grid container spacing={{ xs: 2, md: 3 }}>
-                    {filteredItems.map((item) => (
+                    {filteredItems.map((item,index) => (
                         <Grid
                             item
                             xs={6}
@@ -121,7 +121,7 @@ export default function ItemPage() {
                             md={3}
                             lg={2}
                             xl={2}
-                            key={item}
+                            key={index}
                             onClick={() => editItem(item.id)}
                             textAlign="center"
                             alignContent="center"

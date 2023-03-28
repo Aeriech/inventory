@@ -123,8 +123,8 @@ export default function UpdateItem() {
         <Grid container direction="column" alignItems="center" >
           <Grid item>
             {photo === true 
-            ?<img src={ourImage(image)} width="125px" height="100px" border={2} borderColor="black" onClick={handleClickOpen}></img>
-            :<img src={image} width="125px" height="100px" border={2} borderColor="black" onClick={handleClickOpen} ></img>  
+            ?<img src={ourImage(image)} width="125px" height="100px" border={2} onClick={handleClickOpen}></img>
+            :<img src={image} width="125px" height="100px" border={2} onClick={handleClickOpen} ></img>  
             }
           </Grid>
           <Grid item>
@@ -191,8 +191,8 @@ export default function UpdateItem() {
 <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           {photo === true 
-            ?<img src={ourImage(image)} width="100%" height="100%" border={2} borderColor="black" onClick={handleClose}></img>
-            :<img src={image} width="100%" height="100%" border={2} borderColor="black" onClick={handleClose}></img>  
+            ?<img src={ourImage(image)} width="100%" height="100%" border={2} onClick={handleClose}></img>
+            :<img src={image} width="100%" height="100%" border={2} onClick={handleClose}></img>  
             }
         </DialogContent>
         <DialogActions>
