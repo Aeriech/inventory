@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->string('image', 255)->nullable();
+            $table->unsignedBigInteger('item_id');
+            $table->foreign('item_id')->references('id')->on('items');
             $table->decimal('price', 20, 2)->nullable();
             $table->bigInteger('measurement')->unsigned()->nullable();
-            $table->string('type', 255);
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->string('status', 255)->nullable();
+            $table->bigInteger('item_left')->unsigned()->nullable();
+            $table->timestamp('purchase_date')->nullable();
             $table->timestamps();
-            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('purchases');
     }
 };
