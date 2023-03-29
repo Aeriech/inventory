@@ -26,6 +26,8 @@ Route::get('/view-items',[ItemController::class, 'viewItems']);
 Route::get('/get-item/{id}',[ItemController::class, 'getItem']);
 Route::post('/update-item/{id}',[ItemController::class, 'updateItem']);
 Route::get('/view-archives',[ItemController::class, 'viewArchives']);
+Route::post('/archive-item/{id}',[ItemController::class, 'archive']);
+Route::post('/unarchive-item/{id}',[ItemController::class, 'unarchive']);
 
 Route::post('/add-receipt',[ReceiptController::class, 'addReceipt']);
 Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);

@@ -7,7 +7,8 @@ import {
     Box,
     Toolbar,
     Typography,
-    InputBase,
+    InputBase, Button
+    , Dialog, DialogActions, DialogContent
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
@@ -79,8 +80,39 @@ export default function ViewArchives() {
 
     const navigate = useNavigate();
 
-    const editItem = (id) => {
-        navigate("/get-item/" + id);
+    const handleArchive = async (id) => {
+        await axios
+            .post(`/api/unarchive-item/${id}`)
+            .then(({ data }) => {
+                toast.fire({
+                    icon: "success",
+                    title: "Item unarchived successfully",
+                });
+                navigate("/");
+            })
+            .catch((error) => {});
+    };
+    const [open, setOpen] = React.useState(false);
+    const [id, setID] = React.useState("");
+    const [name, setName] = React.useState("");
+    const [type, setType] = React.useState("");
+    const [measurement, setMeasurement] = React.useState("");
+    const [price, setPrice] = React.useState("");
+    const [image, setImage] = React.useState("");
+
+
+    const handleClick = (id, name, type, measurement, price, image) => {
+        setID(id)
+        setName(name)
+        setType(type)
+        setMeasurement(measurement)
+        setPrice(price)
+        setImage(image)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
     };
 
     return (
@@ -113,7 +145,7 @@ export default function ViewArchives() {
 
             <Box sx={{ marginTop: 5 }}>
                 <Grid container spacing={{ xs: 2, md: 3 }}>
-                    {filteredItems.map((item,index) => (
+                    {filteredItems.map((item, index) => (
                         <Grid
                             item
                             xs={6}
@@ -122,13 +154,15 @@ export default function ViewArchives() {
                             lg={2}
                             xl={2}
                             key={index}
-                            onClick={() => editItem(item.id)}
+                            onClick={() => handleClick(item.id, item.name, item.type, item.measurement, item.price, item.image)}
                             textAlign="center"
                             alignContent="center"
                             alignItems="center"
-                            sx={{ border: "1px solid #ccc", padding: "1rem",
-                            "&:hover": {cursor: "pointer"}
-                          }}
+                            sx={{
+                                border: "1px solid #ccc",
+                                padding: "1rem",
+                                "&:hover": { cursor: "pointer" },
+                            }}
                         >
                             <div
                                 style={{
@@ -154,6 +188,31 @@ export default function ViewArchives() {
                     ))}
                 </Grid>
             </Box>
+
+            <Dialog open={open} onClose={handleClose}>
+                <DialogContent>
+                    <div
+                        style={{
+                            backgroundImage: `url(/upload/${image})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            width: "200px",
+                            height: "200px",
+                            borderRadius: "5px",
+                        }}
+                    />
+                    <Typography textAlign="center" variant="h6">{name}</Typography>
+                    <Typography textAlign="center" variant="h6">{type}</Typography>
+                    <Typography textAlign="center" variant="h6">Prc: {price}</Typography>
+                    <Typography textAlign="center" variant="h6">
+                        Qty: {measurement}
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={()=>handleArchive(id)}>Unarchive</Button>
+                    <Button onClick={handleClose}>Back</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

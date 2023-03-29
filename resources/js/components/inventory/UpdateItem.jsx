@@ -108,8 +108,18 @@ export default function UpdateItem() {
       return "/upload/"+img
     }
 
-    const back = () => {
-      navigate("/")
+    const handleArchive = async () => {
+      await axios.post(`/api/archive-item/${id}`)
+        .then(({data}) =>{
+            toast.fire({
+                icon:"success",
+                title: "Item archived successfully",              
+            })
+            navigate("/")
+        })
+        .catch((error)=>{
+
+        })
     }
 
   return (
@@ -190,7 +200,7 @@ export default function UpdateItem() {
       </Grid>
 
       <Grid item xs={12} sm={12} md={12}>
-      <Button variant="outlined" onClick={back} style={{marginRight: '10px'}}>
+      <Button variant="outlined" onClick={handleArchive} style={{marginRight: '10px'}}>
     <Typography variant='body2'>Archieve</Typography>
   </Button>
   </Grid>

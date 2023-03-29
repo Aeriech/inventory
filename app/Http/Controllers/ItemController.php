@@ -22,6 +22,20 @@ class ItemController extends Controller
             'items' => $items
         ], 200);
     }
+
+    public function archive($id)
+    {
+        $item = Item::find($id);
+        $item->status = "archive";
+        $item->save();
+    }
+
+    public function unarchive($id)
+    {
+        $item = Item::find($id);
+        $item->status = "unarchive";
+        $item->save();
+    }
     
     
 
