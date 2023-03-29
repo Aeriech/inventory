@@ -196,8 +196,8 @@ export default function ViewArchives() {
                             backgroundImage: `url(/upload/${image})`,
                             backgroundSize: "cover",
                             backgroundPosition: "center",
-                            width: "200px",
-                            height: "200px",
+                            width: "250px",
+                            height: "250px",
                             borderRadius: "5px",
                         }}
                     />
@@ -207,9 +207,14 @@ export default function ViewArchives() {
                     <Typography textAlign="center" variant="h6">
                         Qty: {measurement}
                     </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+  <Button variant="outlined" onClick={() => handleArchive(id)}>
+    Unarchive
+  </Button>
+</div>
+
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={()=>handleArchive(id)}>Unarchive</Button>
                     <Button onClick={handleClose}>Back</Button>
                 </DialogActions>
             </Dialog>

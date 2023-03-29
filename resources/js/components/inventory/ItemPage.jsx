@@ -7,7 +7,8 @@ import {
     Box,
     Toolbar,
     Typography,
-    InputBase,
+    InputBase, Button
+    , Dialog, DialogActions, DialogContent
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
@@ -83,6 +84,28 @@ export default function ItemPage() {
         navigate("/get-item/" + id);
     };
 
+    const [open, setOpen] = React.useState(false);
+    const [id, setID] = React.useState("");
+    const [name, setName] = React.useState("");
+    const [type, setType] = React.useState("");
+    const [measurement, setMeasurement] = React.useState("");
+    const [price, setPrice] = React.useState("");
+    const [image, setImage] = React.useState("");
+
+    const handleClickOpen = (id, name, type, measurement, price, image) => {
+        setID(id)
+        setName(name)
+        setType(type)
+        setMeasurement(measurement)
+        setPrice(price)
+        setImage(image)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+    setOpen(false);
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -122,7 +145,7 @@ export default function ItemPage() {
                             lg={2}
                             xl={2}
                             key={index}
-                            onClick={() => editItem(item.id)}
+                            onClick={() => handleClickOpen(item.id, item.name, item.type, item.measurement, item.price, item.image)}//() => editItem(item.id)
                             textAlign="center"
                             alignContent="center"
                             alignItems="center"
@@ -154,6 +177,41 @@ export default function ItemPage() {
                     ))}
                 </Grid>
             </Box>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogContent>
+                    <div
+                        style={{
+                            backgroundImage: `url(/upload/${image})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            width: "250px",
+                            height: "250px",
+                            borderRadius: "5px",
+                        }}
+                    />
+                    <Typography textAlign="center" variant="h6">{name}</Typography>
+                    <Typography textAlign="center" variant="h6">{type}</Typography>
+                    <Typography textAlign="center" variant="h6">Prc: {price}</Typography>
+                    <Typography textAlign="center" variant="h6">
+                        Qty: {measurement}
+                    </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+  <Button variant="outlined" onClick={() => editItem(id)} style={{ width: '75px' }}>
+    Update
+  </Button>
+  <Button variant="outlined" onClick={handleClose} style={{ width: '75px', marginLeft: '5px', marginRight: '10px' }}>
+    Use
+  </Button> 
+  <Button variant="outlined" onClick={handleClose} style={{ width: '75px' }}>
+    Add
+  </Button>
+</div>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Back</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
