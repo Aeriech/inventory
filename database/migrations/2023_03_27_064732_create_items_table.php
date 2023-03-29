@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('measurement')->unsigned()->nullable();
             $table->string('type', 255);
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->string('status', 255)->nullable();
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories');
         });
