@@ -7,8 +7,12 @@ import {
     Box,
     Toolbar,
     Typography,
-    InputBase, Button
-    , Dialog, DialogActions, DialogContent
+    InputBase,
+    Button,
+    Dialog,
+    TextField,
+    DialogActions,
+    DialogContent,
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
@@ -57,6 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+
+
 export default function ItemPage() {
     const [items, setItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -80,7 +86,7 @@ export default function ItemPage() {
 
     const navigate = useNavigate();
 
-    const editItem = (id) => {
+    const editItem = () => {
         navigate("/get-item/" + id);
     };
 
@@ -93,17 +99,21 @@ export default function ItemPage() {
     const [image, setImage] = React.useState("");
 
     const handleClickOpen = (id, name, type, measurement, price, image) => {
-        setID(id)
-        setName(name)
-        setType(type)
-        setMeasurement(measurement)
-        setPrice(price)
-        setImage(image)
+        setID(id);
+        setName(name);
+        setType(type);
+        setMeasurement(measurement);
+        setPrice(price);
+        setImage(image);
         setOpen(true);
     };
 
     const handleClose = () => {
-    setOpen(false);
+        setOpen(false);
+    };
+
+    const handleUse = () => {
+        navigate("/use-item/" + id);
     };
 
     return (
@@ -136,7 +146,7 @@ export default function ItemPage() {
 
             <Box sx={{ marginTop: 5 }}>
                 <Grid container spacing={{ xs: 2, md: 3 }}>
-                    {filteredItems.map((item,index) => (
+                    {filteredItems.map((item, index) => (
                         <Grid
                             item
                             xs={6}
@@ -145,13 +155,24 @@ export default function ItemPage() {
                             lg={2}
                             xl={2}
                             key={index}
-                            onClick={() => handleClickOpen(item.id, item.name, item.type, item.measurement, item.price, item.image)}//() => editItem(item.id)
+                            onClick={() =>
+                                handleClickOpen(
+                                    item.id,
+                                    item.name,
+                                    item.type,
+                                    item.measurement,
+                                    item.price,
+                                    item.image
+                                )
+                            } //() => editItem(item.id)
                             textAlign="center"
                             alignContent="center"
                             alignItems="center"
-                            sx={{ border: "1px solid #ccc", padding: "1rem",
-                            "&:hover": {cursor: "pointer"}
-                          }}
+                            sx={{
+                                border: "1px solid #ccc",
+                                padding: "1rem",
+                                "&:hover": { cursor: "pointer" },
+                            }}
                         >
                             <div
                                 style={{
@@ -189,24 +210,45 @@ export default function ItemPage() {
                             borderRadius: "5px",
                         }}
                     />
-                    <Typography textAlign="center" variant="h6">{name}</Typography>
-                    <Typography textAlign="center" variant="h6">{type}</Typography>
-                    <Typography textAlign="center" variant="h6">Prc: {price}</Typography>
+                    <Typography textAlign="center" variant="h6">
+                        {name}
+                    </Typography>
+                    <Typography textAlign="center" variant="h6">
+                        {type}
+                    </Typography>
+                    <Typography textAlign="center" variant="h6">
+                        Prc: {price}
+                    </Typography>
                     <Typography textAlign="center" variant="h6">
                         Qty: {measurement}
                     </Typography>
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-  <Button variant="outlined" onClick={() => editItem(id)} style={{ width: '75px' }}>
-    Update
-  </Button>
-  <Button variant="outlined" onClick={handleClose} style={{ width: '75px', marginLeft: '5px', marginRight: '10px' }}>
-    Use
-  </Button> 
-  <Button variant="outlined" onClick={handleClose} style={{ width: '75px' }}>
-    Add
-  </Button>
-</div>
-
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <Button
+                            variant="outlined"
+                            onClick={editItem}
+                            style={{ width: "75px" }}
+                        >
+                            Update
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={handleUse}
+                            style={{
+                                width: "75px",
+                                marginLeft: "5px",
+                                marginRight: "5px",
+                            }}
+                        >
+                            Use
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={handleClose}
+                            style={{ width: "75px" }}
+                        >
+                            Add
+                        </Button>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Back</Button>

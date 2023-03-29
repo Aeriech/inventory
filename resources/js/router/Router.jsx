@@ -9,6 +9,7 @@ import AddReceipt from '../components/inventory/AddReceipt'
 import ViewReceipts from '../components/inventory/ViewReceipts'
 import ViewArchives from '../components/inventory/ViewArchives'
 import AddPurchase from '../components/inventory/AddPurchase'
+import UseItem from '../components/inventory/UseItem'
 
 export default function Router() {
   return (
@@ -22,6 +23,7 @@ export default function Router() {
             <Route path='/view-receipts' element={ <ViewReceipts/> } />
             <Route path='/view-archives' element={ <ViewArchives/> } />
             <Route path='/add-purchase' element={ <AddPurchase/> } />
+            <Route path='/use-item/:id' element={ <UseItem/> } />
         </Routes>
     </div>
   )

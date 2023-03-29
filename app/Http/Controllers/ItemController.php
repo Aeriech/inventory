@@ -39,7 +39,7 @@ class ItemController extends Controller
     
     
 
-    public function addItem(Request $request)
+    public function addNewItem(Request $request)
     {
         
         $item = new Item();
@@ -99,7 +99,13 @@ class ItemController extends Controller
         $item->type = $request->type;
         $item->measurement = $request->measurement;
         $item->price = $request->price;
-        $item->status = "unarchive";
+        $item->save();
+    }
+
+    public function useItem(Request $request, $id)
+    {
+        $item = Item::find($id);
+        $item->measurement = $item->measurement - $request->useItem;
         $item->save();
     }
 }
