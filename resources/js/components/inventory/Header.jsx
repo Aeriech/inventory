@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['View Items', 'Add Item', 'View Receipts', 'Add Receipt', 'Archieve'];
+const pages = ['View Items', 'Add Item', 'View Receipts', 'Add Receipt', 'View Archives'];
 const settings = ['Profile', 'Create New Account', 'View Users', 'View History Logs', 'Logout'];
 
 function Header() {
@@ -43,6 +43,9 @@ function Header() {
     }
     else if (e === 'View Receipts') {
       navigate("/view-receipts")
+    }
+    else if (e === 'View Archives') {
+      navigate("/view-archives")
     }
   };
 

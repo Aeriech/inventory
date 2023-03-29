@@ -45,7 +45,7 @@ export default function AddReceipt() {
                 icon:"success",
                 title: "Receipt added successfully",              
             })
-            navigate("/")
+            navigate("/view-receipts")
         })
         .catch(({response})=>{
 
@@ -54,7 +54,14 @@ export default function AddReceipt() {
   return (
     <div > 
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
-  <Typography variant='h3'textAlign="center">Add Receipt</Typography>
+
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:"15px", marginLeft:"15px" }}>
+  <Typography variant='h4' style={{textAlign: "left"}}>Add Receipt</Typography> 
+  <div>
+  <Button size='large' variant="contained" onClick={(event) => createReceipt(event)}><Typography variant='h5'>SAVE</Typography></Button>
+  </div>
+</div>
+
   <Box border={2} borderColor="black" padding={5} margin="10px">
     <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
       <Grid item xs={12} sm={12} md={4}>
@@ -80,7 +87,6 @@ export default function AddReceipt() {
       </Grid>
     </Grid>
   </Box>
-  <Button size='large' variant="contained" onClick={(event) => createReceipt(event)}><Typography variant='h5'>SAVE</Typography></Button>
 </Box>
 
     </div>

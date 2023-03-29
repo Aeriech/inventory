@@ -10,11 +10,20 @@ class ItemController extends Controller
 {
 
     public function viewItems(){
-        $item = Item::all();
+        $items = Item::where('status', '<>', 'archive')->get();
         return response()->json([
-            'items' => $item
-        ],200);
+            'items' => $items
+        ], 200);
     }
+
+    public function viewArchives(){
+        $items = Item::where('status', '=', 'archive')->get();
+        return response()->json([
+            'items' => $items
+        ], 200);
+    }
+    
+    
 
     public function addItem(Request $request)
     {
@@ -39,6 +48,7 @@ class ItemController extends Controller
         $item->type = $request->type;
         $item->measurement = $request->measurement;
         $item->price = $request->price;
+        $item->status = "unarchive";
         $item->save();
     }
 
@@ -75,6 +85,7 @@ class ItemController extends Controller
         $item->type = $request->type;
         $item->measurement = $request->measurement;
         $item->price = $request->price;
+        $item->status = "unarchive";
         $item->save();
     }
 }

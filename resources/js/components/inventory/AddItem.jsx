@@ -69,7 +69,15 @@ export default function AddItem() {
   return (
     <div > 
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
-  <Typography variant='h3'textAlign="center">Add Item</Typography>
+
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:"15px", marginLeft:"15px" }}>
+  <Typography  variant='h4' style={{textAlign: "left"}}>Add Item</Typography>
+  
+  <div>
+  <Button size='large' variant="contained" onClick={(event) => createItem(event)}><Typography variant='h6'>SAVE</Typography></Button>
+  </div>
+</div>
+  
   <Box border={2} borderColor="black" padding={5} margin="10px">
     <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
       <Grid item xs={2} sm={4} md={4}>
@@ -129,7 +137,6 @@ export default function AddItem() {
       </Grid>
     </Grid>
   </Box>
-  <Button size='large' variant="contained" onClick={(event) => createItem(event)}><Typography variant='h5'>SAVE</Typography></Button>
 </Box>
 
     </div>

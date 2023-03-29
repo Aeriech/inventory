@@ -115,7 +115,19 @@ export default function UpdateItem() {
   return (
     <div > 
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
-  <Typography variant='h3'textAlign="center">Update Item</Typography>
+
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:"15px", marginLeft:"15px" }}>
+  <Typography variant='h4' style={{textAlign: "left"}}>Update Item</Typography>
+  
+  <div>
+    <Button size='large' variant="contained" onClick={(e) => updateItem(e)}>
+      <Typography variant='h6'>SAVE</Typography>
+    </Button>
+  </div>
+</div>
+
+
+
   <Box border={2} borderColor="black" padding={5} margin="10px">
     <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
       <Grid item xs={2} sm={4} md={4}>
@@ -176,14 +188,16 @@ export default function UpdateItem() {
         <Typography variant='h5'>{measure}</Typography>
         <TextField id="filled-basic" variant="filled" value={measurement} onChange={(e) => (setMeasurement(e.target.value))}/>
       </Grid>
+
+      <Grid item xs={12} sm={12} md={12}>
+      <Button variant="outlined" onClick={back} style={{marginRight: '10px'}}>
+    <Typography variant='body2'>Archieve</Typography>
+  </Button>
+  </Grid>
+  
     </Grid>
   </Box>
-  <Button size='large' variant="contained" onClick={back}>
-  <Typography variant='h5'>BACK</Typography>
-</Button>
-<Button size='large' variant="contained" onClick={(e) => updateItem(e)} style={{marginLeft: '10px'}}>
-  <Typography variant='h5'>SAVE</Typography>
-</Button>
+
 
 </Box>
 
