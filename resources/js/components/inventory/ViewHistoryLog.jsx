@@ -59,6 +59,12 @@ export default function ViewHistoryLog() {
     const [logs, setLogs] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
 
+    const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+
     useEffect(() => {
         viewReceipts();
     }, []);
@@ -124,6 +130,9 @@ export default function ViewHistoryLog() {
                         >
                             <Typography variant="h6">{log.type}</Typography>
                             <Typography variant="body2">{log.description}</Typography>
+                            <Typography variant="body2">
+                            Date: {new Date(log.updated_at).toLocaleDateString('en-US', dateOptions)}
+                            </Typography>
                         </Grid>
                     ))}
                 </Grid>

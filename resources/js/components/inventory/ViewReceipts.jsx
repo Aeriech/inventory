@@ -59,6 +59,12 @@ export default function ViewReceipts() {
     const [receipts, setReceipts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
 
+    const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+
     useEffect(() => {
         viewReceipts();
     }, []);
@@ -136,6 +142,9 @@ export default function ViewReceipts() {
                                 {receipt.description}
                             </Typography>
                             <Typography variant="body2">Amount: {receipt.amount}</Typography>
+                            <Typography variant="body2">
+                            Date: {new Date(receipt.updated_at).toLocaleDateString('en-US', dateOptions)}
+                            </Typography>
                         </Grid>
                     ))}
                 </Grid>

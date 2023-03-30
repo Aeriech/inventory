@@ -66,6 +66,12 @@ export default function ItemPage() {
     const [items, setItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
 
+    const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+
     useEffect(() => {
         viewItems();
     }, []);
@@ -78,6 +84,7 @@ export default function ItemPage() {
     const filteredItems = items.filter((item) => {
         const lowerCasedQuery = searchQuery.toLowerCase();
         return (
+            item.updated_at.toLowerCase().includes(lowerCasedQuery) ||
             item.name.toLowerCase().includes(lowerCasedQuery) ||
             item.type.toLowerCase().includes(lowerCasedQuery)
         );
@@ -196,6 +203,9 @@ export default function ItemPage() {
                             </Typography>
                             <Typography variant="body2">
                                 Qty: {item.measurement}
+                            </Typography>
+                            <Typography variant="body2">
+                            Date: {new Date(item.updated_at).toLocaleDateString('en-US', dateOptions)}
                             </Typography>
                         </Grid>
                     ))}

@@ -61,6 +61,12 @@ export default function ViewArchives() {
     const [items, setItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
 
+    const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+
     useEffect(() => {
         viewItems();
     }, []);
@@ -183,6 +189,9 @@ export default function ViewArchives() {
                             </Typography>
                             <Typography variant="body2">
                                 Qty: {item.measurement}
+                            </Typography>
+                            <Typography variant="body2">
+                            Date: {new Date(item.updated_at).toLocaleDateString('en-US', dateOptions)}
                             </Typography>
                         </Grid>
                     ))}
