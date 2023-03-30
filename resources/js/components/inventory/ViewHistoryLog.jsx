@@ -86,7 +86,7 @@ export default function ViewHistoryLog() {
                         component="div"
                         sx={{ flexGrow: 1 }}
                     >
-                        View Receipts
+                        View History
                     </Typography>
                     <Search>
                         <SearchIconWrapper>
