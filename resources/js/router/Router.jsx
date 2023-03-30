@@ -10,6 +10,7 @@ import ViewReceipts from '../components/inventory/ViewReceipts'
 import ViewArchives from '../components/inventory/ViewArchives'
 import AddPurchase from '../components/inventory/AddPurchase'
 import UseItem from '../components/inventory/UseItem'
+import ViewHistoryLog from '../components/inventory/ViewHistoryLog'
 
 export default function Router() {
   return (
@@ -17,13 +18,14 @@ export default function Router() {
         <Routes>
             <Route path='/' element={ <ItemPage/> } />
             <Route path='/*' element={ <NotFound/> } />
-            <Route path='/add-item' element={ <AddItem/> } />
+            <Route path='/new-item' element={ <AddItem/> } />
             <Route path='/get-item/:id' element={ <UpdateItem/> } />
-            <Route path='/add-receipt' element={ <AddReceipt/> } />
+            <Route path='/new-receipt' element={ <AddReceipt/> } />
             <Route path='/view-receipts' element={ <ViewReceipts/> } />
             <Route path='/view-archives' element={ <ViewArchives/> } />
-            <Route path='/add-purchase' element={ <AddPurchase/> } />
+            <Route path='/add-purchase/:id' element={ <AddPurchase/> } />
             <Route path='/use-item/:id' element={ <UseItem/> } />
+            <Route path='/view-logs' element={ <ViewHistoryLog/> } />
         </Routes>
     </div>
   )

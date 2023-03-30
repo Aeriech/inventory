@@ -10,7 +10,6 @@ import {
     InputBase,
     Button,
     Dialog,
-    TextField,
     DialogActions,
     DialogContent,
 } from "@mui/material";
@@ -88,6 +87,10 @@ export default function ItemPage() {
 
     const editItem = () => {
         navigate("/get-item/" + id);
+    };
+
+    const addPurchase = () => {
+        navigate("/add-purchase/" + id);
     };
 
     const [open, setOpen] = React.useState(false);
@@ -243,7 +246,7 @@ export default function ItemPage() {
                         </Button>
                         <Button
                             variant="outlined"
-                            onClick={handleClose}
+                            onClick={addPurchase}
                             style={{ width: "75px" }}
                         >
                             Add

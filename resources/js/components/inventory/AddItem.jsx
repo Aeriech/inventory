@@ -54,7 +54,7 @@ export default function AddItem() {
         formData.append('measurement', measurement)
         formData.append('price', price)
 
-        await axios.post("/api/add-item/",formData)
+        await axios.post("/api/new-item/",formData)
         .then(({data}) =>{
             toast.fire({
                 icon:"success",
@@ -71,7 +71,7 @@ export default function AddItem() {
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
 
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:"15px", marginLeft:"15px" }}>
-  <Typography  variant='h4' style={{textAlign: "left"}}>Add Item</Typography>
+  <Typography  variant='h4' style={{textAlign: "left"}}>New Item</Typography>
   
   <div>
   <Button size='large' variant="contained" onClick={(event) => createItem(event)}><Typography variant='h6'>SAVE</Typography></Button>

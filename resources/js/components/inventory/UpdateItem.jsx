@@ -116,7 +116,7 @@ export default function UpdateItem() {
                 icon:"success",
                 title: "Item archived successfully",              
             })
-            navigate("/")
+            navigate("/view-archives")
         })
         .catch((error)=>{
 

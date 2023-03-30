@@ -39,7 +39,7 @@ export default function AddReceipt() {
         formData.append('image', image)
         formData.append('amount', amount)
 
-        await axios.post("/api/add-receipt/",formData)
+        await axios.post("/api/new-receipt/",formData)
         .then(({data}) =>{
             toast.fire({
                 icon:"success",
@@ -56,7 +56,7 @@ export default function AddReceipt() {
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
 
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:"15px", marginLeft:"15px" }}>
-  <Typography variant='h4' style={{textAlign: "left"}}>Add Receipt</Typography> 
+  <Typography variant='h4' style={{textAlign: "left"}}>New Receipt</Typography> 
   <div>
   <Button size='large' variant="contained" onClick={(event) => createReceipt(event)}><Typography variant='h5'>SAVE</Typography></Button>
   </div>

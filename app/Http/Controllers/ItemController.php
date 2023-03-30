@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
@@ -107,5 +108,20 @@ class ItemController extends Controller
         $item = Item::find($id);
         $item->measurement = $item->measurement - $request->useItem;
         $item->save();
+    }
+
+    public function addPurchase(Request $request, $id)
+    {
+        $item = Item::find($id);
+        $item->measurement = $item->measurement + $request->addPurchase;
+        $item->price = $request->addPrice;
+        $item->save();
+
+        $purchase = new Purchase();
+        $purchase->item_id = $id;
+        $purchase->price = $request->addPrice;
+        $purchase->measurement = $request->addPurchase;
+        $purchase->item_left = $request->addPurchase;
+        $purchase->save();
     }
 }

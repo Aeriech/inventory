@@ -4,9 +4,6 @@ import {
     TextField,
     Box,
     Grid,
-    MenuItem,
-    FormControl,
-    Select,
     Button,
     Dialog,
     DialogActions,
@@ -15,7 +12,7 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function UpdateItem() {
+export default function UseItem() {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {

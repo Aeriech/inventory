@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['View Items', 'Add Item', 'View Receipts', 'Add Receipt', 'View Archives'];
+const pages = ['View Items', 'New Item', 'View Receipts', 'New Receipt', 'View Archives'];
 const settings = ['Profile', 'Create New Account', 'View Users', 'View History Logs', 'Logout'];
 
 function Header() {
@@ -35,11 +35,11 @@ function Header() {
     if (e === 'View Items') {
         navigate("/")
     }
-    else if (e === 'Add Item') {
-        navigate("/add-item")
+    else if (e === 'New Item') {
+        navigate("/new-item")
     }
-    else if (e === 'Add Receipt') {
-      navigate("/add-receipt")
+    else if (e === 'New Receipt') {
+      navigate("/new-receipt")
     }
     else if (e === 'View Receipts') {
       navigate("/view-receipts")
@@ -49,8 +49,14 @@ function Header() {
     }
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);
+    if (e === 'View History Logs') {
+      navigate("/view-logs")
+  }
+  else if (e === 'New Item') {
+      navigate("/new-item")
+  }
   };
 
   return (
@@ -164,7 +170,7 @@ function Header() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu} divider={true}>
+                <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)} divider={true}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
