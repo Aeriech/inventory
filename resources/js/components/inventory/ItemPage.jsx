@@ -220,7 +220,7 @@ export default function ItemPage() {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={5} sm={4} md={3} lg={2} xl={2}>
+                    <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
                         <Typography variant="body2">Sort Direction</Typography>
                         <FormControl sx={{ minWidth: 100 }}>
                             <Select
