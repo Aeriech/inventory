@@ -12,6 +12,10 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
@@ -60,17 +64,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-
-
 export default function ItemPage() {
     const [items, setItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [sortOption, setSortOption] = useState("id");
+    const [sortDirection, setSortDirection] = useState("asc");
 
     const dateOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      };
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    };
 
     useEffect(() => {
         viewItems();
@@ -81,14 +85,38 @@ export default function ItemPage() {
         setItems(data.items);
     };
 
-    const filteredItems = items.filter((item) => {
-        const lowerCasedQuery = searchQuery.toLowerCase();
-        return (
-            item.updated_at.toLowerCase().includes(lowerCasedQuery) ||
-            item.name.toLowerCase().includes(lowerCasedQuery) ||
-            item.type.toLowerCase().includes(lowerCasedQuery)
-        );
-    });
+    const filteredItems = items
+        .filter((item) => {
+            const lowerCasedQuery = searchQuery.toLowerCase();
+            return (
+                item.updated_at.toLowerCase().includes(lowerCasedQuery) ||
+                item.name.toLowerCase().includes(lowerCasedQuery) ||
+                item.type.toLowerCase().includes(lowerCasedQuery)
+            );
+        })
+        .sort((a, b) => {
+            if (sortOption === "date") {
+                const dateA = new Date(a.updated_at);
+                const dateB = new Date(b.updated_at);
+                return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
+            } else if (sortOption === "price") {
+                return sortDirection === "asc"
+                    ? a.price - b.price
+                    : b.price - a.price;
+            } else if (sortOption === "id") {
+                return sortDirection === "asc" ? a.id - b.id : b.id - a.id;
+            } else if (sortOption === "measurement") {
+                return sortDirection === "asc"
+                    ? a.measurement - b.measurement
+                    : b.measurement - a.measurement;
+            } else if (sortOption === "name") {
+                return sortDirection === "asc"
+                    ? a.name.localeCompare(b.name)
+                    : b.name.localeCompare(a.name);
+            } else {
+                return 0;
+            }
+        });
 
     const navigate = useNavigate();
 
@@ -126,6 +154,22 @@ export default function ItemPage() {
         navigate("/use-item/" + id);
     };
 
+    const handleSort = (option) => {
+        if (sortOption === option) {
+            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+            setSortOption(option);
+        }
+    };
+
+    const handleDirection = (direction) => {
+        if (direction === "asc") {
+            setSortDirection("asc");
+        } else if (direction === "desc") {
+            setSortDirection("desc");
+        }
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -153,8 +197,47 @@ export default function ItemPage() {
                     </Search>
                 </Toolbar>
             </AppBar>
+            <Box sx={{ marginTop: 1, textAlign:"center" }}>
+                <Grid container>
+                    <Grid item xs={5} sm={4} md={3} lg={2} xl={2}>
+                        <Typography variant="body2">Sort By</Typography>
+                        <FormControl sx={{ minWidth: 100 }}>
+                            <Select
+                                size="small"
+                                value={sortOption}
+                                onChange={(event) =>
+                                    handleSort(event.target.value)
+                                }
+                            >
+                                <MenuItem value="id">Id</MenuItem>
+                                <MenuItem value="date">Date</MenuItem>
+                                <MenuItem value="name">Name</MenuItem>
+                                <MenuItem value="price">Price</MenuItem>
+                                <MenuItem value="measurement">
+                                    Measurement
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
-            <Box sx={{ marginTop: 5 }}>
+                    <Grid item xs={5} sm={4} md={3} lg={2} xl={2}>
+                        <Typography variant="body2">Sort Direction</Typography>
+                        <FormControl sx={{ minWidth: 100 }}>
+                            <Select
+                                size="small"
+                                value={sortDirection}
+                                onChange={(event) =>
+                                    handleDirection(event.target.value)
+                                }
+                            >
+                                <MenuItem value="asc">Ascending</MenuItem>
+                                <MenuItem value="desc">Descending</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box sx={{ marginTop: 4 }}>
                 <Grid container spacing={{ xs: 2, md: 3 }}>
                     {filteredItems.map((item, index) => (
                         <Grid
@@ -205,7 +288,11 @@ export default function ItemPage() {
                                 Qty: {item.measurement}
                             </Typography>
                             <Typography variant="body2">
-                            Date: {new Date(item.updated_at).toLocaleDateString('en-US', dateOptions)}
+                                Date:{" "}
+                                {new Date(item.updated_at).toLocaleDateString(
+                                    "en-US",
+                                    dateOptions
+                                )}
                             </Typography>
                         </Grid>
                     ))}
