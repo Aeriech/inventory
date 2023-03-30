@@ -56,7 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function ViewHistoryLog() {
-    const [receipts, setReceipts] = useState([]);
+    const [logs, setLogs] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
@@ -64,15 +64,15 @@ export default function ViewHistoryLog() {
     }, []);
 
     const viewReceipts = async () => {
-        const { data } = await axios.get("/api/view-receipts");
-        setReceipts(data.receipts);
+        const { data } = await axios.get("/api/view-logs");
+        setLogs(data.logs);
     };
 
-    const filteredItems = receipts.filter((receipt) => {
+    const filteredItems = logs.filter((log) => {
         const lowerCasedQuery = searchQuery.toLowerCase();
         return (
-            receipt.description.toLowerCase().includes(lowerCasedQuery) ||
-            receipt.amount.toLowerCase().includes(lowerCasedQuery)
+            log.description.toLowerCase().includes(lowerCasedQuery) ||
+            log.type.toLowerCase().includes(lowerCasedQuery)
         );
     });
 
@@ -106,7 +106,7 @@ export default function ViewHistoryLog() {
 
             <Box sx={{ marginTop: 5 }}>
                 <Grid container spacing={{ xs: 2, md: 3 }}>
-                    {filteredItems.map((receipt,index) => (
+                    {filteredItems.map((log,index) => (
                         <Grid
                             item
                             xs={6}
@@ -122,20 +122,8 @@ export default function ViewHistoryLog() {
                             "&:hover": {cursor: "pointer"}
                           }}
                         >
-                            <div
-                                style={{
-                                    backgroundImage: `url(/upload/${receipt.image})`,
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                    width: "100%",
-                                    height: "120px",
-                                    borderRadius: "5px",
-                                }}
-                            />
-                            <Typography variant="subtitle1">
-                                {receipt.description}
-                            </Typography>
-                            <Typography variant="body2">Amount: {receipt.amount}</Typography>
+                            <Typography variant="h6">{log.type}</Typography>
+                            <Typography variant="body2">{log.description}</Typography>
                         </Grid>
                     ))}
                 </Grid>

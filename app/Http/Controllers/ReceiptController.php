@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use App\Models\Receipt;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
@@ -38,5 +39,11 @@ class ReceiptController extends Controller
         $receipt->image = $name;
         $receipt->amount = $request->amount;
         $receipt->save();
+
+        $log = new History();
+        $log->type = "Added New Receipt";
+        $log->description = "[ID:1] Added New Receipt Description:".$request->description.", Amount:".$request->amount;
+        $log->created_by = 1;
+        $log->save();
     }
 }
