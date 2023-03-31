@@ -78,6 +78,11 @@ function Header() {
       setOpen(false);
   };
 
+  const handleCategory = () => {
+    setOpen(false);
+    navigate("/add-category");
+  }
+
     return (
         <Box>
             <AppBar position="static">
@@ -255,6 +260,7 @@ function Header() {
                         <Button
                             variant="contained"
                             style={{ width: "200px" }}
+                            onClick={handleCategory}
                         >
                             Add New Category
                         </Button>

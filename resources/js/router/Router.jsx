@@ -11,6 +11,7 @@ import ViewArchives from '../components/inventory/ViewArchives'
 import AddPurchase from '../components/inventory/AddPurchase'
 import UseItem from '../components/inventory/UseItem'
 import ViewHistoryLog from '../components/inventory/ViewHistoryLog'
+import AddCategory from '../components/inventory/AddCategory'
 
 
 export default function Router() {
@@ -27,6 +28,7 @@ export default function Router() {
             <Route path='/add-purchase/:id' element={ <AddPurchase/> } />
             <Route path='/use-item/:id' element={ <UseItem/> } />
             <Route path='/view-logs' element={ <ViewHistoryLog/> } />
+            <Route path='/add-category' element={ <AddCategory/> } />
         </Routes>
     </div>
   )

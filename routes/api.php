@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReceiptController;
@@ -36,3 +37,5 @@ Route::post('/new-receipt',[ReceiptController::class, 'addReceipt']);
 Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);
 
 Route::get('/view-logs',[HistoryController::class, 'viewLogs']);
+
+Route::post('/add-category',[CategoryController::class, 'addCategory']);
