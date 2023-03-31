@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 
 const pages = ['View Items', 'New Item', 'View Receipts', 'New Receipt', 'View Archives'];
-const settings = ['Profile', 'Create New Account', 'View Users', 'View History Logs', 'Logout'];
+const settings = ['Profile', 'Create New Account', 'View Users', 'View History Logs','Settings', 'Logout'];
 
 function Header() {
 
@@ -54,8 +54,8 @@ function Header() {
     if (e === 'View History Logs') {
       navigate("/view-logs")
   }
-  else if (e === 'New Item') {
-      navigate("/new-item")
+  else if (e === 'Settings') {
+      navigate("/settings")
   }
   };
 
