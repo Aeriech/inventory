@@ -16,6 +16,7 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
+    Grid,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -234,24 +235,47 @@ function Header() {
             </AppBar>
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
+                  <Grid container spacing={{ xs: 2, md: 3 }} textAlign="center">
+                  <Grid item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    >
+                      <Typography variant="h4">Settings</Typography>
+                      </Grid>
+                    <Grid item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    >
                         <Button
                             variant="contained"
-                            style={{ width: "75px" }}
+                            style={{ width: "200px" }}
                         >
-                            Update
+                            Add New Category
                         </Button>
+                        </Grid>
+
+
+                        <Grid item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        >
                         <Button
                             variant="contained"
-                            style={{ width: "75px" }}
+                            style={{ width: "200px" }}
                         >
-                            Use
+                            Add New Type Of Measurement
                         </Button>
-                        <Button
-                            variant="contained"
-                            style={{ width: "75px" }}
-                        >
-                            Add
-                        </Button>
+                        </Grid>
+                        </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Back</Button>
