@@ -67,7 +67,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function ItemPage() {
     const [items, setItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [sortOption, setSortOption] = useState("id");
+    const [sortOption, setSortOption] = useState("name");
     const [sortDirection, setSortDirection] = useState("asc");
 
     const dateOptions = {
