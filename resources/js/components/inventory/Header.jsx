@@ -55,7 +55,7 @@ function Header() {
       navigate("/view-logs")
   }
   else if (e === 'Settings') {
-      navigate("/settings")
+
   }
   };
 
