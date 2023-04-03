@@ -346,10 +346,10 @@ export default function ItemPage() {
       <TableRow>
         <TableCell>Image</TableCell>
         <TableCell>Item Name</TableCell>
-        <TableCell sx={{   display: { xs: "none", md: "flex" } }}>Type</TableCell>
+        <TableCell sx={{   display: { xs: "none", md: "table-cell" } }}>Type</TableCell>
         <TableCell>Price</TableCell>
         <TableCell>Measurement</TableCell>
-        <TableCell sx={{   display: { xs: "none", md: "flex"} }}>Date</TableCell>
+        <TableCell sx={{   display: { xs: "none", md: "table-cell"} }}>Date</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>
@@ -392,12 +392,12 @@ export default function ItemPage() {
             />
           </TableCell>
           <TableCell>{item.name}</TableCell>
-          <TableCell sx={{   display: { xs: "none", md: "flex" } }} >{item.type}</TableCell>
+          <TableCell sx={{   display: { xs: "none", md: "table-cell" } }} >{item.type}</TableCell>
           <TableCell>{item.price}</TableCell>
           <TableCell>
             {item.measurement} {item.measured_in}
           </TableCell>
-          <TableCell sx={{   display: { xs: "none" ,md: "flex"} }}>
+          <TableCell sx={{   display: { xs: "none" ,md: "table-cell"} }}>
             {new Date(item.updated_at).toLocaleDateString("en-US", dateOptions)}
           </TableCell>
         </TableRow>
