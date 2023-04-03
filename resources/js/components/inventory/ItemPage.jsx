@@ -221,7 +221,7 @@ export default function ItemPage() {
             </AppBar>
             <Box sx={{ marginTop: 1, textAlign:"center" }}>
                 <Grid container>
-                    <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
+                    <Grid item xs={6} sm={4} md={3} lg={3} xl={3}>
                         <Typography variant="body2">Sort By</Typography>
                         <FormControl sx={{ minWidth: 100 }}>
                             <Select
@@ -242,7 +242,7 @@ export default function ItemPage() {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
+                    <Grid item xs={6} sm={4} md={3} lg={3} xl={3}>
                         <Typography variant="body2">Sort Direction</Typography>
                         <FormControl sx={{ minWidth: 100 }}>
                             <Select
@@ -258,7 +258,7 @@ export default function ItemPage() {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
+                    <Grid item xs={6} sm={4} md={3} lg={3} xl={3}>
                         <Typography variant="body2">View</Typography>
                         <FormControl sx={{ minWidth: 100 }}>
                             <Select
