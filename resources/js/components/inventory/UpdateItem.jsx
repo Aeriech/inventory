@@ -32,11 +32,12 @@ export default function UpdateItem() {
   const getItem = async () => {
     try {
       const { data } = await axios.get(`/api/get-item/${id}`);
-      const {name, image, type, measurement, price} = data.item
+      const {name, image, type, measurement, price, measured_in} = data.item
       setCategory(type)
       setItemName(name)
       setImage(image)
       setMeasurement(measurement)
+      setMeasure(measured_in)
       setPrice(price)
     } catch ({ response:{data} }) {
       // handle error
@@ -46,8 +47,8 @@ export default function UpdateItem() {
     const [name, setItemName] = useState("");
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState("");
-    const [category, setCategory] = React.useState('');
-    const [measure, setMeasure] = React.useState('Quantity');
+    const [category, setCategory] = React.useState("");
+    const [measure, setMeasure] = React.useState("");
     const [measurement, setMeasurement] = React.useState("");
     const [photo, setPhoto] = useState(true);
 
@@ -88,6 +89,7 @@ export default function UpdateItem() {
         formData.append('image', image)
         formData.append('type', category)
         formData.append('measurement', measurement)
+        formData.append('measure',measure)
         formData.append('price', price)
 
         try {
@@ -118,6 +120,36 @@ export default function UpdateItem() {
           // handle error
         }
     }
+
+    useEffect(() => {
+      viewCategory();
+  }, []);
+
+
+    const [subCategory, setSubCategory] = useState([]);
+
+    const viewCategory = async () => {
+        const { data } = await axios.get(`/api/view-category`);
+        console.log(data);
+        setSubCategory(data.categories);
+    };
+
+    useEffect(() => {
+      viewMeasurement();
+  }, []);
+
+
+    const [measurements, setMeasurements] = useState([]);
+
+    const viewMeasurement = async () => {
+        const { data } = await axios.get(`/api/view-measurement`);
+        console.log(data);
+        setMeasurements(data.measurements);
+    };
+
+
+
+
 
   return (
     <div > 
@@ -166,9 +198,9 @@ export default function UpdateItem() {
             value={category}
             onChange={handleCategory}
           >
-            <MenuItem value="Vegetable">Vegetable</MenuItem>
-            <MenuItem value="Utensils">Utensils</MenuItem>
-            <MenuItem value="Condiments">Condiments</MenuItem>
+            {subCategory.map((category,index) => (
+  <MenuItem key={index} value={category.category}>{category.category}</MenuItem>
+))}
           </Select>
         </FormControl>
       </Grid>
@@ -185,9 +217,9 @@ export default function UpdateItem() {
             value={measure}
             onChange={handleMeasure}
           >
-            <MenuItem value="Kilograms">Kilograms</MenuItem>
-            <MenuItem value="Liters">Liters</MenuItem>
-            <MenuItem value="Quantity">Quantity</MenuItem>
+            {measurements.map((measures,index) => (
+  <MenuItem key={index} value={measures.measurement}>{measures.measurement}</MenuItem>
+))}
           </Select>
         </FormControl>
       </Grid>

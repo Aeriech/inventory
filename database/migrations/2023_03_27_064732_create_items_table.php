@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price', 20, 2)->nullable();
             $table->bigInteger('measurement')->unsigned()->nullable();
             $table->string('type', 255);
+            $table->string('measured_in', 255);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('status', 255)->nullable();
             $table->timestamps();

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\MeasurementController;
 use App\Http\Controllers\ReceiptController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,5 +40,7 @@ Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);
 Route::get('/view-logs',[HistoryController::class, 'viewLogs']);
 
 Route::post('/add-category',[CategoryController::class, 'addCategory']);
-Route::get('/view-perishable',[CategoryController::class, 'viewPerishable']);
-Route::get('/view-non-perishable',[CategoryController::class, 'viewNonPerishable']);
+Route::get('/view-category',[CategoryController::class, 'viewCategory']);
+
+Route::post('/add-measurement',[MeasurementController::class, 'addMeasurement']);
+Route::get('/view-measurement',[MeasurementController::class, 'viewMeasurement']);

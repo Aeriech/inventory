@@ -83,6 +83,11 @@ function Header() {
     navigate("/add-category");
   }
 
+  const handleMeasurement = () => {
+    setOpen(false);
+    navigate("/add-measurement");
+  }
+
     return (
         <Box>
             <AppBar position="static">
@@ -277,6 +282,7 @@ function Header() {
                         <Button
                             variant="contained"
                             style={{ width: "200px" }}
+                            onClick={handleMeasurement}
                         >
                             Add New Type Of Measurement
                         </Button>

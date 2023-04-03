@@ -105,15 +105,16 @@ export default function ViewArchives() {
     const [measurement, setMeasurement] = React.useState("");
     const [price, setPrice] = React.useState("");
     const [image, setImage] = React.useState("");
+    const [measure, setMeasure] = React.useState("");
 
-
-    const handleClick = (id, name, type, measurement, price, image) => {
+    const handleClick = (id, name, type, measurement, price, image,measure) => {
         setID(id)
         setName(name)
         setType(type)
         setMeasurement(measurement)
         setPrice(price)
         setImage(image)
+        setMeasure(measure)
         setOpen(true);
     };
 
@@ -160,7 +161,7 @@ export default function ViewArchives() {
                             lg={2}
                             xl={2}
                             key={index}
-                            onClick={() => handleClick(item.id, item.name, item.type, item.measurement, item.price, item.image)}
+                            onClick={() => handleClick(item.id, item.name, item.type, item.measurement, item.price, item.image,item.measured_in)}
                             textAlign="center"
                             alignContent="center"
                             alignItems="center"
@@ -185,10 +186,10 @@ export default function ViewArchives() {
                             </Typography>
                             <Typography variant="body2">{item.type}</Typography>
                             <Typography variant="body2">
-                                Prc: {item.price}
+                                Price: {item.price}
                             </Typography>
                             <Typography variant="body2">
-                                Qty: {item.measurement}
+                                {item.measured_in}: {item.measurement}
                             </Typography>
                             <Typography variant="body2">
                             Date: {new Date(item.updated_at).toLocaleDateString('en-US', dateOptions)}
@@ -214,7 +215,7 @@ export default function ViewArchives() {
                     <Typography textAlign="center" variant="h6">{type}</Typography>
                     <Typography textAlign="center" variant="h6">Prc: {price}</Typography>
                     <Typography textAlign="center" variant="h6">
-                        Qty: {measurement}
+                        {measure}: {measurement}
                     </Typography>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
   <Button variant="outlined" onClick={() => handleArchive(id)}>

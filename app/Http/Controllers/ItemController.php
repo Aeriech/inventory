@@ -118,6 +118,7 @@ class ItemController extends Controller
         }
         $item->image = $name;
         $item->type = $request->type;
+        $item->measured_in = $request->measure;
         $item->measurement = $request->measurement;
         $item->price = $request->price;
         $item->save();

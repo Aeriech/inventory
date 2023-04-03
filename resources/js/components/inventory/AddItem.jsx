@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography,TextField,Box,Grid
 , MenuItem, FormControl, Select, Button
 } from '@mui/material';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -15,7 +15,7 @@ export default function AddItem() {
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState("");
     const [category, setCategory] = React.useState('');
-    const [measure, setMeasure] = React.useState('Quantity');
+    const [measure, setMeasure] = React.useState('');
     const [measurement, setMeasurement] = React.useState("");
 
     const handleCategory = (event) => {
@@ -65,6 +65,32 @@ export default function AddItem() {
           // handle error
         }
     };
+
+    useEffect(() => {
+      viewCategory();
+  }, []);
+
+
+    const [subCategory, setSubCategory] = useState([]);
+
+    const viewCategory = async () => {
+        const { data } = await axios.get(`/api/view-category`);
+        console.log(data);
+        setSubCategory(data.categories);
+    };
+
+    useEffect(() => {
+      viewMeasurement();
+  }, []);
+
+
+    const [measurements, setMeasurements] = useState([]);
+
+    const viewMeasurement = async () => {
+        const { data } = await axios.get(`/api/view-measurement`);
+        console.log(data);
+        setMeasurements(data.measurements);
+    };
   return (
     <div > 
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
@@ -105,9 +131,9 @@ export default function AddItem() {
             value={category}
             onChange={handleCategory}
           >
-            <MenuItem value="Vegetable">Vegetable</MenuItem>
-            <MenuItem value="Utensils">Utensils</MenuItem>
-            <MenuItem value="Condiments">Condiments</MenuItem>
+            {subCategory.map((category,index) => (
+  <MenuItem key={index} value={category.category}>{category.category}</MenuItem>
+))}
           </Select>
         </FormControl>
       </Grid>
@@ -124,9 +150,9 @@ export default function AddItem() {
             value={measure}
             onChange={handleMeasure}
           >
-            <MenuItem value="Kilograms">Kilograms</MenuItem>
-            <MenuItem value="Liters">Liters</MenuItem>
-            <MenuItem value="Quantity">Quantity</MenuItem>
+            {measurements.map((measures,index) => (
+  <MenuItem key={index} value={measures.measurement}>{measures.measurement}</MenuItem>
+))}
           </Select>
         </FormControl>
       </Grid>

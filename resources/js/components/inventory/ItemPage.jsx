@@ -65,11 +65,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function ItemPage() {
     const [items, setItems] = useState([]);
-    const [perishable, setPerishable] = useState([]);
-    const [nonPerishable, setNonPerishable] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [sortOption, setSortOption] = useState("name");
-    const [sortDirection, setSortDirection] = useState("asc");
+    const [sortOption, setSortOption] = useState("date");
+    const [sortDirection, setSortDirection] = useState("desc");
 
     const dateOptions = {
         year: "numeric",
@@ -86,15 +84,6 @@ export default function ItemPage() {
         setItems(data.items);
     };
 
-    const viewPerishable = async () => {
-        const { data } = await axios.get("/api/view-perishable");
-        setPerishable(data.categories);
-    };
-
-    const viewNonPerishable = async () => {
-        const { data } = await axios.get("/api/view-non-perishable");
-        setNonPerishable(data.categories);
-    };
 
     const filteredItems = items
         .filter((item) => {
@@ -144,16 +133,18 @@ export default function ItemPage() {
     const [name, setName] = React.useState("");
     const [type, setType] = React.useState("");
     const [measurement, setMeasurement] = React.useState("");
+    const [measure, setMeasure] = React.useState("");
     const [price, setPrice] = React.useState("");
     const [image, setImage] = React.useState("");
 
-    const handleClickOpen = (id, name, type, measurement, price, image) => {
+    const handleClickOpen = (id, name, type, measurement, price, image, measure) => {
         setID(id);
         setName(name);
         setType(type);
         setMeasurement(measurement);
         setPrice(price);
         setImage(image);
+        setMeasure(measure);
         setOpen(true);
     };
 
@@ -266,7 +257,8 @@ export default function ItemPage() {
                                     item.type,
                                     item.measurement,
                                     item.price,
-                                    item.image
+                                    item.image,
+                                    item.measured_in
                                 )
                             } //() => editItem(item.id)
                             textAlign="center"
@@ -293,10 +285,10 @@ export default function ItemPage() {
                             </Typography>
                             <Typography variant="body2">{item.type}</Typography>
                             <Typography variant="body2">
-                                Prc: {item.price}
+                                Price: {item.price}
                             </Typography>
                             <Typography variant="body2">
-                                Qty: {item.measurement}
+                                {item.measured_in}: {item.measurement}
                             </Typography>
                             <Typography variant="body2">
                                 Date:{" "}
@@ -308,6 +300,9 @@ export default function ItemPage() {
                         </Grid>
                     ))}
                 </Grid>
+            </Box>
+            <Box>
+                
             </Box>
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
@@ -328,10 +323,10 @@ export default function ItemPage() {
                         {type}
                     </Typography>
                     <Typography textAlign="center" variant="h6">
-                        Prc: {price}
+                        Price: {price}
                     </Typography>
                     <Typography textAlign="center" variant="h6">
-                        Qty: {measurement}
+                        {measure}: {measurement}
                     </Typography>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         <Button

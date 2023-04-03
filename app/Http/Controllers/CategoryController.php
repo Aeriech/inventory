@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\History;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -13,17 +14,17 @@ class CategoryController extends Controller
         $category->category = $request->subCategory;
         $category->parent_id = $request->category;
         $category->save();
+
+        $log = new History();
+        $log->type = "Added New Category";
+        $log->description = "[ID:1] added new category:".$request->subCategoty;
+        $log->created_by = 1;
+        $log->save();
     }
-    public function viewPerishable(){
-        $category = Category::where('parent_id', '=', '1')->get();
+    public function viewCategory(){
+        $categories = Category::whereNotNull('parent_id')->get();
         return response()->json([
-            'categories' => $category
-        ], 200);
-    }
-    public function viewNonPerishable(){
-        $category = Category::where('parent_id', '=', '2')->get();
-        return response()->json([
-            'categories' => $category
+            'categories' => $categories
         ], 200);
     }
 }
