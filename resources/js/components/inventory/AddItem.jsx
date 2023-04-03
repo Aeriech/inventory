@@ -54,17 +54,16 @@ export default function AddItem() {
         formData.append('measurement', measurement)
         formData.append('price', price)
 
-        await axios.post("/api/new-item/",formData)
-        .then(({data}) =>{
-            toast.fire({
-                icon:"success",
-                title: "Item added successfully",              
-            })
-            navigate("/")
-        })
-        .catch(({response})=>{
-
-        })
+        try {
+          const { data } = await axios.post("/api/new-item/",formData);
+          toast.fire({
+            icon:"success",
+            title: "Item added successfully",   
+          });
+          navigate("/");
+        } catch ({ response }) {
+          // handle error
+        }
     };
   return (
     <div > 

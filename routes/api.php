@@ -39,3 +39,5 @@ Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);
 Route::get('/view-logs',[HistoryController::class, 'viewLogs']);
 
 Route::post('/add-category',[CategoryController::class, 'addCategory']);
+Route::get('/view-perishable',[CategoryController::class, 'viewPerishable']);
+Route::get('/view-non-perishable',[CategoryController::class, 'viewNonPerishable']);

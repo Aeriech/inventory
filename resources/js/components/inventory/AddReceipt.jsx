@@ -39,17 +39,16 @@ export default function AddReceipt() {
         formData.append('image', image)
         formData.append('amount', amount)
 
-        await axios.post("/api/new-receipt/",formData)
-        .then(({data}) =>{
-            toast.fire({
-                icon:"success",
-                title: "Receipt added successfully",              
-            })
-            navigate("/view-receipts")
-        })
-        .catch(({response})=>{
-
-        })
+        try {
+          const { data } = await axios.post("/api/new-receipt/",formData);
+          toast.fire({
+            icon:"success",
+                title: "Receipt added successfully",   
+          });
+          navigate("/view-receipts")
+        } catch ({ response }) {
+          // handle error
+        }
     };
   return (
     <div > 

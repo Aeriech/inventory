@@ -32,17 +32,16 @@ export default function AddPurchase() {
     }, []);
 
     const getItem = async () => {
-        await axios
-            .get(`/api/get-item/${id}`)
-            .then(({ data }) => {
-                //console.log('data',data)
+            try {
+                const { data } = await axios.get(`/api/get-item/${id}`);
                 const { name, image, measurement, price } = data.item;
                 setItemName(name);
                 setImage(image);
                 setMeasurement(measurement);
                 setPrice(price);
-            })
-            .catch(({ response: { data } }) => {});
+              } catch ({response: { data } }) {
+                // handle error
+              }
     };
 
     const [name, setItemName] = useState("");
@@ -88,16 +87,17 @@ export default function AddPurchase() {
         formData.append("addPurchase", addPurchase);
         formData.append("addPrice", addPrice);
 
-        await axios
-            .post(`/api/add-purchase/${id}`, formData)
-            .then(({ data }) => {
+            try {
+                const { data } = await axios.post(`/api/add-purchase/${id}`, formData);
                 toast.fire({
                     icon: "success",
                     title: "Purchase added successfully",
                 });
-            })
-            .catch((error) => {});
-        navigate("/")
+                navigate("/");
+              } catch ({ error }) {
+                // handle error
+              }
+
     };
 
     return (

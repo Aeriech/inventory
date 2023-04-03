@@ -32,16 +32,16 @@ export default function UseItem() {
     }, []);
 
     const getItem = async () => {
-        await axios
-            .get(`/api/get-item/${id}`)
-            .then(({ data }) => {
-                //console.log('data',data)
+    
+            try {
+                const { data } = await axios.get(`/api/get-item/${id}`);
                 const { name, image, type, measurement, price } = data.item;
                 setItemName(name);
                 setImage(image);
                 setMeasurement(measurement);
-            })
-            .catch(({ response: { data } }) => {});
+              } catch ({ response: { data }}) {
+                // handle error
+              }
     };
 
     const [name, setItemName] = useState("");
@@ -71,16 +71,16 @@ export default function UseItem() {
 
         formData.append("useItem", useItem);
 
-        await axios
-            .post(`/api/use-item/${id}`, formData)
-            .then(({ data }) => {
-                toast.fire({
-                    icon: "success",
+        try {
+            const { data } = await axios.post(`/api/use-item/${id}`, formData);
+            toast.fire({
+                icon: "success",
                     title: "Item updated successfully",
-                });
-            })
-            .catch((error) => {});
-        navigate("/")
+            });
+            navigate("/");
+          } catch ({ response }) {
+            // handle error
+          }
     };
 
     return (

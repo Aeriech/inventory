@@ -20,25 +20,25 @@ export default function AddCategory() {
     };
 
     const createCategory = async (e) => {
-        e.preventDefault();
+  e.preventDefault();
 
-        const formData = new FormData();
-        
-        formData.append('category', category)
-        formData.append('subCategory', subCategory)
+  const formData = new FormData();
 
-        await axios.post("/api/add-category",formData)
-        .then(({data}) =>{
-            toast.fire({
-                icon:"success",
-                title: "Category added successfully",              
-            })
-            navigate("/")
-        })
-        .catch(({response})=>{
+  formData.append("category", category);
+  formData.append("subCategory", subCategory);
 
-        })
-    };
+  try {
+    const { data } = await axios.post("/api/add-category", formData);
+    toast.fire({
+      icon: "success",
+      title: "Category added successfully",
+    });
+    navigate("/");
+  } catch ({ response }) {
+    // handle error
+  }
+};
+
   return (
     <div > 
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">

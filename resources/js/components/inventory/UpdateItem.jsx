@@ -30,19 +30,17 @@ export default function UpdateItem() {
   }, []);
 
   const getItem = async () => {
-    await axios.get(`/api/get-item/${id}`)
-    .then(({data})=>{
-      //console.log('data',data)
+    try {
+      const { data } = await axios.get(`/api/get-item/${id}`);
       const {name, image, type, measurement, price} = data.item
       setCategory(type)
       setItemName(name)
       setImage(image)
       setMeasurement(measurement)
       setPrice(price)
-    })
-    .catch(({response:{data}})=>{
-
-    })
+    } catch ({ response:{data} }) {
+      // handle error
+    }
 };
 
     const [name, setItemName] = useState("");
@@ -92,17 +90,16 @@ export default function UpdateItem() {
         formData.append('measurement', measurement)
         formData.append('price', price)
 
-        await axios.post(`/api/update-item/${id}`,formData)
-        .then(({data}) =>{
-            toast.fire({
-                icon:"success",
-                title: "Item updated successfully",              
-            })
-            navigate("/")
-        })
-        .catch((error)=>{
-
-        })
+        try {
+          const { data } = await axios.post(`/api/update-item/${id}`,formData);
+          toast.fire({
+            icon:"success",
+                title: "Item updated successfully",  
+          });
+          navigate("/");
+        } catch ({ error }) {
+          // handle error
+        }
     };
 
     const ourImage = (img) => {
@@ -110,17 +107,16 @@ export default function UpdateItem() {
     }
 
     const handleArchive = async () => {
-      await axios.post(`/api/archive-item/${id}`)
-        .then(({data}) =>{
-            toast.fire({
-                icon:"success",
-                title: "Item archived successfully",              
-            })
-            navigate("/view-archives")
-        })
-        .catch((error)=>{
-
-        })
+        try {
+          const { data } = await axios.post(`/api/archive-item/${id}`);
+          toast.fire({
+            icon:"success",
+                title: "Item archived successfully",  
+          });
+          navigate("/view-archives")
+        } catch ({ error }) {
+          // handle error
+        }
     }
 
   return (

@@ -87,16 +87,16 @@ export default function ViewArchives() {
     const navigate = useNavigate();
 
     const handleArchive = async (id) => {
-        await axios
-            .post(`/api/unarchive-item/${id}`)
-            .then(({ data }) => {
+            try {
+                const { data } = await axios.post(`/api/unarchive-item/${id}`);
                 toast.fire({
                     icon: "success",
                     title: "Item unarchived successfully",
                 });
                 navigate("/");
-            })
-            .catch((error) => {});
+              } catch ({ response }) {
+                // handle error
+              }
     };
     const [open, setOpen] = React.useState(false);
     const [id, setID] = React.useState("");

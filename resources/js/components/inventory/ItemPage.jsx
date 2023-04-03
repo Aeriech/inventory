@@ -65,6 +65,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function ItemPage() {
     const [items, setItems] = useState([]);
+    const [perishable, setPerishable] = useState([]);
+    const [nonPerishable, setNonPerishable] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOption, setSortOption] = useState("name");
     const [sortDirection, setSortDirection] = useState("asc");
@@ -82,6 +84,16 @@ export default function ItemPage() {
     const viewItems = async () => {
         const { data } = await axios.get("/api/view-items");
         setItems(data.items);
+    };
+
+    const viewPerishable = async () => {
+        const { data } = await axios.get("/api/view-perishable");
+        setPerishable(data.categories);
+    };
+
+    const viewNonPerishable = async () => {
+        const { data } = await axios.get("/api/view-non-perishable");
+        setNonPerishable(data.categories);
     };
 
     const filteredItems = items
