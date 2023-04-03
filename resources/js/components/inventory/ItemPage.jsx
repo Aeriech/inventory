@@ -15,6 +15,11 @@ import {
     FormControl,
     Select,
     MenuItem,
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+    TableHead,
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
@@ -68,6 +73,7 @@ export default function ItemPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOption, setSortOption] = useState("date");
     const [sortDirection, setSortDirection] = useState("desc");
+    const [listView, setListView] = useState("image");
 
     const dateOptions = {
         year: "numeric",
@@ -172,6 +178,20 @@ export default function ItemPage() {
         }
     };
 
+    const handleView = (e) => {
+        setListView(e.target.value);
+        if (listView === "table") {
+            setImageList(true);
+            setTableList(false);
+        } else if(listView === "image"){
+            setImageList(false);
+            setTableList(true);
+        }
+    };
+
+    const [imageList, setImageList] = React.useState(true);
+    const [tableList, setTableList] = React.useState(false);
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -201,7 +221,7 @@ export default function ItemPage() {
             </AppBar>
             <Box sx={{ marginTop: 1, textAlign:"center" }}>
                 <Grid container>
-                    <Grid item xs={5} sm={4} md={3} lg={2} xl={2}>
+                    <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
                         <Typography variant="body2">Sort By</Typography>
                         <FormControl sx={{ minWidth: 100 }}>
                             <Select
@@ -237,8 +257,25 @@ export default function ItemPage() {
                             </Select>
                         </FormControl>
                     </Grid>
+
+                    <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
+                        <Typography variant="body2">View</Typography>
+                        <FormControl sx={{ minWidth: 100 }}>
+                            <Select
+                                size="small"
+                                value={listView}
+                                onChange={
+                                    handleView
+                                }
+                            >
+                                <MenuItem value="image">Image List</MenuItem>
+                                <MenuItem value="table">Table List</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
                 </Grid>
             </Box>
+            {imageList &&
             <Box sx={{ marginTop: 4 }}>
                 <Grid container spacing={{ xs: 2, md: 3 }}>
                     {filteredItems.map((item, index) => (
@@ -301,9 +338,77 @@ export default function ItemPage() {
                     ))}
                 </Grid>
             </Box>
-            <Box>
-                
-            </Box>
+}
+{tableList &&
+            <Box sx={{ marginTop: 4 }}>
+  <Table>
+    <TableHead>
+      <TableRow>
+        <TableCell>Image</TableCell>
+        <TableCell>Item Name</TableCell>
+        <TableCell sx={{   display: { xs: "none", md: "flex" } }}>Type</TableCell>
+        <TableCell>Price</TableCell>
+        <TableCell>Measurement</TableCell>
+        <TableCell sx={{   display: { xs: "none", md: "flex"} }}>Date</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {filteredItems.map((item, index) => (
+        <TableRow
+          key={index}
+          sx={{
+            "&:hover": { cursor: "pointer", background: "#f5f5f5" },
+            "& td": {
+              borderBottom: "1px solid #ddd",
+              padding: "0.75rem",
+            },
+            "& td:first-child": {
+              padding: "0",
+            },
+          }}
+          onClick={() =>
+            handleClickOpen(
+              item.id,
+              item.name,
+              item.type,
+              item.measurement,
+              item.price,
+              item.image,
+              item.measured_in
+            )
+          }
+        >
+          <TableCell sx={{ width: { xs: "80px", sm: "100px" } }}>
+            <div
+              style={{
+                backgroundImage: `url(/upload/${item.image})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                width: "100%",
+                height: "80px",
+                borderRadius: "5px",
+              }}
+            />
+          </TableCell>
+          <TableCell>{item.name}</TableCell>
+          <TableCell sx={{   display: { xs: "none", md: "flex" } }} >{item.type}</TableCell>
+          <TableCell>{item.price}</TableCell>
+          <TableCell>
+            {item.measurement} {item.measured_in}
+          </TableCell>
+          <TableCell sx={{   display: { xs: "none" ,md: "flex"} }}>
+            {new Date(item.updated_at).toLocaleDateString("en-US", dateOptions)}
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+</Box>
+}
+
+
+
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
                     <div
