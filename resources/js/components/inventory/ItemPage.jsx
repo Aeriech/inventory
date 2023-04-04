@@ -20,6 +20,7 @@ import {
     TableRow,
     TableCell,
     TableHead,
+    Pagination,
 } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
@@ -82,24 +83,36 @@ export default function ItemPage() {
     };
 
     const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/items?page=${currentPage}`)
-      .then(response => {
-        setItems(response.data.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    async function fetchData() {
+      const response = await axios.get(`/api/items?page=${currentPage}`);
+      setItems(response.data.data);
+      setLastPage(response.data.last_page);
+    }
+
+    fetchData();
   }, [currentPage]);
 
-  const handlePrevPageClick = () => {
-    setCurrentPage(prevPage => prevPage - 1);
+  const handleNextPage = () => {
+    if (currentPage < lastPage) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
-  const handleNextPageClick = () => {
-    setCurrentPage(prevPage => prevPage + 1);
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  }
+  
+
+
 
 
     const filteredItems = items
@@ -199,6 +212,8 @@ export default function ItemPage() {
             setTableList(true);
         }
     };
+
+    
 
     const [imageList, setImageList] = React.useState(true);
     const [tableList, setTableList] = React.useState(false);
@@ -418,19 +433,24 @@ export default function ItemPage() {
 </Box>
 }
 
-{/* Display pagination links */}
-<ul>
-        <li>
-          <button onClick={handlePrevPageClick} disabled={items.prev_page_url === null}>
-            Previous
-          </button>
-        </li>
-        <li>
-          <button onClick={handleNextPageClick} disabled={items.next_page_url === null}>
-            Next
-          </button>
-        </li>
-      </ul>
+<Box marginTop="10px" display="flex" justifyContent="center" alignItems="center">
+  <Button variant="contained" onClick={handlePrevPage}>Prev</Button>
+  {lastPage && (
+    <Pagination
+      count={lastPage}
+      page={currentPage}
+      onChange={(event, page) => handlePageClick(page)}
+      color="primary"
+    />
+  )}
+  <Button variant="contained" onClick={handleNextPage} disabled={currentPage === lastPage}>
+    Next
+  </Button>
+</Box>
+
+
+
+
 
 
             <Dialog open={open} onClose={handleClose}>
