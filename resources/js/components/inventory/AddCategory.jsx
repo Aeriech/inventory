@@ -47,7 +47,7 @@ export default function AddCategory() {
   <Typography  variant='h4' style={{textAlign: "left"}}>Add Category</Typography>
   
   <div>
-  <Button size='large' variant="contained" onClick={(event) => createCategory(event)}><Typography variant='h6'>SAVE</Typography></Button>
+  <Button size='large' variant="outlined" onClick={(event) => createCategory(event)}><Typography variant='h6'>SAVE</Typography></Button>
   </div>
 </div>
   

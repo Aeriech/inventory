@@ -99,7 +99,7 @@ export default function AddItem() {
   <Typography  variant='h4' style={{textAlign: "left"}}>New Item</Typography>
   
   <div>
-  <Button size='large' variant="contained" onClick={(event) => createItem(event)}><Typography variant='h6'>SAVE</Typography></Button>
+  <Button size='large' variant="outlined" onClick={(event) => createItem(event)}><Typography variant='h6'>SAVE</Typography></Button>
   </div>
 </div>
   

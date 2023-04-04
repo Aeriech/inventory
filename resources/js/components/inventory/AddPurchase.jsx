@@ -245,7 +245,7 @@ export default function AddPurchase() {
                             </div>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
-                        <Button variant="contained" onClick={add_Purchase}>
+                        <Button variant="outlined" onClick={add_Purchase}>
                                     <Typography variant="h5" textAlign="center">
                                         Add Purchase
                                     </Typography>

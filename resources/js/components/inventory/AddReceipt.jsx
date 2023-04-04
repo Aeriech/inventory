@@ -57,7 +57,7 @@ export default function AddReceipt() {
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:"15px", marginLeft:"15px" }}>
   <Typography variant='h4' style={{textAlign: "left"}}>New Receipt</Typography> 
   <div>
-  <Button size='large' variant="contained" onClick={(event) => createReceipt(event)}><Typography variant='h5'>SAVE</Typography></Button>
+  <Button size='large' variant="outlined" onClick={(event) => createReceipt(event)}><Typography variant='h5'>SAVE</Typography></Button>
   </div>
 </div>
 

@@ -40,7 +40,7 @@ export default function AddMeasurement() {
   <Typography  variant='h4' style={{textAlign: "left"}}>Add Measurement</Typography>
   
   <div>
-  <Button size='large' variant="contained" onClick={(event) => createMeasurement(event)}><Typography variant='h6'>SAVE</Typography></Button>
+  <Button size='large' variant="outlined" onClick={(event) => createMeasurement(event)}><Typography variant='h6'>SAVE</Typography></Button>
   </div>
 </div>
   

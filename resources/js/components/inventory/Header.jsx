@@ -263,7 +263,7 @@ function Header() {
                     xl={12}
                     >
                         <Button
-                            variant="contained"
+                            variant="outlined"
                             style={{ width: "200px" }}
                             onClick={handleCategory}
                         >
@@ -280,7 +280,7 @@ function Header() {
                         xl={12}
                         >
                         <Button
-                            variant="contained"
+                            variant="outlined"
                             style={{ width: "200px" }}
                             onClick={handleMeasurement}
                         >

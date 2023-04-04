@@ -471,7 +471,7 @@ export default function ItemPage() {
 }
 
 <Box marginTop="10px" marginBottom="20px" display="flex" justifyContent="center" alignItems="center">
-  <Button variant="contained" onClick={handlePrevPage}>Prev</Button>
+  <Button variant="outlined" onClick={handlePrevPage}>Prev</Button>
   {lastPage && (
     <Pagination
       count={lastPage}
@@ -480,7 +480,7 @@ export default function ItemPage() {
       color="primary"
     />
   )}
-  <Button variant="contained" onClick={handleNextPage} disabled={currentPage === lastPage}>
+  <Button variant="outlined" onClick={handleNextPage} disabled={currentPage === lastPage}>
     Next
   </Button>
 </Box>

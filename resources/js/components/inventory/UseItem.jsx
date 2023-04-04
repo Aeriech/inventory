@@ -175,7 +175,7 @@ export default function UseItem() {
                                     marginTop: "10px",
                                 }}
                             >
-                                <Button variant="contained" onClick={use_Item}>
+                                <Button variant="outlined" onClick={use_Item}>
                                     <Typography variant="h5" textAlign="center">
                                         Use Item
                                     </Typography>
