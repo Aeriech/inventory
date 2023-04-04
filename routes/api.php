@@ -48,4 +48,4 @@ Route::get('/view-measurement',[MeasurementController::class, 'viewMeasurement']
 Route::get('/view-items', [ItemController::class, 'viewItems']);
 
 //view archives
-Route::get('/view-archive', [ItemController::class, 'viewArchives']);
+Route::get('/view-archives', [ItemController::class, 'viewArchives']);
