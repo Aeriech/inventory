@@ -319,7 +319,7 @@ export default function ItemPage() {
                     </Grid>
 
                     <Grid item xs={6} sm={4} md={3} lg={3} xl={3}>
-                        <Typography variant="body2">View</Typography>
+                        <Typography variant="body2">Category</Typography>
                         <FormControl sx={{ minWidth: 100 }}>
                             <Select
                                 size="small"
