@@ -84,37 +84,35 @@ export default function ItemPage() {
     };
 
     const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(null);
+    const [lastPage, setLastPage] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await axios.get(`/api/view-items?page=${currentPage}&category=${category}`);
-      setItems(response.data.data);
-      setLastPage(response.data.last_page);
-    }
+    useEffect(() => {
+        async function fetchData() {
+            const response = await axios.get(
+                `/api/view-items?page=${currentPage}&category=${category}`
+            );
+            setItems(response.data.data);
+            setLastPage(response.data.last_page);
+        }
 
-    fetchData();
-  }, [currentPage, category]);
+        fetchData();
+    }, [currentPage, category]);
 
-  const handleNextPage = () => {
-    if (currentPage < lastPage) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+    const handleNextPage = () => {
+        if (currentPage < lastPage) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
-  const handlePageClick = (page) => {
-    setCurrentPage(page);
-  }
-  
-
-
-
+    const handlePageClick = (page) => {
+        setCurrentPage(page);
+    };
 
     const filteredItems = items
         .filter((item) => {
@@ -168,7 +166,15 @@ export default function ItemPage() {
     const [price, setPrice] = React.useState("");
     const [image, setImage] = React.useState("");
 
-    const handleClickOpen = (id, name, type, measurement, price, image, measure) => {
+    const handleClickOpen = (
+        id,
+        name,
+        type,
+        measurement,
+        price,
+        image,
+        measure
+    ) => {
         setID(id);
         setName(name);
         setType(type);
@@ -208,17 +214,15 @@ export default function ItemPage() {
         if (listView === "table") {
             setImageList(true);
             setTableList(false);
-        } else if(listView === "image"){
+        } else if (listView === "image") {
             setImageList(false);
             setTableList(true);
         }
     };
 
     const handleCategory = (e) => {
-        setCategory(e.target.value)
+        setCategory(e.target.value);
     };
-
-    
 
     const [imageList, setImageList] = React.useState(true);
     const [tableList, setTableList] = React.useState(false);
@@ -226,15 +230,14 @@ export default function ItemPage() {
     useEffect(() => {
         viewCategory();
     }, []);
-  
-  
-      const [subCategory, setSubCategory] = useState([]);
-  
-      const viewCategory = async () => {
-          const { data } = await axios.get(`/api/view-category`);
-           
-          setSubCategory(data.categories);
-      };
+
+    const [subCategory, setSubCategory] = useState([]);
+
+    const viewCategory = async () => {
+        const { data } = await axios.get(`/api/view-category`);
+
+        setSubCategory(data.categories);
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -263,7 +266,7 @@ export default function ItemPage() {
                     </Search>
                 </Toolbar>
             </AppBar>
-            <Box sx={{ marginTop: 1, textAlign:"center" }}>
+            <Box sx={{ marginTop: 1, textAlign: "center" }}>
                 <Grid container>
                     <Grid item xs={6} sm={4} md={3} lg={3} xl={3}>
                         <Typography variant="body2">Sort By</Typography>
@@ -308,9 +311,7 @@ export default function ItemPage() {
                             <Select
                                 size="small"
                                 value={listView}
-                                onChange={
-                                    handleView
-                                }
+                                onChange={handleView}
                             >
                                 <MenuItem value="image">Image List</MenuItem>
                                 <MenuItem value="table">Table List</MenuItem>
@@ -324,171 +325,224 @@ export default function ItemPage() {
                             <Select
                                 size="small"
                                 value={category}
-                                onChange={
-                                    handleCategory
-                                }
+                                onChange={handleCategory}
                             >
-
-<MenuItem value="All Item">All Item</MenuItem>
-                                {subCategory.map((category,index) => (
-  <MenuItem key={index} value={category.category}>{category.category}</MenuItem>
-))}
+                                <MenuItem value="All Item">All Item</MenuItem>
+                                {subCategory.map((category, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={category.category}
+                                    >
+                                        {category.category}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </Grid>
                 </Grid>
             </Box>
-            {imageList &&
-            <Box sx={{ marginTop: 4 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }}>
-                    {filteredItems.map((item, index) => (
-                        <Grid
-                            item
-                            xs={6}
-                            sm={4}
-                            md={3}
-                            lg={2}
-                            xl={2}
-                            key={index}
-                            onClick={() =>
-                                handleClickOpen(
-                                    item.id,
-                                    item.name,
-                                    item.type,
-                                    item.measurement,
-                                    item.price,
-                                    item.image,
-                                    item.measured_in
-                                )
-                            } //() => editItem(item.id)
-                            textAlign="center"
-                            alignContent="center"
-                            alignItems="center"
-                            sx={{
-                                border: "1px solid #ccc",
-                                padding: "1rem",
-                                "&:hover": { cursor: "pointer" },
-                            }}
-                        >
-                            <div
-                                style={{
-                                    backgroundImage: `url(/upload/${item.image})`,
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                    width: "100%",
-                                    height: "120px",
-                                    borderRadius: "5px",
+            {imageList && (
+                <Box sx={{ marginTop: 4 }}>
+                    <Grid container spacing={{ xs: 2, md: 3 }}>
+                        {filteredItems.map((item, index) => (
+                            <Grid
+                                item
+                                xs={6}
+                                sm={4}
+                                md={3}
+                                lg={2}
+                                xl={2}
+                                key={index}
+                                onClick={() =>
+                                    handleClickOpen(
+                                        item.id,
+                                        item.name,
+                                        item.type,
+                                        item.measurement,
+                                        item.price,
+                                        item.image,
+                                        item.measured_in
+                                    )
+                                } //() => editItem(item.id)
+                                textAlign="center"
+                                alignContent="center"
+                                alignItems="center"
+                                sx={{
+                                    border: "1px solid #ccc",
+                                    padding: "1rem",
+                                    "&:hover": { cursor: "pointer" },
                                 }}
-                            />
-                            <Typography variant="subtitle1">
-                                {item.name}
-                            </Typography>
-                            <Typography variant="body2">{item.type}</Typography>
-                            <Typography variant="body2">
-                                Price: {item.price}
-                            </Typography>
-                            <Typography variant="body2">
-                                {item.measured_in}: {item.measurement}
-                            </Typography>
-                            <Typography variant="body2">
-                                Date:{" "}
-                                {new Date(item.updated_at).toLocaleDateString(
-                                    "en-US",
-                                    dateOptions
-                                )}
-                            </Typography>
-                        </Grid>
-                    ))}
-                </Grid>
+                            >
+                                <div
+                                    style={{
+                                        backgroundImage: `url(/upload/${item.image})`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        width: "100%",
+                                        height: "120px",
+                                        borderRadius: "5px",
+                                    }}
+                                />
+                                <Typography variant="subtitle1">
+                                    {item.name}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {item.type}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Price: {item.price}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {item.measured_in}: {item.measurement}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Date:{" "}
+                                    {new Date(
+                                        item.updated_at
+                                    ).toLocaleDateString("en-US", dateOptions)}
+                                </Typography>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+            )}
+            {tableList && (
+                <Box sx={{ marginTop: 4 }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Image</TableCell>
+                                <TableCell>Item Name</TableCell>
+                                <TableCell
+                                    sx={{
+                                        display: {
+                                            xs: "none",
+                                            md: "table-cell",
+                                        },
+                                    }}
+                                >
+                                    Type
+                                </TableCell>
+                                <TableCell>Price</TableCell>
+                                <TableCell>Measurement</TableCell>
+                                <TableCell
+                                    sx={{
+                                        display: {
+                                            xs: "none",
+                                            md: "table-cell",
+                                        },
+                                    }}
+                                >
+                                    Date
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {filteredItems.map((item, index) => (
+                                <TableRow
+                                    key={index}
+                                    sx={{
+                                        "&:hover": { cursor: "pointer" },
+                                        "& td": {
+                                            borderBottom: "1px solid #ddd",
+                                            padding: "0.75rem",
+                                        },
+                                        "& td:first-of-type": {
+                                            padding: "0",
+                                        },
+                                    }}
+                                    onClick={() =>
+                                        handleClickOpen(
+                                            item.id,
+                                            item.name,
+                                            item.type,
+                                            item.measurement,
+                                            item.price,
+                                            item.image,
+                                            item.measured_in
+                                        )
+                                    }
+                                >
+                                    <TableCell
+                                        sx={{
+                                            width: { xs: "80px", sm: "100px" },
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                backgroundImage: `url(/upload/${item.image})`,
+                                                backgroundSize: "contain",
+                                                backgroundRepeat: "no-repeat",
+                                                backgroundPosition: "center",
+                                                width: "100%",
+                                                height: "80px",
+                                                borderRadius: "5px",
+                                            }}
+                                        />
+                                    </TableCell>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell
+                                        sx={{
+                                            display: {
+                                                xs: "none",
+                                                md: "table-cell",
+                                            },
+                                        }}
+                                    >
+                                        {item.type}
+                                    </TableCell>
+                                    <TableCell>{item.price}</TableCell>
+                                    <TableCell>
+                                        {item.measurement} {item.measured_in}
+                                    </TableCell>
+                                    <TableCell
+                                        sx={{
+                                            display: {
+                                                xs: "none",
+                                                md: "table-cell",
+                                            },
+                                        }}
+                                    >
+                                        {new Date(
+                                            item.updated_at
+                                        ).toLocaleDateString(
+                                            "en-US",
+                                            dateOptions
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Box>
+            )}
+
+            <Box
+                marginTop="10px"
+                marginBottom="20px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Button variant="outlined" onClick={handlePrevPage}>
+                    Prev
+                </Button>
+                {lastPage && (
+                    <Pagination
+                        count={lastPage}
+                        page={currentPage}
+                        onChange={(event, page) => handlePageClick(page)}
+                        color="primary"
+                    />
+                )}
+                <Button
+                    variant="outlined"
+                    onClick={handleNextPage}
+                    disabled={currentPage === lastPage}
+                >
+                    Next
+                </Button>
             </Box>
-}
-{tableList &&
-            <Box sx={{ marginTop: 4 }}>
-  <Table>
-    <TableHead>
-      <TableRow>
-        <TableCell>Image</TableCell>
-        <TableCell>Item Name</TableCell>
-        <TableCell sx={{   display: { xs: "none", md: "table-cell" } }}>Type</TableCell>
-        <TableCell>Price</TableCell>
-        <TableCell>Measurement</TableCell>
-        <TableCell sx={{   display: { xs: "none", md: "table-cell"} }}>Date</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {filteredItems.map((item, index) => (
-        <TableRow
-          key={index}
-          sx={{
-            "&:hover": { cursor: "pointer" },
-            "& td": {
-              borderBottom: "1px solid #ddd",
-              padding: "0.75rem",
-            },
-            "& td:first-of-type": {
-              padding: "0",
-            },
-          }}
-          onClick={() =>
-            handleClickOpen(
-              item.id,
-              item.name,
-              item.type,
-              item.measurement,
-              item.price,
-              item.image,
-              item.measured_in
-            )
-          }
-        >
-          <TableCell sx={{ width: { xs: "80px", sm: "100px" } }}>
-            <div
-              style={{
-                backgroundImage: `url(/upload/${item.image})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                width: "100%",
-                height: "80px",
-                borderRadius: "5px",
-              }}
-            />
-          </TableCell>
-          <TableCell>{item.name}</TableCell>
-          <TableCell sx={{   display: { xs: "none", md: "table-cell" } }} >{item.type}</TableCell>
-          <TableCell>{item.price}</TableCell>
-          <TableCell>
-            {item.measurement} {item.measured_in}
-          </TableCell>
-          <TableCell sx={{   display: { xs: "none" ,md: "table-cell"} }}>
-            {new Date(item.updated_at).toLocaleDateString("en-US", dateOptions)}
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</Box>
-}
-
-<Box marginTop="10px" marginBottom="20px" display="flex" justifyContent="center" alignItems="center">
-  <Button variant="outlined" onClick={handlePrevPage}>Prev</Button>
-  {lastPage && (
-    <Pagination
-      count={lastPage}
-      page={currentPage}
-      onChange={(event, page) => handlePageClick(page)}
-      color="primary"
-    />
-  )}
-  <Button variant="outlined" onClick={handleNextPage} disabled={currentPage === lastPage}>
-    Next
-  </Button>
-</Box>
-
-
-
-
-
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
