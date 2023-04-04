@@ -88,7 +88,7 @@ export default function ItemPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`/api/items?page=${currentPage}&category=${category}`);
+      const response = await axios.get(`/api/view-items?page=${currentPage}&category=${category}`);
       setItems(response.data.data);
       setLastPage(response.data.last_page);
     }
