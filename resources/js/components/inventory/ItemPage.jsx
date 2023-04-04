@@ -433,7 +433,7 @@ export default function ItemPage() {
 </Box>
 }
 
-<Box marginTop="10px" display="flex" justifyContent="center" alignItems="center">
+<Box marginTop="10px" marginBottom="20px" display="flex" justifyContent="center" alignItems="center">
   <Button variant="contained" onClick={handlePrevPage}>Prev</Button>
   {lastPage && (
     <Pagination

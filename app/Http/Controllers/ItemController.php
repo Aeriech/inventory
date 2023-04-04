@@ -12,7 +12,7 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $items = Item::where('status', '<>', 'archive')->paginate(3, ['*'], 'page', $request->query('page'));
+        $items = Item::where('status', '<>', 'archive')->paginate(30, ['*'], 'page', $request->query('page'));
     
         return response()->json($items);
     }
