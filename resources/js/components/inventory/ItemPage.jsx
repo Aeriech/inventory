@@ -75,6 +75,7 @@ export default function ItemPage() {
     const [sortOption, setSortOption] = useState("date");
     const [sortDirection, setSortDirection] = useState("desc");
     const [listView, setListView] = useState("image");
+    const [category, setCategory] = useState("All Item");
 
     const dateOptions = {
         year: "numeric",
@@ -87,13 +88,13 @@ export default function ItemPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`/api/items?page=${currentPage}`);
+      const response = await axios.get(`/api/items?page=${currentPage}&category=${category}`);
       setItems(response.data.data);
       setLastPage(response.data.last_page);
     }
 
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, category]);
 
   const handleNextPage = () => {
     if (currentPage < lastPage) {
@@ -213,10 +214,27 @@ export default function ItemPage() {
         }
     };
 
+    const handleCategory = (e) => {
+        setCategory(e.target.value)
+    };
+
     
 
     const [imageList, setImageList] = React.useState(true);
     const [tableList, setTableList] = React.useState(false);
+
+    useEffect(() => {
+        viewCategory();
+    }, []);
+  
+  
+      const [subCategory, setSubCategory] = useState([]);
+  
+      const viewCategory = async () => {
+          const { data } = await axios.get(`/api/view-category`);
+           
+          setSubCategory(data.categories);
+      };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -296,6 +314,25 @@ export default function ItemPage() {
                             >
                                 <MenuItem value="image">Image List</MenuItem>
                                 <MenuItem value="table">Table List</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={6} sm={4} md={3} lg={3} xl={3}>
+                        <Typography variant="body2">View</Typography>
+                        <FormControl sx={{ minWidth: 100 }}>
+                            <Select
+                                size="small"
+                                value={category}
+                                onChange={
+                                    handleCategory
+                                }
+                            >
+
+<MenuItem value="All Item">All Item</MenuItem>
+                                {subCategory.map((category,index) => (
+  <MenuItem key={index} value={category.category}>{category.category}</MenuItem>
+))}
                             </Select>
                         </FormControl>
                     </Grid>
