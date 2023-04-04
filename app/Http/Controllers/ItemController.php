@@ -62,7 +62,7 @@ class ItemController extends Controller
     public function unarchive($id)
     {
         $item = Item::find($id);
-        $item->status = "Archive";
+        $item->status = "unarchive";
         $item->save();
 
         $log = new History();
