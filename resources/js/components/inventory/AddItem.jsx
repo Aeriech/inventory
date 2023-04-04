@@ -75,7 +75,7 @@ export default function AddItem() {
 
     const viewCategory = async () => {
         const { data } = await axios.get(`/api/view-category`);
-        console.log(data);
+         
         setSubCategory(data.categories);
     };
 
@@ -88,7 +88,7 @@ export default function AddItem() {
 
     const viewMeasurement = async () => {
         const { data } = await axios.get(`/api/view-measurement`);
-        console.log(data);
+         
         setMeasurements(data.measurements);
     };
   return (

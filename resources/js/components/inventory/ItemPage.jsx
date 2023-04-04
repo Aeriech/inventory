@@ -362,7 +362,7 @@ export default function ItemPage() {
               borderBottom: "1px solid #ddd",
               padding: "0.75rem",
             },
-            "& td:first-child": {
+            "& td:first-of-type": {
               padding: "0",
             },
           }}
@@ -406,6 +406,7 @@ export default function ItemPage() {
   </Table>
 </Box>
 }
+
 
 
 
