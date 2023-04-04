@@ -27,7 +27,7 @@ class ItemController extends Controller
         return response()->json($items);
     }
 
-    public function ViewArc(Request $request)
+    public function ViewArchives(Request $request)
     {
         $items = Item::where('status', '=', 'archive');
 
@@ -44,14 +44,6 @@ class ItemController extends Controller
         return response()->json($items);
     }
 
-
-    public function viewArchives()
-    {
-        $items = Item::where('status', '=', 'archive')->get();
-        return response()->json([
-            'items' => $items
-        ], 200);
-    }
 
     public function archive($id)
     {
