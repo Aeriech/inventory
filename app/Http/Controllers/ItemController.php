@@ -10,7 +10,13 @@ use Intervention\Image\Facades\Image;
 
 class ItemController extends Controller
 {
-
+    public function index(Request $request)
+    {
+        $items = Item::where('status', '<>', 'archive')->paginate(3, ['*'], 'page', $request->query('page'));
+    
+        return response()->json($items);
+    }
+    
     public function viewItems(){
         $items = Item::where('status', '<>', 'archive')->get();
         return response()->json([

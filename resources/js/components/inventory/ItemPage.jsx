@@ -81,14 +81,25 @@ export default function ItemPage() {
         day: "numeric",
     };
 
-    useEffect(() => {
-        viewItems();
-    }, []);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const viewItems = async () => {
-        const { data } = await axios.get("/api/view-items");
-        setItems(data.items);
-    };
+  useEffect(() => {
+    axios.get(`/api/items?page=${currentPage}`)
+      .then(response => {
+        setItems(response.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, [currentPage]);
+
+  const handlePrevPageClick = () => {
+    setCurrentPage(prevPage => prevPage - 1);
+  };
+
+  const handleNextPageClick = () => {
+    setCurrentPage(prevPage => prevPage + 1);
+  };
 
 
     const filteredItems = items
@@ -407,7 +418,19 @@ export default function ItemPage() {
 </Box>
 }
 
-
+{/* Display pagination links */}
+<ul>
+        <li>
+          <button onClick={handlePrevPageClick} disabled={items.prev_page_url === null}>
+            Previous
+          </button>
+        </li>
+        <li>
+          <button onClick={handleNextPageClick} disabled={items.next_page_url === null}>
+            Next
+          </button>
+        </li>
+      </ul>
 
 
             <Dialog open={open} onClose={handleClose}>
