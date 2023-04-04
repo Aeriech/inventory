@@ -27,7 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/new-item',[ItemController::class, 'addNewItem']);
 Route::get('/get-item/{id}',[ItemController::class, 'getItem']);
 Route::post('/update-item/{id}',[ItemController::class, 'updateItem']);
-Route::get('/view-archives',[ItemController::class, 'viewArchives']);
 Route::post('/archive-item/{id}',[ItemController::class, 'archive']);
 Route::post('/unarchive-item/{id}',[ItemController::class, 'unarchive']);
 Route::post('/use-item/{id}',[ItemController::class, 'useItem']);
@@ -48,4 +47,5 @@ Route::get('/view-measurement',[MeasurementController::class, 'viewMeasurement']
 //view items
 Route::get('/view-items', [ItemController::class, 'viewItems']);
 
+//view archives
 Route::get('/view-archive', [ItemController::class, 'viewArchives']);
