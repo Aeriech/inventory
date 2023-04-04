@@ -10,7 +10,7 @@ use Intervention\Image\Facades\Image;
 
 class ItemController extends Controller
 {
-    public function index(Request $request)
+    public function viewItems(Request $request)
     {
         $items = Item::where('status', '<>', 'archive');
 
@@ -27,13 +27,23 @@ class ItemController extends Controller
         return response()->json($items);
     }
 
-    public function viewItems()
+    public function ViewArc(Request $request)
     {
-        $items = Item::where('status', '<>', 'archive')->get();
-        return response()->json([
-            'items' => $items
-        ], 200);
+        $items = Item::where('status', '=', 'archive');
+
+        if ($request->has('category')) {
+            $category = $request->query('category');
+            if ($category !== 'All Item') {
+                $items->where('type', $category);
+            }
+        }
+
+        $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
+
+
+        return response()->json($items);
     }
+
 
     public function viewArchives()
     {

@@ -45,5 +45,7 @@ Route::post('/add-measurement',[MeasurementController::class, 'addMeasurement'])
 Route::get('/view-measurement',[MeasurementController::class, 'viewMeasurement']);
 
 
+//view items
+Route::get('/view-items', [ItemController::class, 'viewItems']);
 
-Route::get('/view-items', [ItemController::class, 'index']);
+Route::get('/view-archive', [ItemController::class, 'viewArchives']);

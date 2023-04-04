@@ -420,7 +420,7 @@ export default function ItemPage() {
         <TableRow
           key={index}
           sx={{
-            "&:hover": { cursor: "pointer", background: "#f5f5f5" },
+            "&:hover": { cursor: "pointer" },
             "& td": {
               borderBottom: "1px solid #ddd",
               padding: "0.75rem",
