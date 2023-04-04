@@ -62,7 +62,7 @@ class ItemController extends Controller
     public function unarchive($id)
     {
         $item = Item::find($id);
-        $item->status = "unarchive";
+        $item->status = "Archive";
         $item->save();
 
         $log = new History();
@@ -100,7 +100,7 @@ class ItemController extends Controller
         $item->save();
 
         $log = new History();
-        $log->type = "Added New Item";
+        $log->type = "Add";
         $log->description = "[ID = {$item->id}] Added New Item Name:" . $request->name . ", Price:" . $request->price . ", and Qty:" . $request->measurement;
         $log->created_by = $item->id;
         $log->save();
@@ -142,7 +142,7 @@ class ItemController extends Controller
         $item->save();
 
         $log = new History();
-        $log->type = "Updated Item";
+        $log->type = "Update";
         $log->description = "[ID = {$item->id}] Updated Item Name:" . $request->name . ", Price:" . $request->price . ", and Qty:" . $request->measurement;
         $log->created_by = $item->id;
         $log->save();
@@ -155,7 +155,7 @@ class ItemController extends Controller
         $item->save();
 
         $log = new History();
-        $log->type = "Updated Item";
+        $log->type = "Update";
         $log->description = "[ID = {$item->id}] Updated Item Name:" . $item->name . ", and Qty:" . $request->useItem;
         $log->created_by = $item->id;
         $log->save();
@@ -176,7 +176,7 @@ class ItemController extends Controller
         $purchase->save();
 
         $log = new History();
-        $log->type = "Updated Item";
+        $log->type = "Update";
         $log->description = "[ID = {$item->id}] Updated Item Name:" . $item->name . ", Price:" . $request->addPrice . ", and Qty:" . $request->addPurchase;
         $log->created_by = $item->id;
         $log->save();

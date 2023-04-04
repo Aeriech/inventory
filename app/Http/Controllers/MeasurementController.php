@@ -17,7 +17,7 @@ class MeasurementController extends Controller
         $measurement->save();
 
         $log = new History();
-        $log->type = "Added New Measurement";
+        $log->type = "Add";
         $log->description = "[ID:1] added new measurement: ".$request->measurement;
         $log->created_by = 1;
         $log->save();

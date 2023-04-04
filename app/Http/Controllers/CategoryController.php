@@ -16,7 +16,7 @@ class CategoryController extends Controller
         $category->save();
 
         $log = new History();
-        $log->type = "Added New Category";
+        $log->type = "Add";
         $log->description = "[ID:1] added new category:".$request->subCategoty;
         $log->created_by = 1;
         $log->save();

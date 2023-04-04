@@ -33,7 +33,7 @@ Route::post('/use-item/{id}',[ItemController::class, 'useItem']);
 Route::post('/add-purchase/{id}',[ItemController::class, 'addPurchase']);
 
 Route::post('/new-receipt',[ReceiptController::class, 'addReceipt']);
-Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);
+
 
 Route::get('/view-logs',[HistoryController::class, 'viewLogs']);
 
@@ -49,3 +49,5 @@ Route::get('/view-items', [ItemController::class, 'viewItems']);
 
 //view archives
 Route::get('/view-archives', [ItemController::class, 'viewArchives']);
+
+Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);

@@ -10,12 +10,11 @@ use Intervention\Image\Facades\Image;
 class ReceiptController extends Controller
 {
 
-    public function viewReceipts(){
-        $receipt = Receipt::all();
-        return response()->json([
-            'receipts' => $receipt
-        ],200);
+    public function viewReceipts(Request $request) {
+        $receipts = Receipt::paginate(30, ['*'], 'page', $request->query('page'));
+        return response()->json($receipts);
     }
+    
 
     public function addReceipt(Request $request)
     {
@@ -41,7 +40,7 @@ class ReceiptController extends Controller
         $receipt->save();
 
         $log = new History();
-        $log->type = "Added New Receipt";
+        $log->type = "Add";
         $log->description = "[ID:1] Added New Receipt Description:".$request->description.", Amount:".$request->amount;
         $log->created_by = 1;
         $log->save();
