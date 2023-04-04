@@ -21,20 +21,22 @@ class ItemController extends Controller
             }
         }
 
-$items = $items->paginate(30, ['*'], 'page', $request->query('page'));
+        $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
 
-    
+
         return response()->json($items);
     }
-    
-    public function viewItems(){
+
+    public function viewItems()
+    {
         $items = Item::where('status', '<>', 'archive')->get();
         return response()->json([
             'items' => $items
         ], 200);
     }
 
-    public function viewArchives(){
+    public function viewArchives()
+    {
         $items = Item::where('status', '=', 'archive')->get();
         return response()->json([
             'items' => $items
@@ -42,17 +44,17 @@ $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
     }
 
     public function archive($id)
-{
-    $item = Item::find($id);
-    $item->status = "archive";
-    $item->save();
+    {
+        $item = Item::find($id);
+        $item->status = "archive";
+        $item->save();
 
-    $log = new History();
-    $log->type = "Archive";
-    $log->description = "[ID = {$id}] Archived Item " . $item->name;
-    $log->created_by = $id;
-    $log->save();
-}
+        $log = new History();
+        $log->type = "Archive";
+        $log->description = "[ID = {$id}] Archived Item " . $item->name;
+        $log->created_by = $id;
+        $log->save();
+    }
 
 
     public function unarchive($id)
@@ -67,26 +69,25 @@ $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
         $log->created_by = $id;
         $log->save();
     }
-    
-    
+
+
 
     public function addNewItem(Request $request)
     {
-        
+
         $item = new Item();
 
         $item->name = $request->name;
-        if ($request->image!="") {
-            $strpos = strpos($request->image,";");
-            $sub = substr($request->image,0,$strpos);
-            $ex = explode('/',$sub)[1];
-            $name = time().".".$ex;
-            $img = Image::make($request->image)->resize(500,500);
-            $upload_path = public_path()."/upload/";
-            $img->save($upload_path.$name);
+        if ($request->image != "") {
+            $strpos = strpos($request->image, ";");
+            $sub = substr($request->image, 0, $strpos);
+            $ex = explode('/', $sub)[1];
+            $name = time() . "." . $ex;
+            $img = Image::make($request->image)->resize(500, 500);
+            $upload_path = public_path() . "/upload/";
+            $img->save($upload_path . $name);
             $item->image = $name;
-        }
-        else{
+        } else {
             $item->image = "image.png";
         }
         $item->image = $name;
@@ -98,7 +99,7 @@ $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
 
         $log = new History();
         $log->type = "Added New Item";
-        $log->description = "[ID = {$item->id}] Added New Item Name:" . $request->name. ", Price:" .$request->price. ", and Qty:".$request->measurement;
+        $log->description = "[ID = {$item->id}] Added New Item Name:" . $request->name . ", Price:" . $request->price . ", and Qty:" . $request->measurement;
         $log->created_by = $item->id;
         $log->save();
     }
@@ -108,28 +109,27 @@ $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
         $item = Item::find($id);
         return response()->json([
             'item' => $item
-        ],200);
+        ], 200);
     }
 
     public function updateItem(Request $request, $id)
     {
         $item = Item::find($id);
         $item->name = $request->name;
-        if($item->image!=$request->image){
-            $strpos = strpos($request->image,";");
-            $sub = substr($request->image,0,$strpos);
-            $ex = explode('/',$sub)[1];
-            $name = time().".".$ex;
-            $img = Image::make($request->image)->resize(500,500);
-            $upload_path = public_path()."/upload/";
-            $img->save($upload_path.$name);
-            $photo = $upload_path. $item->image;
-            $img->save($upload_path.$name);
-            if(file_exists($photo)){
+        if ($item->image != $request->image) {
+            $strpos = strpos($request->image, ";");
+            $sub = substr($request->image, 0, $strpos);
+            $ex = explode('/', $sub)[1];
+            $name = time() . "." . $ex;
+            $img = Image::make($request->image)->resize(500, 500);
+            $upload_path = public_path() . "/upload/";
+            $img->save($upload_path . $name);
+            $photo = $upload_path . $item->image;
+            $img->save($upload_path . $name);
+            if (file_exists($photo)) {
                 @unlink($photo);
             }
-        }
-        else{
+        } else {
             $name = $item->image;
         }
         $item->image = $name;
@@ -141,7 +141,7 @@ $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
 
         $log = new History();
         $log->type = "Updated Item";
-        $log->description = "[ID = {$item->id}] Updated Item Name:" . $request->name. ", Price:" .$request->price. ", and Qty:".$request->measurement;
+        $log->description = "[ID = {$item->id}] Updated Item Name:" . $request->name . ", Price:" . $request->price . ", and Qty:" . $request->measurement;
         $log->created_by = $item->id;
         $log->save();
     }
@@ -154,7 +154,7 @@ $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
 
         $log = new History();
         $log->type = "Updated Item";
-        $log->description = "[ID = {$item->id}] Updated Item Name:" . $item->name. ", and Qty:".$request->useItem;
+        $log->description = "[ID = {$item->id}] Updated Item Name:" . $item->name . ", and Qty:" . $request->useItem;
         $log->created_by = $item->id;
         $log->save();
     }
@@ -175,7 +175,7 @@ $items = $items->paginate(30, ['*'], 'page', $request->query('page'));
 
         $log = new History();
         $log->type = "Updated Item";
-        $log->description = "[ID = {$item->id}] Updated Item Name:" . $item->name. ", Price:" .$request->addPrice. ", and Qty:".$request->addPurchase;
+        $log->description = "[ID = {$item->id}] Updated Item Name:" . $item->name . ", Price:" . $request->addPrice . ", and Qty:" . $request->addPurchase;
         $log->created_by = $item->id;
         $log->save();
     }
