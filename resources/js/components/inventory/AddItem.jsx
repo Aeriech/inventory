@@ -52,6 +52,7 @@ export default function AddItem() {
         formData.append('image', image)
         formData.append('type', category)
         formData.append('measurement', measurement)
+        formData.append('measure', measure)
         formData.append('price', price)
 
         try {

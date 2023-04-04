@@ -127,7 +127,7 @@ export default function UseItem() {
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
                             <Typography variant="h5">
-                                Qty: {measurement}
+                                Item Left: {measurement}
                             </Typography>
                             <div
                                 style={{
@@ -178,7 +178,7 @@ export default function UseItem() {
                                 <Button variant="outlined" onClick={use_Item}>
                                     <Typography variant="h5" textAlign="center">
                                         Use Item
-                                    </Typography>
+                       </Typography>
                                 </Button>
                             </div>
                         </Grid>
