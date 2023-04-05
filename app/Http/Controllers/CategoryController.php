@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\History;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
     public function addCategory(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'category' => 'required',
+            'subCategory' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+
         $category = new Category();
         $category->category = $request->subCategory;
         $category->parent_id = $request->category;

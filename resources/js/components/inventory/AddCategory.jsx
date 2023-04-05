@@ -34,10 +34,16 @@ export default function AddCategory() {
       title: "Category added successfully",
     });
     navigate("/");
-  } catch ({ response }) {
-    // handle error
+  } catch (error) {
+    if (error.response && error.response.status === 422) {
+      setErrors(error.response.data.errors);
+  } else {
+      // handle other errors here
+  }
   }
 };
+
+const [errors, setErrors] = useState(null);
 
   return (
     <div > 
@@ -51,6 +57,18 @@ export default function AddCategory() {
   </div>
 </div>
   
+<Box marginTop="10px">
+{errors && (
+                <div className="alert alert-danger">
+                    <ul>
+                        {Object.values(errors).map((messages, index) => (
+                            <li key={index}>{messages[0]}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            </Box>
+
   <Box border={2} borderColor="black" padding={5} margin="10px">
     <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
       <Grid item xs={12} sm={6} md={6}>
