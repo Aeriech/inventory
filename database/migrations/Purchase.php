@@ -16,8 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');
             $table->decimal('price', 20, 2)->nullable();
-            $table->bigInteger('measurement')->unsigned()->nullable();
-            $table->bigInteger('item_left')->unsigned()->nullable();
+            $table->bigInteger('item_added')->unsigned()->nullable();
             $table->timestamp('purchase_date')->nullable();
             $table->timestamps();
         });

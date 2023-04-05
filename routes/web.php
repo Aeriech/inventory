@@ -16,3 +16,27 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/view-receipts', function () {
+    return view('welcome');
+});
+
+Route::get('/new-item', function () {
+    return view('welcome');
+});
+
+Route::get('/new-receipt', function () {
+    return view('welcome');
+});
+
+Route::get('/view-archives', function () {
+    return view('welcome');
+});
+
+Route::get('/get-item/{id}', function () {
+    return view('welcome');
+});
+
+Route::get('/use-item/{id}', function () {
+    return view('welcome');
+});
