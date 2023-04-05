@@ -6,6 +6,7 @@ use App\Models\History;
 use App\Models\Item;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class ItemController extends Controller
@@ -75,37 +76,51 @@ class ItemController extends Controller
 
 
     public function addNewItem(Request $request)
-    {
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required',
+        'category' => 'required',
+        'measure' => 'required',
+        'measurement' => 'required|numeric',
+        'price' => 'required|numeric',
+    ]);
 
-        $item = new Item();
-
-        $item->name = $request->name;
-        if ($request->image != "") {
-            $strpos = strpos($request->image, ";");
-            $sub = substr($request->image, 0, $strpos);
-            $ex = explode('/', $sub)[1];
-            $name = time() . "." . $ex;
-            $img = Image::make($request->image)->resize(500, 500);
-            $upload_path = public_path() . "/upload/";
-            $img->save($upload_path . $name);
-            $item->image = $name;
-        } else {
-            $item->image = "image.png";
-        }
-        $item->image = $name;
-        $item->type = $request->type;
-        $item->measured_in = $request->measure;
-        $item->measurement = $request->measurement;
-        $item->price = $request->price;
-        $item->status = "unarchive";
-        $item->save();
-
-        $log = new History();
-        $log->type = "Add";
-        $log->description = "[ID = {$item->id}] Added New Item Name:" . $request->name . ", Price:" . $request->price . ", and Qty:" . $request->measurement;
-        $log->created_by = $item->id;
-        $log->save();
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    $item = new Item();
+
+    $item->name = $request->name;
+
+    if ($request->image != "") {
+        $strpos = strpos($request->image, ";");
+        $sub = substr($request->image, 0, $strpos);
+        $ex = explode('/', $sub)[1];
+        $name = time() . "." . $ex;
+        $img = Image::make($request->image)->resize(500, 500);
+        $upload_path = public_path() . "/upload/";
+        $img->save($upload_path . $name);
+        $item->image = $name;
+    } else {
+        $item->image = "image.png";
+    }
+
+    $item->type = $request->category;
+    $item->measured_in = $request->measure;
+    $item->measurement = $request->measurement;
+    $item->price = $request->price;
+    $item->status = "unarchive";
+    $item->save();
+
+    $log = new History();
+    $log->type = "Add";
+    $log->description = "[ID = {$item->id}] Added New Item Name:" . $request->name . ", Price:" . $request->price . ", and Qty:" . $request->measurement;
+    $log->created_by = $item->id;
+    $log->save();
+
+}
+
 
     public function getItem($id)
     {

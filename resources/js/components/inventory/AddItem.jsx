@@ -17,6 +17,7 @@ export default function AddItem() {
     const [category, setCategory] = React.useState('');
     const [measure, setMeasure] = React.useState('');
     const [measurement, setMeasurement] = React.useState("");
+    const [errors, setErrors] = useState(null);
 
     const handleCategory = (event) => {
       setCategory(event.target.value);
@@ -50,7 +51,7 @@ export default function AddItem() {
 
         formData.append('name', name)
         formData.append('image', image)
-        formData.append('type', category)
+        formData.append('category', category)
         formData.append('measurement', measurement)
         formData.append('measure', measure)
         formData.append('price', price)
@@ -62,8 +63,12 @@ export default function AddItem() {
             title: "Item added successfully",   
           });
           navigate("/");
-        } catch ({ response }) {
-          // handle error
+        } catch (error) {
+          if (error.response && error.response.status === 422) {
+            setErrors(error.response.data.errors);
+        } else {
+            // handle other errors here
+        }
         }
     };
 
@@ -103,9 +108,19 @@ export default function AddItem() {
   <Button size='large' variant="outlined" onClick={(event) => createItem(event)}><Typography variant='h6'>SAVE</Typography></Button>
   </div>
 </div>
-  
+<Box marginTop="10px">
+{errors && (
+                <div className="alert alert-danger">
+                    <ul>
+                        {Object.values(errors).map((messages, index) => (
+                            <li key={index}>{messages[0]}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            </Box>
   <Box border={2} borderColor="black" padding={5} margin="10px">
-    <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
+    <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
       <Grid item xs={2} sm={4} md={4}>
         <Grid container direction="column" alignItems="center" >
           <Grid item>
