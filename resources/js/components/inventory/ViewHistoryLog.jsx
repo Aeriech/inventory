@@ -151,6 +151,7 @@ export default function ViewHistoryLog() {
 
     const handleCategory = (e) => {
         setType(e.target.value);
+        setCurrentPage(1);
     };
 
     const handleSort = (option) => {

@@ -222,6 +222,7 @@ export default function ItemPage() {
 
     const handleCategory = (e) => {
         setCategory(e.target.value);
+        setCurrentPage(1);
     };
 
     const [imageList, setImageList] = React.useState(true);

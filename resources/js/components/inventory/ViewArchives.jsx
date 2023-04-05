@@ -96,6 +96,7 @@ export default function ViewArchives() {
 
     const handleCategory = (e) => {
         setCategory(e.target.value);
+        setCurrentPage(1);
     };
 
     const handleClickOpen = (
