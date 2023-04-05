@@ -87,7 +87,7 @@ export default function UpdateItem() {
 
         formData.append('name', name)
         formData.append('image', image)
-        formData.append('type', category)
+        formData.append('category', category)
         formData.append('measurement', measurement)
         formData.append('measure',measure)
         formData.append('price', price)
@@ -99,10 +99,16 @@ export default function UpdateItem() {
                 title: "Item updated successfully",  
           });
           navigate("/");
-        } catch ({ error }) {
-          // handle error
+        } catch (error) {
+          if (error.response && error.response.status === 422) {
+            setErrors(error.response.data.errors);
+        } else {
+            // handle other errors here
+        }
         }
     };
+
+    const [errors, setErrors] = useState(null);
 
     const ourImage = (img) => {
       return "/upload/"+img
@@ -165,7 +171,17 @@ export default function UpdateItem() {
   </div>
 </div>
 
-
+<Box marginTop="10px">
+{errors && (
+                <div className="alert alert-danger">
+                    <ul>
+                        {Object.values(errors).map((messages, index) => (
+                            <li key={index}>{messages[0]}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            </Box>
 
   <Box border={2} borderColor="black" padding={5} margin="10px">
     <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\History;
 use App\Models\Receipt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class ReceiptController extends Controller
@@ -18,7 +19,15 @@ class ReceiptController extends Controller
 
     public function addReceipt(Request $request)
     {
-        
+        $validator = Validator::make($request->all(), [
+            'description' => 'required',
+            'amount' => 'required|numeric',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $receipt = new Receipt();
 
         $receipt->description = $request->description;

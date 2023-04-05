@@ -46,10 +46,17 @@ export default function AddReceipt() {
                 title: "Receipt added successfully",   
           });
           navigate("/view-receipts")
-        } catch ({ response }) {
-          // handle error
+        } catch (error) {
+          if (error.response && error.response.status === 422) {
+            setErrors(error.response.data.errors);
+        } else {
+            // handle other errors here
+        }
         }
     };
+
+    const [errors, setErrors] = useState(null);
+
   return (
     <div > 
       <Box sx={{ flexGrow: 1}}  textAlign="center" marginTop="20px">
@@ -60,6 +67,18 @@ export default function AddReceipt() {
   <Button size='large' variant="outlined" onClick={(event) => createReceipt(event)}><Typography variant='h5'>SAVE</Typography></Button>
   </div>
 </div>
+
+<Box marginTop="10px">
+{errors && (
+                <div className="alert alert-danger">
+                    <ul>
+                        {Object.values(errors).map((messages, index) => (
+                            <li key={index}>{messages[0]}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            </Box>
 
   <Box border={2} borderColor="black" padding={5} margin="10px">
     <Grid alignItems="center" container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >

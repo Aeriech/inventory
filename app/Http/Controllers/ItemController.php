@@ -132,6 +132,19 @@ class ItemController extends Controller
 
     public function updateItem(Request $request, $id)
     {
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'category' => 'required',
+            'measure' => 'required',
+            'measurement' => 'required|numeric',
+            'price' => 'required|numeric',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $item = Item::find($id);
         $item->name = $request->name;
         if ($item->image != $request->image) {
@@ -151,7 +164,7 @@ class ItemController extends Controller
             $name = $item->image;
         }
         $item->image = $name;
-        $item->type = $request->type;
+        $item->type = $request->category;
         $item->measured_in = $request->measure;
         $item->measurement = $request->measurement;
         $item->price = $request->price;
@@ -167,6 +180,15 @@ class ItemController extends Controller
     public function useItem(Request $request, $id)
     {
         $item = Item::find($id);
+        $maxValue = $item->measurement;
+        $validator = Validator::make($request->all(), [
+            'useItem' => 'required|numeric|min:1|max:' . $maxValue
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $item->measurement = $item->measurement - $request->useItem;
         $item->save();
 
@@ -179,6 +201,14 @@ class ItemController extends Controller
 
     public function addPurchase(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'addPurchase' => 'required|numeric|min:1|',
+    'addPrice' => 'required|numeric|min:1',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $item = Item::find($id);
         $item->measurement = $item->measurement + $request->addPurchase;
         $item->price = $request->addPrice;
