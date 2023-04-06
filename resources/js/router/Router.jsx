@@ -13,6 +13,7 @@ import UseItem from '../components/inventory/UseItem'
 import ViewHistoryLog from '../components/inventory/ViewHistoryLog'
 import AddCategory from '../components/inventory/AddCategory'
 import AddMeasurement from '../components/inventory/AddMeasurement'
+import NewPurchase from '../components/inventory/NewPurchase'
 
 
 export default function Router() {
@@ -31,6 +32,7 @@ export default function Router() {
             <Route path='/view-logs' element={ <ViewHistoryLog/> } />
             <Route path='/add-category' element={ <AddCategory/> } />
             <Route path='/add-measurement' element={ <AddMeasurement/> } />
+            <Route path='/new-purchase' element={ <NewPurchase/> } />
         </Routes>
     </div>
   )

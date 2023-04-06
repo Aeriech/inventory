@@ -40,3 +40,7 @@ Route::get('/get-item/{id}', function () {
 Route::get('/use-item/{id}', function () {
     return view('welcome');
 });
+
+Route::get('/new-purchase', function () {
+    return view('welcome');
+});

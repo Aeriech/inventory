@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MeasurementController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReceiptController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,7 +48,12 @@ Route::get('/view-measurement',[MeasurementController::class, 'viewMeasurement']
 //view items
 Route::get('/view-items', [ItemController::class, 'viewItems']);
 
+Route::get('/items', [ItemController::class, 'Items']);
+
+
 //view archives
 Route::get('/view-archives', [ItemController::class, 'viewArchives']);
 
 Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);
+
+Route::post('/purchases', [PurchaseController::class, 'store']);

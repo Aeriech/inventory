@@ -12,11 +12,11 @@ const darkTheme = createTheme({
 const App = () => {
     return(
         <div>
-            <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
+            {/* <ThemeProvider theme={darkTheme}>
+            <CssBaseline /> */}
             <Header />
             <Router />
-            </ThemeProvider>
+            {/* </ThemeProvider> */}
         </div>
     )
 }

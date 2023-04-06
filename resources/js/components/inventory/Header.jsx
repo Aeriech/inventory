@@ -23,9 +23,8 @@ import { useNavigate } from "react-router-dom";
 const pages = [
     "View Items",
     "New Item",
-    "View Receipts",
-    "New Receipt",
     "View Archives",
+    "New Purchase",
 ];
 const settings = [
     "Profile",
@@ -61,7 +60,10 @@ function Header() {
             navigate("/view-receipts");
         } else if (e === "View Archives") {
             navigate("/view-archives");
+        } else if (e === "New Purchase") {
+            navigate("/new-purchase");
         }
+        
     };
 
     const handleCloseUserMenu = (e) => {
