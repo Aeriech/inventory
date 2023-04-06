@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('name', 255)->unique();
             $table->string('image', 255)->nullable();
             $table->decimal('price', 20, 2)->nullable();
             $table->bigInteger('measurement')->unsigned()->nullable();
