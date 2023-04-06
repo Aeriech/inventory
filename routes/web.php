@@ -44,3 +44,7 @@ Route::get('/use-item/{id}', function () {
 Route::get('/new-purchase', function () {
     return view('welcome');
 });
+
+Route::get('/view-purchases', function () {
+    return view('welcome');
+});

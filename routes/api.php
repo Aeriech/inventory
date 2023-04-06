@@ -56,4 +56,6 @@ Route::get('/view-archives', [ItemController::class, 'viewArchives']);
 
 Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);
 
-Route::post('/purchases', [PurchaseController::class, 'store']);
+Route::post('/new-purchase', [PurchaseController::class, 'store']);
+
+Route::get('/view-purchases', [PurchaseController::class, 'index']);

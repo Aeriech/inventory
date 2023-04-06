@@ -25,6 +25,7 @@ const pages = [
     "New Item",
     "View Archives",
     "New Purchase",
+    "View Purchases",
 ];
 const settings = [
     "Profile",
@@ -62,6 +63,8 @@ function Header() {
             navigate("/view-archives");
         } else if (e === "New Purchase") {
             navigate("/new-purchase");
+        } else if (e === "View Purchases") {
+            navigate("/view-purchases");
         }
         
     };

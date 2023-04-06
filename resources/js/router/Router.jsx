@@ -14,6 +14,7 @@ import ViewHistoryLog from '../components/inventory/ViewHistoryLog'
 import AddCategory from '../components/inventory/AddCategory'
 import AddMeasurement from '../components/inventory/AddMeasurement'
 import NewPurchase from '../components/inventory/NewPurchase'
+import ViewPurchases from '../components/inventory/ViewPurchases'
 
 
 export default function Router() {
@@ -33,6 +34,7 @@ export default function Router() {
             <Route path='/add-category' element={ <AddCategory/> } />
             <Route path='/add-measurement' element={ <AddMeasurement/> } />
             <Route path='/new-purchase' element={ <NewPurchase/> } />
+            <Route path='/view-purchases' element={ <ViewPurchases/> } />
         </Routes>
     </div>
   )

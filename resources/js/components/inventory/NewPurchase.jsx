@@ -44,7 +44,7 @@ function PurchaseForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         axios
-            .post("/api/purchases", { purchases })
+            .post("/api/new-purchase", { purchases })
             .then((response) => {
                 console.log(response.data.message);
                 setPurchases([{ name: "", measurement: "" }]);
