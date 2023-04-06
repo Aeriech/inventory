@@ -30,10 +30,13 @@ class ItemController extends Controller
 
     public function Items()
 {
-    $items = Item::where('status', '<>', 'archive')->get();
+    $items = Item::where('status', '<>', 'archive')
+                 ->orderBy('name', 'asc')
+                 ->get();
 
     return response()->json($items);
 }
+
 
 
     public function ViewArchives(Request $request)
