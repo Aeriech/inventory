@@ -53,14 +53,16 @@ function Header() {
             navigate("/");
         } else if (e === "New Item") {
             navigate("/new-item");
-        } else if (e === "New Receipt") {
-            navigate("/new-receipt");
-        } else if (e === "View Receipts") {
-            navigate("/view-receipts");
-        } else if (e === "New Purchase") {
+        }  else if (e === "New Purchase") {
             navigate("/new-purchase");
         } else if (e === "View Purchases") {
             navigate("/view-purchases");
+        }
+
+        else if (e === "New Receipt") {
+            navigate("/new-receipt");
+        } else if (e === "View Receipts") {
+            navigate("/view-receipts");
         }
         
     };
