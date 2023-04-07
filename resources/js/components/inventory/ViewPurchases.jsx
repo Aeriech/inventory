@@ -59,7 +59,7 @@ const ViewPurchases = () => {
     return (
         <Container sx={{ marginTop: 4 }}>
             <Typography variant="h4" gutterBottom align="center">
-                Grouped Purchases
+                View Purchase Requests
             </Typography>
             <Box
                 sx={{
@@ -96,15 +96,7 @@ const ViewPurchases = () => {
                                     gutterBottom
                                     align="center"
                                 >
-                                    Purchase Number
-                                </Typography>
-                                <Typography
-                                    variant="h5"
-                                    gutterBottom
-                                    align="center"
-                                    sx={{ color: "#2E6B8E" }}
-                                >
-                                    {purchaseNumber}
+                                    Purchase Number: {purchaseNumber}
                                 </Typography>
                                 <Box
                                     sx={{
