@@ -11,6 +11,16 @@ use Intervention\Image\Facades\Image;
 
 class ItemController extends Controller
 {
+    public function getMeasuredIn($name)
+{
+    $item = Item::where('name', $name)->first();
+    if (!$item) {
+        return response()->json(['message' => 'Item not found'], 404);
+    }
+    return response()->json(['measured_in' => $item->measured_in]);
+}
+
+
     public function viewItems(Request $request)
     {
         $items = Item::where('status', '<>', 'archive');
@@ -188,56 +198,6 @@ class ItemController extends Controller
         $log->created_by = $item->id;
         $log->save();
     }
-
-//     public function updateItems(Request $request)
-// {
-//     $validator = Validator::make($request->all(), [
-//         '*.id' => 'required|exists:items,id',
-//         '*.name' => 'required',
-//         '*.category' => 'required',
-//         '*.measure' => 'required',
-//         '*.measurement' => 'required|numeric',
-//         '*.price' => 'required|numeric',
-//     ]);
-
-//     if ($validator->fails()) {
-//         return response()->json(['errors' => $validator->errors()], 422);
-//     }
-
-//     foreach ($request->all() as $itemData) {
-//         $item = Item::find($itemData['id']);
-//         $item->name = $itemData['name'];
-//         if ($item->image != $itemData['image']) {
-//             $strpos = strpos($itemData['image'], ";");
-//             $sub = substr($itemData['image'], 0, $strpos);
-//             $ex = explode('/', $sub)[1];
-//             $name = time() . "." . $ex;
-//             $img = Image::make($itemData['image'])->resize(500, 500);
-//             $upload_path = public_path() . "/upload/";
-//             $img->save($upload_path . $name);
-//             $photo = $upload_path . $item->image;
-//             $img->save($upload_path . $name);
-//             if (file_exists($photo)) {
-//                 @unlink($photo);
-//             }
-//         } else {
-//             $name = $item->image;
-//         }
-//         $item->image = $name;
-//         $item->type = $itemData['category'];
-//         $item->measured_in = $itemData['measure'];
-//         $item->measurement = $itemData['measurement'];
-//         $item->price = $itemData['price'];
-//         $item->save();
-
-//         $log = new History();
-//         $log->type = "Update";
-//         $log->description = "[ID = {$item->id}] Updated Item Name:" . $itemData['name'] . ", Price:" . $itemData['price'] . ", and Qty:" . $itemData['measurement'];
-//         $log->created_by = $item->id;
-//         $log->save();
-//     }
-
-// }
 
 
     public function useItem(Request $request, $id)

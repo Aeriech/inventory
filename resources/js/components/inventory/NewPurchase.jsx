@@ -59,15 +59,30 @@ function PurchaseForm() {
     };
 
     const handleNameChange = (event, value, index) => {
-        handleInputChange(
-            {
-                target: {
-                    name: "name",
-                    value: value,
-                },
-            },
-            index
-        );
+        const selectedItem = filteredOptions.find((option) => option === value);
+
+        if (selectedItem) {
+            // Fetch the item from the database based on the selected name
+            axios
+                .get(`/api/items/${selectedItem}`)
+                .then((response) => {
+                    // Update the label of the Measurement TextField with the measurement unit
+                    const measurementUnit = response.data.measured_in;
+                    const newPurchases = [...purchases];
+                    newPurchases[index].name = selectedItem;
+                    newPurchases[index].measurement = "";
+                    newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
+                    setPurchases(newPurchases);
+                })
+                .catch((error) => {
+                    console.log(error.response.data.message);
+                });
+        } else {
+            const newPurchases = [...purchases];
+            newPurchases[index].name = value;
+            newPurchases[index].measurement = "";
+            setPurchases(newPurchases);
+        }
         setSearchValue(value);
     };
 
@@ -144,7 +159,10 @@ function PurchaseForm() {
                             </Grid>
                             <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
                                 <TextField
-                                    label="Measurement"
+                                    label={`(${
+                                        purchase.measurementUnit ||
+                                        "Measurement "
+                                    })`}
                                     variant="outlined"
                                     name="measurement"
                                     value={purchase.measurement}
@@ -180,15 +198,15 @@ function PurchaseForm() {
             </Box>
 
             <Button
-                    variant="contained"
-                    color="success"
-                    onClick={handleSubmit}
-                    style={{ marginTop: "16px" }}
-                    disabled={purchases.length === 0}
-                    fullWidth
-                >
-                    Submit
-                </Button>
+                variant="contained"
+                color="success"
+                onClick={handleSubmit}
+                style={{ marginTop: "16px" }}
+                disabled={purchases.length === 0}
+                fullWidth
+            >
+                Submit
+            </Button>
         </Box>
     );
 }

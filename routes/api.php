@@ -59,3 +59,5 @@ Route::get('/view-receipts',[ReceiptController::class, 'viewReceipts']);
 Route::post('/new-purchase', [PurchaseController::class, 'store']);
 
 Route::get('/view-purchases', [PurchaseController::class, 'index']);
+
+Route::get('/items/{id}', [ItemController::class, 'getMeasuredIn']);
