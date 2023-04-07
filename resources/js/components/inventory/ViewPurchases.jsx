@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-    Container,
-    Typography,
-    Grid,
-    Card,
-    CardContent,
-    Box,
-    TextField,
-    Button,
-    Pagination,
-} from "@mui/material";
+import { Container, Typography, Grid, Card, CardContent, Box, TextField, Button, Pagination, Dialog, DialogContent } from "@mui/material";
+
 
 const ViewPurchases = () => {
     const [groupedPurchases, setGroupedPurchases] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedPurchase, setSelectedPurchase] = useState([]);
+    const [pNumber, setPNumber] = useState("");
+    const [status, setStatus] = useState("");
+    
+
+    const handleCardClick = (purchase) => {
+        setSelectedPurchase(purchase);
+        setDialogOpen(true);
+    };
+    
 
     const handlePageClick = (page) => {
         setCurrentPage(page);
@@ -48,7 +50,10 @@ const ViewPurchases = () => {
                     purchase.purchase_number
                         .toString()
                         .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
+                        .includes(searchTerm.toLowerCase()) ||
+                        purchase.status
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) 
             );
 
             if (filteredGroup.length > 0) {
@@ -82,19 +87,30 @@ const ViewPurchases = () => {
             </Box>
             <Grid container spacing={1}>
                 {Object.keys(filteredPurchases).map((purchaseNumber) => (
-                    <Grid key={purchaseNumber} item xs={6} sm={4} md={3} lg={2}>
+                    <Grid key={purchaseNumber} item xs={6} sm={4} md={3} lg={3}>
                         <Card
                             elevation={3}
                             sx={{ borderRadius: 8, backgroundColor: "#F8F8F8" }}
+                            onClick={() => {
+                                handleCardClick(filteredPurchases[purchaseNumber]);
+                                setPNumber(purchaseNumber);
+                                setStatus(filteredPurchases[purchaseNumber][0].status);
+                            }}
+                            
+                             // Pass filtered purchases for the given purchaseNumber
+                            style={{ cursor: "pointer" }}
                         >
                             <CardContent sx={{ padding: 2 }}>
-                                <Typography
-                                    variant="h6"
-                                    gutterBottom
-                                    align="center"
-                                >
-                                    Purchase Number: {purchaseNumber}
-                                </Typography>
+                            <Typography variant="h6" gutterBottom align="center">
+            Purchase Number: {purchaseNumber}
+            <Typography
+              variant="body1"
+              color="textSecondary"
+              style={{ marginLeft: "0.5rem" }} // Add left margin
+            >
+              Status: {filteredPurchases[purchaseNumber][0].status}
+            </Typography>
+          </Typography>
                                 <Box
                                     sx={{
                                         display: "flex",
@@ -115,6 +131,7 @@ const ViewPurchases = () => {
                                                 <Typography variant="body1">
                                                     {purchase.name}
                                                 </Typography>
+
                                                 <Typography
                                                     variant="body1"
                                                     color="textSecondary"
@@ -165,6 +182,44 @@ const ViewPurchases = () => {
                     boundaryCount={1}
                 />
             </Box>
+            {selectedPurchase && (
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogContent>
+                    {/* Display the selected purchase details here */}
+                    <Typography variant="h6">
+                        Purchase Number: {pNumber}
+                    </Typography>
+                    <Typography
+              variant="body1"
+              gutterBottom
+            >
+              Status: {status}
+            </Typography>
+                    {selectedPurchase && selectedPurchase.map((purchase, index) => (
+    <Box
+    key={index}
+    sx={{
+        display: "flex",
+        justifyContent:
+            "space-between",
+    }}
+>
+    <Typography variant="body1">
+        {purchase.name}
+    </Typography>
+
+    <Typography
+        variant="body1"
+        color="textSecondary"
+    >
+        {purchase.measurement}
+    </Typography>
+</Box>
+))}
+
+                </DialogContent>
+            </Dialog>
+        )}
         </Container>
     );
 };
