@@ -61,3 +61,7 @@ Route::post('/new-purchase', [PurchaseController::class, 'store']);
 Route::get('/view-purchases', [PurchaseController::class, 'index']);
 
 Route::get('/items/{id}', [ItemController::class, 'getMeasuredIn']);
+
+Route::post('/set-approved/{id}', [PurchaseController::class, 'approve']);
+
+Route::post('/set-rejected/{id}', [PurchaseController::class, 'reject']);

@@ -65,4 +65,32 @@ public function index()
     ]);
 }
 
+public function approve($id)
+{
+    $purchases = Purchase::where('purchase_number', $id)->get();
+    $savedPurchases = [];
+
+    foreach ($purchases as $purchase) {
+        $purchase->status = "Approved";
+        $purchase->save();
+        $savedPurchases[] = $purchase;
+    }
+
+    return response()->json(['purchases' => $savedPurchases]);
+}
+
+public function reject($id)
+{
+    $purchases = Purchase::where('purchase_number', $id)->get();
+    $savedPurchases = [];
+
+    foreach ($purchases as $purchase) {
+        $purchase->status = "Rejected";
+        $purchase->save();
+        $savedPurchases[] = $purchase;
+    }
+
+    return response()->json(['purchases' => $savedPurchases]);
+}
+
 }

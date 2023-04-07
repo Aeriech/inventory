@@ -65,6 +65,46 @@ const ViewPurchases = () => {
         {}
     );
 
+    const handleApprove = (event) => {
+        event.preventDefault();
+        axios
+            .post(`/api/set-approved/${pNumber}`)
+            .then((response) => {
+                console.log(response.data.message);
+                setDialogOpen(false)
+            toast.fire({
+                icon: "success",
+                title: "Set purchase to approved successfully",
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, 4000);
+        })
+            .catch((error) => {
+
+            });
+    };
+
+    const handleReject = (event) => {
+        event.preventDefault();
+        axios
+            .post(`/api/set-rejected/${pNumber}`)
+            .then((response) => {
+                console.log(response.data.message);
+                setDialogOpen(false)
+                toast.fire({
+                    icon: "success",
+                    title: "Set purchase to rejected successfully",
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 4000);
+            })
+            .catch((error) => {
+                // Handle error
+            });
+    };
+
     return (
         <Container sx={{ marginTop: 4 }}>
             <Typography variant="h4" gutterBottom align="center">
@@ -221,11 +261,11 @@ const ViewPurchases = () => {
 {status === "Pending" && (
   <>
     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-      <Button variant="contained" color="error" fullWidth>Reject</Button>
+      <Button variant="contained" color="error" fullWidth onClick={(e) => handleReject(e)}>Reject</Button>
     </Grid>
 
     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-      <Button variant="contained" color="success" fullWidth>Approve</Button>
+      <Button variant="contained" color="success" fullWidth onClick={(e) => handleApprove(e)}>Approve</Button>
     </Grid>
   </>
 )}
