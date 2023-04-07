@@ -13,6 +13,8 @@ function PurchaseForm() {
     const [purchases, setPurchases] = useState([{ name: "", measurement: "" }]);
     const [searchValue, setSearchValue] = useState("");
     const [filteredOptions, setFilteredOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
 
     useEffect(() => {
         async function fetchData() {
@@ -29,10 +31,22 @@ function PurchaseForm() {
     };
 
     const handleRemovePurchase = (index) => {
+        const removedOption = selectedOptions[index];
+        if (removedOption) {
+            // Add the removed option back to the filteredOptions list
+            const updatedFilteredOptions = [...filteredOptions, removedOption];
+            setFilteredOptions(updatedFilteredOptions);
+        }
+    
         const newPurchases = [...purchases];
         newPurchases.splice(index, 1);
         setPurchases(newPurchases);
+    
+        const updatedSelectedOptions = [...selectedOptions];
+        updatedSelectedOptions.splice(index, 1);
+        setSelectedOptions(updatedSelectedOptions);
     };
+    
 
     const handleInputChange = (event, index) => {
         const { name, value } = event.target;
@@ -60,8 +74,19 @@ function PurchaseForm() {
 
     const handleNameChange = (event, value, index) => {
         const selectedItem = filteredOptions.find((option) => option === value);
-
+    
         if (selectedItem) {
+            // Remove the selected item from filteredOptions
+            const updatedFilteredOptions = filteredOptions.filter(
+                (option) => option !== selectedItem
+            );
+            setFilteredOptions(updatedFilteredOptions);
+    
+            // Update the selectedOptions with the selected item
+            const updatedSelectedOptions = [...selectedOptions];
+            updatedSelectedOptions[index] = selectedItem;
+            setSelectedOptions(updatedSelectedOptions);
+    
             // Fetch the item from the database based on the selected name
             axios
                 .get(`/api/items/${selectedItem}`)
@@ -85,6 +110,7 @@ function PurchaseForm() {
         }
         setSearchValue(value);
     };
+    
 
     const handleMeasurementChange = (event, index) => {
         const { name, value } = event.target;
