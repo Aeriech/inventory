@@ -12,51 +12,53 @@ import {
     Pagination,
 } from "@mui/material";
 
-
 const ViewPurchases = () => {
-  const [groupedPurchases, setGroupedPurchases] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(null);
-  
-  const handlePageClick = (page) => {
-      setCurrentPage(page);
-  };
-  
-  useEffect(() => {
-      // Fetch data from API endpoint for the current page
-      axios
-          .get(`/api/view-purchases?page=${currentPage}`) // Pass the current page value to the API endpoint
-          .then((response) => {
-              // Assuming API response includes pagination data in 'pagination' object
-              setGroupedPurchases(response.data.groupedPurchases);
-              setLastPage(response.data.pagination.lastPage);
-          })
-          .catch((error) => console.error(error));
-  }, [currentPage]); // Add 'currentPage' as a dependency to the useEffect hook
-  
-  const handleSearch = (event) => {
-      setSearchTerm(event.target.value);
-  };
-  
-  const filteredPurchases = Object.keys(groupedPurchases).reduce(
-    (filtered, purchaseNumber) => {
-        const filteredGroup = groupedPurchases[purchaseNumber].filter(
-            (purchase) =>
-                purchase.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                purchase.purchase_number.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        );
+    const [groupedPurchases, setGroupedPurchases] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [lastPage, setLastPage] = useState(null);
 
-        if (filteredGroup.length > 0) {
-            filtered[purchaseNumber] = filteredGroup;
-        }
+    const handlePageClick = (page) => {
+        setCurrentPage(page);
+    };
 
-        return filtered;
-    },
-    {}
-);
+    useEffect(() => {
+        // Fetch data from API endpoint for the current page
+        axios
+            .get(`/api/view-purchases?page=${currentPage}`) // Pass the current page value to the API endpoint
+            .then((response) => {
+                // Assuming API response includes pagination data in 'pagination' object
+                setGroupedPurchases(response.data.groupedPurchases);
+                setLastPage(response.data.pagination.lastPage);
+            })
+            .catch((error) => console.error(error));
+    }, [currentPage]); // Add 'currentPage' as a dependency to the useEffect hook
 
-  
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const filteredPurchases = Object.keys(groupedPurchases).reduce(
+        (filtered, purchaseNumber) => {
+            const filteredGroup = groupedPurchases[purchaseNumber].filter(
+                (purchase) =>
+                    purchase.name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                    purchase.purchase_number
+                        .toString()
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+            );
+
+            if (filteredGroup.length > 0) {
+                filtered[purchaseNumber] = filteredGroup;
+            }
+
+            return filtered;
+        },
+        {}
+    );
 
     return (
         <Container sx={{ marginTop: 4 }}>
@@ -78,16 +80,9 @@ const ViewPurchases = () => {
                     onChange={handleSearch}
                 />
             </Box>
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
                 {Object.keys(filteredPurchases).map((purchaseNumber) => (
-                    <Grid
-                        key={purchaseNumber}
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                    >
+                    <Grid key={purchaseNumber} item xs={6} sm={4} md={3} lg={2}>
                         <Card
                             elevation={3}
                             sx={{ borderRadius: 8, backgroundColor: "#F8F8F8" }}
@@ -155,21 +150,21 @@ const ViewPurchases = () => {
                 ))}
             </Grid>
             <Box
-  sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}
->
-  <Pagination
-    count={lastPage ?? 1} // Fix for handling null lastPage value
-    page={currentPage}
-    onChange={(event, page) => handlePageClick(page)}
-    variant="outlined"
-    shape="rounded"
-    color="primary"
-    showFirstButton
-    showLastButton
-    siblingCount={1}
-    boundaryCount={1}
-  />
-</Box>
+                sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}
+            >
+                <Pagination
+                    count={lastPage ?? 1} // Fix for handling null lastPage value
+                    page={currentPage}
+                    onChange={(event, page) => handlePageClick(page)}
+                    variant="outlined"
+                    shape="rounded"
+                    color="primary"
+                    showFirstButton
+                    showLastButton
+                    siblingCount={1}
+                    boundaryCount={1}
+                />
+            </Box>
         </Container>
     );
 };
