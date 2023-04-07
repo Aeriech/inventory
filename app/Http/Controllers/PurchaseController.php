@@ -17,10 +17,12 @@ class PurchaseController extends Controller
     
     foreach ($purchases as $purchaseData) {
         $purchase = new Purchase();
-        $item = Item::where('name', $purchaseData['name'])->first();
+        //$item = Item::where('name', $purchaseData['name'])->first();
+        //$purchase->item_id = $item->id;
         $purchase->name = $purchaseData['name'];
         $purchase->measurement = $purchaseData['measurement'];
-        $purchase->item_id = $item->id;
+        $purchase->measured_in = $purchaseData['measurementUnit'];
+        $purchase->item_id = $purchaseData['item_id'];
         $purchase->purchase_number = $newPurchaseNumber;
         $purchase->save();
         $savedPurchases[] = $purchase;

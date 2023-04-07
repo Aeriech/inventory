@@ -15,7 +15,6 @@ function PurchaseForm() {
     const [filteredOptions, setFilteredOptions] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
 
-
     useEffect(() => {
         async function fetchData() {
             const response = await axios.get("/api/items");
@@ -37,16 +36,15 @@ function PurchaseForm() {
             const updatedFilteredOptions = [...filteredOptions, removedOption];
             setFilteredOptions(updatedFilteredOptions);
         }
-    
+
         const newPurchases = [...purchases];
         newPurchases.splice(index, 1);
         setPurchases(newPurchases);
-    
+
         const updatedSelectedOptions = [...selectedOptions];
         updatedSelectedOptions.splice(index, 1);
         setSelectedOptions(updatedSelectedOptions);
     };
-    
 
     const handleInputChange = (event, index) => {
         const { name, value } = event.target;
@@ -74,29 +72,33 @@ function PurchaseForm() {
 
     const handleNameChange = (event, value, index) => {
         const selectedItem = filteredOptions.find((option) => option === value);
-    
+
         if (selectedItem) {
             // Remove the selected item from filteredOptions
             const updatedFilteredOptions = filteredOptions.filter(
                 (option) => option !== selectedItem
             );
             setFilteredOptions(updatedFilteredOptions);
-    
+
             // Update the selectedOptions with the selected item
             const updatedSelectedOptions = [...selectedOptions];
             updatedSelectedOptions[index] = selectedItem;
             setSelectedOptions(updatedSelectedOptions);
-    
+
             // Fetch the item from the database based on the selected name
             axios
                 .get(`/api/items/${selectedItem}`)
                 .then((response) => {
                     // Update the label of the Measurement TextField with the measurement unit
                     const measurementUnit = response.data.measured_in;
+                    const item_id = response.data.id;
+                    const item_left = response.data.item_left;
                     const newPurchases = [...purchases];
                     newPurchases[index].name = selectedItem;
                     newPurchases[index].measurement = "";
                     newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
+                    newPurchases[index].item_id = item_id; // Add the item id to the purchase object
+                    newPurchases[index].item_left = item_left; // Add the item left to the purchase object
                     setPurchases(newPurchases);
                 })
                 .catch((error) => {
@@ -110,7 +112,6 @@ function PurchaseForm() {
         }
         setSearchValue(value);
     };
-    
 
     const handleMeasurementChange = (event, index) => {
         const { name, value } = event.target;
@@ -177,7 +178,7 @@ function PurchaseForm() {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label="Name"
+                                            label="Item Name"
                                             variant="outlined"
                                         />
                                     )}
@@ -185,10 +186,12 @@ function PurchaseForm() {
                             </Grid>
                             <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
                                 <TextField
-                                    label={`(${
-                                        purchase.measurementUnit ||
-                                        "Measurement "
-                                    })`}
+                                    label={
+                                        purchase.measurementUnit &&
+                                        purchase.item_left // check if measurementUnit and item_left are truthy
+                                            ? `${purchase.measurementUnit}=${purchase.item_left}` // show measurementUnit and item_left if available
+                                            : "Measurement" // otherwise, show "Measurement"
+                                    }
                                     variant="outlined"
                                     name="measurement"
                                     value={purchase.measurement}
@@ -204,6 +207,7 @@ function PurchaseForm() {
                                     color="secondary"
                                     onClick={() => handleRemovePurchase(index)}
                                     style={{ marginTop: "10px" }}
+                                    disabled={purchases.length === 1}
                                     fullWidth
                                 >
                                     Remove

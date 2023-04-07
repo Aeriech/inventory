@@ -17,8 +17,13 @@ class ItemController extends Controller
     if (!$item) {
         return response()->json(['message' => 'Item not found'], 404);
     }
-    return response()->json(['measured_in' => $item->measured_in]);
+    return response()->json([
+        'id' => $item->id,
+        'item_left' => $item->measurement,
+        'measured_in' => $item->measured_in
+    ]);
 }
+
 
 
     public function viewItems(Request $request)
