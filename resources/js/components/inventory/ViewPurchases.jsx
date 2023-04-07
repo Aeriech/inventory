@@ -150,7 +150,7 @@ const ViewPurchases = () => {
                 ))}
             </Grid>
             <Box
-                sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}
+                sx={{ display: "flex", justifyContent: "center", marginTop: 2, marginBottom: 2 }}
             >
                 <Pagination
                     count={lastPage ?? 1} // Fix for handling null lastPage value
