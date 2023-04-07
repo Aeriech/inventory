@@ -56,6 +56,7 @@ function PurchaseForm() {
     };
 
     const navigate = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
         axios
@@ -70,9 +71,16 @@ function PurchaseForm() {
                 navigate("/view-purchases");
             })
             .catch((error) => {
-                console.log(error.response.data.message);
+                if (error.response && error.response.status === 422) {
+                    setErrors(error.response.data.errors);
+                } else {
+                    // handle other errors here
+                }
             });
     };
+    
+
+    const [errors, setErrors] = useState(null);
 
     const handleNameChange = (event, value, index) => {
         // Check if the selected value is not null, which means the user has selected an option
@@ -163,7 +171,6 @@ function PurchaseForm() {
                 <Typography variant="h5" textAlign="left">
                     New Purchase Request
                 </Typography>
-
                 <div>
                     <Button
                         variant="outlined"
@@ -174,6 +181,17 @@ function PurchaseForm() {
                     </Button>
                 </div>
             </div>
+            <Box marginTop="10px">
+{errors && (
+                <div className="alert alert-danger">
+                    <ul>
+                        {Object.values(errors).map((messages, index) => (
+                            <li key={index}>{messages[0]}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            </Box>
             <Box
                 sx={{
                     border: "2px solid black",

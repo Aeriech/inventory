@@ -5,31 +5,43 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
 {
     public function store(Request $request)
 {
+    $validator = Validator::make($request->all(), [
+        'purchases.*.name' => 'required',
+        'purchases.*.measurement' => 'required|numeric|min:1',
+    ]);
+
+    
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
     $purchases = $request->input('purchases');
     $savedPurchases = [];
     $latestPurchase = Purchase::latest('purchase_number')->first();
     $newPurchaseNumber = $latestPurchase ? $latestPurchase->purchase_number + 1 : 1;
-    
+
     foreach ($purchases as $purchaseData) {
         $purchase = new Purchase();
         //$item = Item::where('name', $purchaseData['name'])->first();
         //$purchase->item_id = $item->id;
         $purchase->name = $purchaseData['name'];
         $purchase->measurement = $purchaseData['measurement'];
-        $purchase->measured_in = $purchaseData['measurementUnit'];
+        $purchase->status = "Pending";
         $purchase->item_id = $purchaseData['item_id'];
         $purchase->purchase_number = $newPurchaseNumber;
         $purchase->save();
         $savedPurchases[] = $purchase;
     }
-    
+
     return response()->json(['purchases' => $savedPurchases]);
 }
+
 
 public function index()
 {
