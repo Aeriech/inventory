@@ -40,20 +40,22 @@ const ViewPurchases = () => {
   };
   
   const filteredPurchases = Object.keys(groupedPurchases).reduce(
-      (filtered, purchaseNumber) => {
-          const filteredGroup = groupedPurchases[purchaseNumber].filter(
-              (purchase) =>
-                  purchase.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-  
-          if (filteredGroup.length > 0) {
-              filtered[purchaseNumber] = filteredGroup;
-          }
-  
-          return filtered;
-      },
-      {}
-  );
+    (filtered, purchaseNumber) => {
+        const filteredGroup = groupedPurchases[purchaseNumber].filter(
+            (purchase) =>
+                purchase.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                purchase.purchase_number.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        if (filteredGroup.length > 0) {
+            filtered[purchaseNumber] = filteredGroup;
+        }
+
+        return filtered;
+    },
+    {}
+);
+
   
 
     return (
@@ -69,9 +71,9 @@ const ViewPurchases = () => {
                 }}
             >
                 <TextField
-                    label="Search by name"
+                    label="Search"
                     variant="outlined"
-                    size="small"
+                    size="large"
                     value={searchTerm}
                     onChange={handleSearch}
                 />
