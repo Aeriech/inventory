@@ -48,3 +48,7 @@ Route::get('/new-purchase', function () {
 Route::get('/view-purchases', function () {
     return view('welcome');
 });
+
+Route::get('/view-logs', function () {
+    return view('welcome');
+});

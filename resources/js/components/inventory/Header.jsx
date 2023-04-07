@@ -22,17 +22,15 @@ import { useNavigate } from "react-router-dom";
 
 const pages = [
     "View Items",
-    "New Item",
-    "View Archives",
-    "New Purchase",
     "View Purchases",
+    "New Item",
+    "New Purchase",
 ];
 const settings = [
     "Profile",
     "Create New Account",
     "View Users",
-    "View History Logs",
-    "Settings",
+    "More Settings",
     "Logout",
 ];
 
@@ -59,8 +57,6 @@ function Header() {
             navigate("/new-receipt");
         } else if (e === "View Receipts") {
             navigate("/view-receipts");
-        } else if (e === "View Archives") {
-            navigate("/view-archives");
         } else if (e === "New Purchase") {
             navigate("/new-purchase");
         } else if (e === "View Purchases") {
@@ -71,9 +67,7 @@ function Header() {
 
     const handleCloseUserMenu = (e) => {
         setAnchorElUser(null);
-        if (e === "View History Logs") {
-            navigate("/view-logs");
-        } else if (e === "Settings") {
+        if (e === "More Settings") {
           setOpen(true);
         }
     };
@@ -91,6 +85,16 @@ function Header() {
   const handleMeasurement = () => {
     setOpen(false);
     navigate("/add-measurement");
+  }
+
+  const handleViewArchives = () => {
+    setOpen(false);
+    navigate("/view-archives");
+  }
+
+  const handleViewLogs = () => {
+    setOpen(false);
+    navigate("/view-logs");
   }
 
     return (
@@ -250,7 +254,7 @@ function Header() {
             </AppBar>
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
-                  <Grid container spacing={{ xs: 2, md: 3 }} textAlign="center">
+                  <Grid container spacing={1} textAlign="center">
                   <Grid item
                     xs={12}
                     sm={12}
@@ -263,13 +267,13 @@ function Header() {
                     <Grid item
                     xs={12}
                     sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
+                    md={6}
+                    lg={6}
+                    xl={6}
                     >
                         <Button
                             variant="outlined"
-                            style={{ width: "200px" }}
+                            fullWidth
                             onClick={handleCategory}
                         >
                             Add New Category
@@ -280,18 +284,51 @@ function Header() {
                         <Grid item
                         xs={12}
                         sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
+                        md={6}
+                        lg={6}
+                        xl={6}
                         >
                         <Button
                             variant="outlined"
-                            style={{ width: "200px" }}
+                            fullWidth
                             onClick={handleMeasurement}
                         >
-                            Add New Type Of Measurement
+                            Add New Measurement
                         </Button>
                         </Grid>
+
+                        <Grid item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        xl={6}
+                        >
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            onClick={handleViewArchives}
+                        >
+                            View Archives
+                        </Button>
+                        </Grid>
+
+                        <Grid item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        xl={6}
+                        >
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            onClick={handleViewLogs}
+                        >
+                            View History Log
+                        </Button>
+                        </Grid>
+
                         </Grid>
                 </DialogContent>
                 <DialogActions>
