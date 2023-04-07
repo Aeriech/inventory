@@ -167,18 +167,6 @@ export default function ViewArchives() {
   
           fetchData();
       }, [currentPage, category]);
-  
-      const handleNextPage = () => {
-          if (currentPage < lastPage) {
-              setCurrentPage(currentPage + 1);
-          }
-      };
-  
-      const handlePrevPage = () => {
-          if (currentPage > 1) {
-              setCurrentPage(currentPage - 1);
-          }
-      };
 
     const filteredItems = items
         .filter((item) => {
@@ -532,31 +520,21 @@ export default function ViewArchives() {
             )}
 
 <Box
-                marginTop="10px"
-                marginBottom="20px"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <Button variant="outlined" onClick={handlePrevPage}>
-                    Prev
-                </Button>
-                {lastPage && (
-                    <Pagination
-                        count={lastPage}
-                        page={currentPage}
-                        onChange={(event, page) => handlePageClick(page)}
-                        color="primary"
-                    />
-                )}
-                <Button
-                    variant="outlined"
-                    onClick={handleNextPage}
-                    disabled={currentPage === lastPage}
-                >
-                    Next
-                </Button>
-            </Box>
+  sx={{ display: "flex", justifyContent: "center", marginTop: 2, marginBottom: 2, }}
+>
+  <Pagination
+    count={lastPage ?? 1} // Fix for handling null lastPage value
+    page={currentPage}
+    onChange={(event, page) => handlePageClick(page)}
+    variant="outlined"
+    shape="rounded"
+    color="primary"
+    showFirstButton
+    showLastButton
+    siblingCount={1}
+    boundaryCount={1}
+  />
+</Box>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>

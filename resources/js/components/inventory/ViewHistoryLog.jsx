@@ -79,12 +79,12 @@ export default function ViewHistoryLog() {
     const [listView, setListView] = useState("image");
 
     const dateOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      };
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         async function fetchData() {
             const response = await axios.get(
                 `/api/view-logs?page=${currentPage}&type=${type}`
@@ -96,47 +96,37 @@ export default function ViewHistoryLog() {
         fetchData();
     }, [currentPage, type]);
 
-    const handleNextPage = () => {
-        if (currentPage < lastPage) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
     const handlePageClick = (page) => {
         setCurrentPage(page);
     };
 
-    const filteredItems = logs.filter((log) => {
-        const lowerCasedQuery = searchQuery.toLowerCase();
-        return (
-            log.description.toLowerCase().includes(lowerCasedQuery) ||
-            log.type.toLowerCase().includes(lowerCasedQuery)
-        );
-    }).sort((a, b) => {
-        if (sortOption === "date") {
-            const dateA = new Date(a.updated_at);
-            const dateB = new Date(b.updated_at);
-            return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
-        } else if (sortOption === "type") {
-            return sortDirection === "asc"
-                ? a.type - b.type
-                : b.type - a.type;
-        } else if (sortOption === "id") {
-            return sortDirection === "asc" ? a.id - b.id : b.id - a.id;
-        } else if (sortOption === "description") {
-            return sortDirection === "asc"
-                ? a.description - b.description
-                : b.description - a.description;
-        } else {
-            return 0;
-        }
-    });
+    const filteredItems = logs
+        .filter((log) => {
+            const lowerCasedQuery = searchQuery.toLowerCase();
+            return (
+                log.description.toLowerCase().includes(lowerCasedQuery) ||
+                log.type.toLowerCase().includes(lowerCasedQuery)
+            );
+        })
+        .sort((a, b) => {
+            if (sortOption === "date") {
+                const dateA = new Date(a.updated_at);
+                const dateB = new Date(b.updated_at);
+                return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
+            } else if (sortOption === "type") {
+                return sortDirection === "asc"
+                    ? a.type - b.type
+                    : b.type - a.type;
+            } else if (sortOption === "id") {
+                return sortDirection === "asc" ? a.id - b.id : b.id - a.id;
+            } else if (sortOption === "description") {
+                return sortDirection === "asc"
+                    ? a.description - b.description
+                    : b.description - a.description;
+            } else {
+                return 0;
+            }
+        });
 
     const handleView = (e) => {
         setListView(e.target.value);
@@ -216,7 +206,9 @@ export default function ViewHistoryLog() {
                                 <MenuItem value="id">Id</MenuItem>
                                 <MenuItem value="date">Date</MenuItem>
                                 <MenuItem value="type">Type</MenuItem>
-                                <MenuItem value="description">Description</MenuItem>
+                                <MenuItem value="description">
+                                    Description
+                                </MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
@@ -268,35 +260,42 @@ export default function ViewHistoryLog() {
                     </Grid>
                 </Grid>
             </Box>
-{imageList &&
-            <Box sx={{ marginTop: 5 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }}>
-                    {filteredItems.map((log,index) => (
-                        <Grid
-                            item
-                            xs={6}
-                            sm={4}
-                            md={3}
-                            lg={2}
-                            xl={2}
-                            key={index}
-                            textAlign="center"
-                            alignContent="center"
-                            alignItems="center"
-                            sx={{ border: "1px solid #ccc", padding: "1rem",
-                            "&:hover": {cursor: "pointer"}
-                          }}
-                        >
-                            <Typography variant="h6">{log.type}</Typography>
-                            <Typography variant="body2">{log.description}</Typography>
-                            <Typography variant="body2">
-                            Date: {new Date(log.updated_at).toLocaleDateString('en-US', dateOptions)}
-                            </Typography>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-}
+            {imageList && (
+                <Box sx={{ marginTop: 5 }}>
+                    <Grid container spacing={{ xs: 2, md: 3 }}>
+                        {filteredItems.map((log, index) => (
+                            <Grid
+                                item
+                                xs={6}
+                                sm={4}
+                                md={3}
+                                lg={2}
+                                xl={2}
+                                key={index}
+                                textAlign="center"
+                                alignContent="center"
+                                alignItems="center"
+                                sx={{
+                                    border: "1px solid #ccc",
+                                    padding: "1rem",
+                                    "&:hover": { cursor: "pointer" },
+                                }}
+                            >
+                                <Typography variant="h6">{log.type}</Typography>
+                                <Typography variant="body2">
+                                    {log.description}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Date:{" "}
+                                    {new Date(
+                                        log.updated_at
+                                    ).toLocaleDateString("en-US", dateOptions)}
+                                </Typography>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+            )}
             {tableList && (
                 <Box sx={{ marginTop: 4 }}>
                     <Table>
@@ -324,8 +323,14 @@ export default function ViewHistoryLog() {
                                 >
                                     <TableCell>{item.type}</TableCell>
                                     <TableCell>{item.description}</TableCell>
-                                    <TableCell>{new Date(item.updated_at).toLocaleDateString('en-US', dateOptions)}</TableCell>
-                                
+                                    <TableCell>
+                                        {new Date(
+                                            item.updated_at
+                                        ).toLocaleDateString(
+                                            "en-US",
+                                            dateOptions
+                                        )}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -333,33 +338,22 @@ export default function ViewHistoryLog() {
                 </Box>
             )}
 
-            <Box
-                marginTop="10px"
-                marginBottom="20px"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <Button variant="outlined" onClick={handlePrevPage}>
-                    Prev
-                </Button>
-                {lastPage && (
-                    <Pagination
-                        count={lastPage}
-                        page={currentPage}
-                        onChange={(event, page) => handlePageClick(page)}
-                        color="primary"
-                    />
-                )}
-                <Button
-                    variant="outlined"
-                    onClick={handleNextPage}
-                    disabled={currentPage === lastPage}
-                >
-                    Next
-                </Button>
-            </Box>
-
+<Box
+  sx={{ display: "flex", justifyContent: "center", marginTop: 2, marginBottom: 2, }}
+>
+  <Pagination
+    count={lastPage ?? 1} // Fix for handling null lastPage value
+    page={currentPage}
+    onChange={(event, page) => handlePageClick(page)}
+    variant="outlined"
+    shape="rounded"
+    color="primary"
+    showFirstButton
+    showLastButton
+    siblingCount={1}
+    boundaryCount={1}
+  />
+</Box>
         </Box>
     );
 }
