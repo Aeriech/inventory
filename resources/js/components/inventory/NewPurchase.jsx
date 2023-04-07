@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
     TextField,
@@ -8,6 +9,7 @@ import {
     Grid,
     Typography,
 } from "@mui/material";
+
 
 function PurchaseForm() {
     const [purchases, setPurchases] = useState([{ name: "", measurement: "" }]);
@@ -53,6 +55,7 @@ function PurchaseForm() {
         setPurchases(newPurchases);
     };
 
+    const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
         axios
@@ -64,6 +67,7 @@ function PurchaseForm() {
                     icon: "success",
                     title: "New purchase added successfully",
                 });
+                navigate("/view-purchases");
             })
             .catch((error) => {
                 console.log(error.response.data.message);
@@ -71,47 +75,66 @@ function PurchaseForm() {
     };
 
     const handleNameChange = (event, value, index) => {
-        const selectedItem = filteredOptions.find((option) => option === value);
-
-        if (selectedItem) {
+        // Check if the selected value is not null, which means the user has selected an option
+        if (value !== null) {
+          const selectedItem = filteredOptions.find((option) => option === value);
+      
+          if (selectedItem) {
             // Remove the selected item from filteredOptions
             const updatedFilteredOptions = filteredOptions.filter(
-                (option) => option !== selectedItem
+              (option) => option !== selectedItem
             );
             setFilteredOptions(updatedFilteredOptions);
-
+      
             // Update the selectedOptions with the selected item
             const updatedSelectedOptions = [...selectedOptions];
             updatedSelectedOptions[index] = selectedItem;
             setSelectedOptions(updatedSelectedOptions);
-
+      
             // Fetch the item from the database based on the selected name
             axios
-                .get(`/api/items/${selectedItem}`)
-                .then((response) => {
-                    // Update the label of the Measurement TextField with the measurement unit
-                    const measurementUnit = response.data.measured_in;
-                    const item_id = response.data.id;
-                    const item_left = response.data.item_left;
-                    const newPurchases = [...purchases];
-                    newPurchases[index].name = selectedItem;
-                    newPurchases[index].measurement = "";
-                    newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
-                    newPurchases[index].item_id = item_id; // Add the item id to the purchase object
-                    newPurchases[index].item_left = item_left; // Add the item left to the purchase object
-                    setPurchases(newPurchases);
-                })
-                .catch((error) => {
-                    console.log(error.response.data.message);
-                });
-        } else {
+              .get(`/api/items/${selectedItem}`)
+              .then((response) => {
+                // Update the label of the Measurement TextField with the measurement unit
+                const measurementUnit = response.data.measured_in;
+                const item_id = response.data.id;
+                const item_left = response.data.item_left;
+                const newPurchases = [...purchases];
+                newPurchases[index].name = selectedItem;
+                newPurchases[index].measurement = "";
+                newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
+                newPurchases[index].item_id = item_id; // Add the item id to the purchase object
+                newPurchases[index].item_left = item_left; // Add the item left to the purchase object
+                setPurchases(newPurchases);
+              })
+              .catch((error) => {
+                console.log(error.response.data.message);
+              });
+          } else {
             const newPurchases = [...purchases];
             newPurchases[index].name = value;
             newPurchases[index].measurement = "";
             setPurchases(newPurchases);
+          }
+          setSearchValue(value);
+        } else {
+          // If the value is null, which means the user unselected the option
+          // Add the unselected option back to the filteredOptions list
+          const unselectedOption = purchases[index].name;
+          const updatedFilteredOptions = [...filteredOptions, unselectedOption];
+          setFilteredOptions(updatedFilteredOptions);
+      
+          // Update the selectedOptions with an empty value
+          const updatedSelectedOptions = [...selectedOptions];
+          updatedSelectedOptions[index] = "";
+          setSelectedOptions(updatedSelectedOptions);
+      
+          // Update the purchase object with an empty value for the name
+          const newPurchases = [...purchases];
+          newPurchases[index].name = "";
+          setPurchases(newPurchases);
         }
-        setSearchValue(value);
-    };
+      };
 
     const handleMeasurementChange = (event, index) => {
         const { name, value } = event.target;
