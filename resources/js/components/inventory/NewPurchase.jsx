@@ -245,7 +245,7 @@ function PurchaseForm() {
                             <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                                 <Button
                                     variant="contained"
-                                    color="secondary"
+                                    color="error"
                                     onClick={() => handleRemovePurchase(index)}
                                     style={{ marginTop: "10px" }}
                                     disabled={purchases.length === 1}

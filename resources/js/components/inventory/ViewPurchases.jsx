@@ -186,12 +186,13 @@ const ViewPurchases = () => {
             <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
                 <DialogContent>
                     {/* Display the selected purchase details here */}
-                    <Typography variant="h6">
+                    <Typography variant="h4">
                         Purchase Number: {pNumber}
                     </Typography>
                     <Typography
-              variant="body1"
+              variant="h5"
               gutterBottom
+              textAlign="center"
             >
               Status: {status}
             </Typography>
@@ -216,7 +217,21 @@ const ViewPurchases = () => {
     </Typography>
 </Box>
 ))}
+<Grid container spacing={1} marginTop="10px">
 
+<Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+<Button variant="contained" color="error" fullWidth>Reject</Button>
+</Grid>
+
+<Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+<Button variant="contained" color="success" fullWidth>Approve</Button>
+</Grid>
+
+<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+<Button variant="contained" fullWidth onClick={() => setDialogOpen(false)}>Back</Button>
+</Grid>
+
+</Grid>
                 </DialogContent>
             </Dialog>
         )}
