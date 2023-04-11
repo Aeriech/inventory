@@ -120,7 +120,10 @@ const PurchaseComponent = () => {
                             <React.Fragment key={index}>
                                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                                     <Typography>
-                                        {purchase.name} Item Request:{" "}
+                                        {purchase.name}
+                                    </Typography>
+                                    <Typography>
+                                        Item Request:{" "}
                                         {purchase.measured_in}{" "}
                                         {purchase.measurement}
                                     </Typography>
@@ -164,7 +167,10 @@ const PurchaseComponent = () => {
                                 </Grid>
                             </React.Fragment>
                         ))}
-                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            <Typography variant="h4">Select Supplier</Typography>
+                        </Grid>
+                        <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
                             <div style={{ textAlign: "center" }}>
                                 <h3>Purchased On</h3>
                                 <div style={{ display: "inline-block" }}>
@@ -174,20 +180,10 @@ const PurchaseComponent = () => {
                                         dateFormat="MMMM dd, yyyy" // Set the desired date format
                                     />
                                 </div>
-                                {selectedDate && (
-                                    <p>
-                                        Selected Date:{" "}
-                                        {selectedDate.toLocaleDateString(
-                                            "en-US",
-                                            {
-                                                month: "long",
-                                                day: "numeric",
-                                                year: "numeric",
-                                            }
-                                        )}
-                                    </p>
-                                )}
                             </div>
+                        </Grid>
+                        <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
+                            <Button variant="contained">Add Receipt </Button>
                         </Grid>
                     </Grid>
                 </Box>
