@@ -15,6 +15,7 @@ import AddCategory from '../components/inventory/AddCategory'
 import AddMeasurement from '../components/inventory/AddMeasurement'
 import NewPurchase from '../components/inventory/NewPurchase'
 import ViewPurchases from '../components/inventory/ViewPurchases'
+import CompletePurchase from '../components/inventory/CompletePurchase'
 
 
 export default function Router() {
@@ -35,6 +36,7 @@ export default function Router() {
             <Route path='/add-measurement' element={ <AddMeasurement/> } />
             <Route path='/new-purchase' element={ <NewPurchase/> } />
             <Route path='/view-purchases' element={ <ViewPurchases/> } />
+            <Route path='/complete-purchase' element={ <CompletePurchase/> } />
         </Routes>
     </div>
   )

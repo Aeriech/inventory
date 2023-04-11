@@ -32,6 +32,7 @@ class PurchaseController extends Controller
         //$purchase->item_id = $item->id;
         $purchase->name = $purchaseData['name'];
         $purchase->measurement = $purchaseData['measurement'];
+        $purchase->measured_in = $purchaseData['measurementUnit'];
         $purchase->status = "Pending";
         $purchase->item_id = $purchaseData['item_id'];
         $purchase->purchase_number = $newPurchaseNumber;

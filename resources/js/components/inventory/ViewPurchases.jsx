@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Typography, Grid, Card, CardContent, Box, TextField, Button, Pagination, Dialog, DialogContent } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
 const ViewPurchases = () => {
@@ -71,7 +72,6 @@ const ViewPurchases = () => {
             .post(`/api/set-approved/${pNumber}`)
             .then((response) => {
                 console.log(response.data.message);
-                setDialogOpen(false)
             toast.fire({
                 icon: "success",
                 title: "Set purchase to approved successfully",
@@ -91,7 +91,6 @@ const ViewPurchases = () => {
             .post(`/api/set-rejected/${pNumber}`)
             .then((response) => {
                 console.log(response.data.message);
-                setDialogOpen(false)
                 toast.fire({
                     icon: "success",
                     title: "Set purchase to rejected successfully",
@@ -104,6 +103,11 @@ const ViewPurchases = () => {
                 // Handle error
             });
     };
+
+    const navigate = useNavigate();
+     const handleOpenPurchase = () => {
+        navigate("/complete-purchase");
+     }
 
     return (
         <Container sx={{ marginTop: 4 }}>
@@ -269,7 +273,13 @@ const ViewPurchases = () => {
     </Grid>
   </>
 )}
-
+{status === "Approved" && (
+  <>
+    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+      <Button variant="contained" color="success" onClick={handleOpenPurchase} fullWidth>Open Puchase</Button>
+    </Grid>
+  </>
+)}
 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 <Button variant="contained" fullWidth onClick={() => setDialogOpen(false)}>Back</Button>
 </Grid>
