@@ -127,11 +127,10 @@ public function getPurchase($purchaseNumber)
 public function updatePurchases(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'purchases.*.price' => 'required|numeric',
-        'purchases.*.itemAdded' => 'required|numeric|min:1',
+        'updatedPurchases.*.price' => 'required|numeric|min:0',
+        'updatedPurchases.*.itemAdded' => 'required|numeric|min:0',
     ]);
 
-    
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()], 422);
     }
@@ -155,8 +154,6 @@ public function updatePurchases(Request $request)
         }
     }
 
-    // Return a response back to the client
-    return response()->json(['message' => 'Purchases updated successfully!']);
 }
 
 
