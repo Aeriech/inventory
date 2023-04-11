@@ -8,6 +8,8 @@ import {
     Grid,
     Typography,
 } from "@mui/material";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const PurchaseComponent = () => {
     const [purchases, setPurchases] = useState([]);
@@ -55,6 +57,12 @@ const PurchaseComponent = () => {
                     // handle other errors here
                 }
             });
+    };
+
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
     };
 
     return (
@@ -153,7 +161,32 @@ const PurchaseComponent = () => {
                                 </Grid>
                             </React.Fragment>
                         ))}
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <div style={{ textAlign: 'center' }}>
+  <h3>Purchased On</h3>
+  <div style={{ display: 'inline-block' }}>
+    <DatePicker
+      selected={selectedDate}
+      onChange={handleDateChange}
+      dateFormat="MMMM dd, yyyy" // Set the desired date format
+    />
+  </div>
+  {selectedDate && (
+    <p>
+      Selected Date:{" "}
+      {selectedDate.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      })}
+    </p>
+  )}
+</div>
+
+
+                                </Grid>
                     </Grid>
+            
                 </Box>
 
                 <Button
