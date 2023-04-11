@@ -116,6 +116,12 @@ const ViewPurchases = () => {
         navigate("/complete-purchase/" + pNumber);
     };
 
+    const dateOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    };
+
     return (
         <Container sx={{ marginTop: 4 }}>
             <Typography variant="h4" gutterBottom align="center">
@@ -314,12 +320,28 @@ const ViewPurchases = () => {
                                         marginTop: 2,
                                         marginBottom: 2,
                                         display: "flex",
-                                        justifyContent: "flex-end",
+                                        justifyContent: "space-between",
                                     }}
                                 >
                                     <Typography
                                         variant="caption"
                                         color="textSecondary"
+                                        textAlign="left"
+                                    >
+                                        Date:{" "}
+                                        {new Date(
+                                            filteredPurchases[
+                                                purchaseNumber
+                                            ][0].created_at
+                                        ).toLocaleDateString(
+                                            "en-US",
+                                            dateOptions
+                                        )}
+                                    </Typography>
+                                    <Typography
+                                        variant="caption"
+                                        color="textSecondary"
+                                        textAlign="right"
                                     >
                                         {
                                             filteredPurchases[purchaseNumber]
@@ -445,7 +467,28 @@ const ViewPurchases = () => {
                                             onClick={handleOpenPurchase}
                                             fullWidth
                                         >
-                                            Open Puchase
+                                            Open Purchase
+                                        </Button>
+                                    </Grid>
+                                </>
+                            )}
+                            {status === "Completed" && (
+                                <>
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={12}
+                                        xl={12}
+                                    >
+                                        <Button
+                                            variant="contained"
+                                            color="success"
+                                            //onClick={handleOpenPurchase}
+                                            fullWidth
+                                        >
+                                            View Purchase Details
                                         </Button>
                                     </Grid>
                                 </>

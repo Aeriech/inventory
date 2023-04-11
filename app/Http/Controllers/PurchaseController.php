@@ -108,6 +108,7 @@ public function getPurchase($purchaseNumber)
         $name = $purchase->name;
         $measurement = $purchase->measurement;
         $measured_in = $purchase->measured_in;
+        $created_at = $purchase->created_at;
         // ... and so on
 
         // Add the retrieved data to the $purchaseData array
@@ -116,6 +117,7 @@ public function getPurchase($purchaseNumber)
             'name' => $name,
             'measurement' => $measurement,
             'measured_in' => $measured_in,
+            'created_at' => $created_at,
             // ... and so on
         ];
     }
