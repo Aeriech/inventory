@@ -141,10 +141,6 @@ export default function ItemPage() {
         navigate("/get-item/" + id);
     };
 
-    const addPurchase = () => {
-        navigate("/add-purchase/" + id);
-    };
-
     const [open, setOpen] = React.useState(false);
     const [id, setID] = React.useState("");
     const [name, setName] = React.useState("");
@@ -566,13 +562,6 @@ export default function ItemPage() {
                             }}
                         >
                             Use
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            onClick={addPurchase}
-                            style={{ width: "75px" }}
-                        >
-                            Add
                         </Button>
                     </div>
                 </DialogContent>

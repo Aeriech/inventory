@@ -126,17 +126,31 @@ public function getPurchase($purchaseNumber)
 
 public function updatePurchases(Request $request)
 {
+    $validator = Validator::make($request->all(), [
+        'purchases.*.price' => 'required|numeric',
+        'purchases.*.itemAdded' => 'required|numeric|min:1',
+    ]);
+
+    
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
     // Retrieve the updated purchase data from the request body
-    $updatedPurchases = $request->input('purchases');
+    $updatedPurchases = $request->input('updatedPurchases');
 
     // Perform logic to update the purchases in the database
     foreach ($updatedPurchases as $purchaseData) {
+        $item = Item::where('name', $purchaseData['name'])->first();
         $purchase = Purchase::find($purchaseData['id']); // Assuming 'id' is the primary key column name
         if ($purchase) {
             // Update the purchase data
             $purchase->price = $purchaseData['price'];
             $purchase->item_added = $purchaseData['itemAdded'];
+            $purchase->status = "Completed";
+            $item->price = $purchaseData['price'];
+            $item->measurement = $item->measurement + $purchaseData['itemAdded'];
             // Save the updated purchase to the database
+            $item->save();
             $purchase->save();
         }
     }

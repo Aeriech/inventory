@@ -3,6 +3,7 @@ import { Typography,TextField,Box,Grid
 , MenuItem, FormControl, Select, Button
 , Dialog, DialogActions, DialogContent
 } from '@mui/material';
+import { Delete } from '@mui/icons-material'
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -245,9 +246,15 @@ export default function UpdateItem() {
       </Grid>
 
       <Grid item xs={12} sm={12} md={12}>
-      <Button variant="outlined" onClick={handleArchive} style={{marginRight: '10px'}}>
-    <Typography variant='body2'>Archieve</Typography>
-  </Button>
+      <Button
+        variant="contained"
+        color='error'
+        onClick={handleArchive}
+        style={{marginRight: '10px'}}
+        startIcon={<Delete />}
+      >
+        <Typography variant='body2'>Archive</Typography>
+      </Button>
   </Grid>
   
     </Grid>
