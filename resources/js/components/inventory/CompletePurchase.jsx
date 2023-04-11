@@ -62,12 +62,11 @@ const PurchaseComponent = () => {
     const [selectedDate, setSelectedDate] = useState(null);
 
     const handleDateChange = (date) => {
-      setSelectedDate(date);
+        setSelectedDate(date);
     };
 
     return (
         <div>
-
             <Box sx={{ marginTop: 1, textAlign: "center", padding: "10px" }}>
                 <div
                     style={{
@@ -120,7 +119,11 @@ const PurchaseComponent = () => {
                         {purchases.map((purchase, index) => (
                             <React.Fragment key={index}>
                                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                                    <Typography>{purchase.name} Item Request: {purchase.measured_in} {purchase.measurement}</Typography>
+                                    <Typography>
+                                        {purchase.name} Item Request:{" "}
+                                        {purchase.measured_in}{" "}
+                                        {purchase.measurement}
+                                    </Typography>
                                 </Grid>
                                 <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
                                     <TextField
@@ -162,31 +165,31 @@ const PurchaseComponent = () => {
                             </React.Fragment>
                         ))}
                         <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <div style={{ textAlign: 'center' }}>
-  <h3>Purchased On</h3>
-  <div style={{ display: 'inline-block' }}>
-    <DatePicker
-      selected={selectedDate}
-      onChange={handleDateChange}
-      dateFormat="MMMM dd, yyyy" // Set the desired date format
-    />
-  </div>
-  {selectedDate && (
-    <p>
-      Selected Date:{" "}
-      {selectedDate.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      })}
-    </p>
-  )}
-</div>
-
-
-                                </Grid>
+                            <div style={{ textAlign: "center" }}>
+                                <h3>Purchased On</h3>
+                                <div style={{ display: "inline-block" }}>
+                                    <DatePicker
+                                        selected={selectedDate}
+                                        onChange={handleDateChange}
+                                        dateFormat="MMMM dd, yyyy" // Set the desired date format
+                                    />
+                                </div>
+                                {selectedDate && (
+                                    <p>
+                                        Selected Date:{" "}
+                                        {selectedDate.toLocaleDateString(
+                                            "en-US",
+                                            {
+                                                month: "long",
+                                                day: "numeric",
+                                                year: "numeric",
+                                            }
+                                        )}
+                                    </p>
+                                )}
+                            </div>
+                        </Grid>
                     </Grid>
-            
                 </Box>
 
                 <Button
