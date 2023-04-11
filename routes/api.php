@@ -65,3 +65,7 @@ Route::get('/items/{id}', [ItemController::class, 'getMeasuredIn']);
 Route::post('/set-approved/{id}', [PurchaseController::class, 'approve']);
 
 Route::post('/set-rejected/{id}', [PurchaseController::class, 'reject']);
+
+Route::get('/get-purchase/{id}',[PurchaseController::class, 'getPurchase']);
+
+Route::post('/update-purchases', [PurchaseController::class, 'updatePurchases']);

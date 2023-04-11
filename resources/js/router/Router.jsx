@@ -36,7 +36,7 @@ export default function Router() {
             <Route path='/add-measurement' element={ <AddMeasurement/> } />
             <Route path='/new-purchase' element={ <NewPurchase/> } />
             <Route path='/view-purchases' element={ <ViewPurchases/> } />
-            <Route path='/complete-purchase' element={ <CompletePurchase/> } />
+            <Route path='/complete-purchase/:id' element={ <CompletePurchase/> } />
         </Routes>
     </div>
   )

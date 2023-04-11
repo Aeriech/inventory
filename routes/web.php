@@ -52,3 +52,7 @@ Route::get('/view-purchases', function () {
 Route::get('/view-logs', function () {
     return view('welcome');
 });
+
+Route::get('/complete-purchase/{id}', function () {
+    return view('welcome');
+});

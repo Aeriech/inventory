@@ -94,4 +94,56 @@ public function reject($id)
     return response()->json(['purchases' => $savedPurchases]);
 }
 
+public function getPurchase($purchaseNumber)
+{
+    $purchases = Purchase::where('purchase_number', $purchaseNumber)->get();
+
+    // Create an empty array to store the retrieved data
+    $purchaseData = [];
+
+    // Loop through the $purchases collection to access each record
+    foreach ($purchases as $purchase) {
+        // Access the data of each record
+        $id = $purchase->id;
+        $name = $purchase->name;
+        $measurement = $purchase->measurement;
+        $measured_in = $purchase->measured_in;
+        // ... and so on
+
+        // Add the retrieved data to the $purchaseData array
+        $purchaseData[] = [
+            'id' => $id,
+            'name' => $name,
+            'measurement' => $measurement,
+            'measured_in' => $measured_in,
+            // ... and so on
+        ];
+    }
+
+    // Return the $purchaseData array as JSON
+    return response()->json($purchaseData);
+}
+
+public function updatePurchases(Request $request)
+{
+    // Retrieve the updated purchase data from the request body
+    $updatedPurchases = $request->input('purchases');
+
+    // Perform logic to update the purchases in the database
+    foreach ($updatedPurchases as $purchaseData) {
+        $purchase = Purchase::find($purchaseData['id']); // Assuming 'id' is the primary key column name
+        if ($purchase) {
+            // Update the purchase data
+            $purchase->price = $purchaseData['price'];
+            $purchase->item_added = $purchaseData['itemAdded'];
+            // Save the updated purchase to the database
+            $purchase->save();
+        }
+    }
+
+    // Return a response back to the client
+    return response()->json(['message' => 'Purchases updated successfully!']);
+}
+
+
 }

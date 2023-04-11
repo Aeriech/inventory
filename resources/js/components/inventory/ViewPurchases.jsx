@@ -106,7 +106,7 @@ const ViewPurchases = () => {
 
     const navigate = useNavigate();
      const handleOpenPurchase = () => {
-        navigate("/complete-purchase");
+        navigate("/complete-purchase/"+pNumber);
      }
 
     return (
