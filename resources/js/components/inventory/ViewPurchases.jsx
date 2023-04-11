@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Typography, Grid, Card, CardContent, Box, TextField, Button, Pagination, Dialog, DialogContent } from "@mui/material";
+import {
+    Container,
+    Typography,
+    Grid,
+    Card,
+    CardContent,
+    Box,
+    TextField,
+    Button,
+    Pagination,
+    Dialog,
+    DialogContent,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
 
 const ViewPurchases = () => {
     const [groupedPurchases, setGroupedPurchases] = useState([]);
@@ -13,13 +24,11 @@ const ViewPurchases = () => {
     const [selectedPurchase, setSelectedPurchase] = useState([]);
     const [pNumber, setPNumber] = useState("");
     const [status, setStatus] = useState("");
-    
 
     const handleCardClick = (purchase) => {
         setSelectedPurchase(purchase);
         setDialogOpen(true);
     };
-    
 
     const handlePageClick = (page) => {
         setCurrentPage(page);
@@ -52,9 +61,9 @@ const ViewPurchases = () => {
                         .toString()
                         .toLowerCase()
                         .includes(searchTerm.toLowerCase()) ||
-                        purchase.status
+                    purchase.status
                         .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) 
+                        .includes(searchTerm.toLowerCase())
             );
 
             if (filteredGroup.length > 0) {
@@ -72,17 +81,15 @@ const ViewPurchases = () => {
             .post(`/api/set-approved/${pNumber}`)
             .then((response) => {
                 console.log(response.data.message);
-            toast.fire({
-                icon: "success",
-                title: "Set purchase to approved successfully",
-            });
-            setTimeout(() => {
-                window.location.reload();
-            }, 4000);
-        })
-            .catch((error) => {
-
-            });
+                toast.fire({
+                    icon: "success",
+                    title: "Set purchase to approved successfully",
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 4000);
+            })
+            .catch((error) => {});
     };
 
     const handleReject = (event) => {
@@ -105,9 +112,9 @@ const ViewPurchases = () => {
     };
 
     const navigate = useNavigate();
-     const handleOpenPurchase = () => {
-        navigate("/complete-purchase/"+pNumber);
-     }
+    const handleOpenPurchase = () => {
+        navigate("/complete-purchase/" + pNumber);
+    };
 
     return (
         <Container sx={{ marginTop: 4 }}>
@@ -131,30 +138,145 @@ const ViewPurchases = () => {
             </Box>
             <Grid container spacing={1}>
                 {Object.keys(filteredPurchases).map((purchaseNumber) => (
-                    <Grid key={purchaseNumber} item xs={6} sm={4} md={3} lg={3}>
+                    <Grid
+                        key={purchaseNumber}
+                        item
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={3}
+                    >
                         <Card
                             elevation={3}
-                            sx={{ borderRadius: 8, backgroundColor: "#F8F8F8" }}
-                            onClick={() => {
-                                handleCardClick(filteredPurchases[purchaseNumber]);
-                                setPNumber(purchaseNumber);
-                                setStatus(filteredPurchases[purchaseNumber][0].status);
+                            sx={{
+                                borderRadius: 8,
+                                backgroundColor: "#F8F8F8",
+                                borderColor: "black",
+                                borderWidth: 2,
+                                borderStyle: "solid",
                             }}
-                            
-                             // Pass filtered purchases for the given purchaseNumber
+                            onClick={() => {
+                                handleCardClick(
+                                    filteredPurchases[purchaseNumber]
+                                );
+                                setPNumber(purchaseNumber);
+                                setStatus(
+                                    filteredPurchases[purchaseNumber][0].status
+                                );
+                            }}
+                            // Pass filtered purchases for the given purchaseNumber
                             style={{ cursor: "pointer" }}
                         >
                             <CardContent sx={{ padding: 2 }}>
-                            <Typography variant="h6" gutterBottom align="center">
-            Purchase Number: {purchaseNumber}
-            <Typography
-              variant="body1"
-              color="textSecondary"
-              style={{ marginLeft: "0.5rem" }} // Add left margin
-            >
-              Status: {filteredPurchases[purchaseNumber][0].status}
-            </Typography>
-          </Typography>
+                                {filteredPurchases[purchaseNumber][0].status ===
+                                    "Approved" && (
+                                    <Typography
+                                        variant="h6"
+                                        gutterBottom
+                                        align="center"
+                                        style={{
+                                            backgroundColor: "blue",
+                                            color: "white",
+                                            padding: "8px",
+                                            borderRadius: "20px",
+                                        }}
+                                    >
+                                        Purchase Number: {purchaseNumber}
+                                        <Typography
+                                            variant="body1"
+                                            color="white"
+                                        >
+                                            Status:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].status
+                                            }
+                                        </Typography>
+                                    </Typography>
+                                )}
+                                {filteredPurchases[purchaseNumber][0].status ===
+                                    "Completed" && (
+                                    <Typography
+                                        variant="h6"
+                                        gutterBottom
+                                        align="center"
+                                        style={{
+                                            backgroundColor: "green",
+                                            color: "white",
+                                            padding: "8px",
+                                            borderRadius: "20px",
+                                        }}
+                                    >
+                                        Purchase Number: {purchaseNumber}
+                                        <Typography
+                                            variant="body1"
+                                            color="white"
+                                        >
+                                            Status:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].status
+                                            }
+                                        </Typography>
+                                    </Typography>
+                                )}
+                                {filteredPurchases[purchaseNumber][0].status ===
+                                    "Rejected" && (
+                                    <Typography
+                                        variant="h6"
+                                        gutterBottom
+                                        align="center"
+                                        style={{
+                                            backgroundColor: "red",
+                                            color: "white",
+                                            padding: "8px",
+                                            borderRadius: "20px",
+                                        }}
+                                    >
+                                        Purchase Number: {purchaseNumber}
+                                        <Typography
+                                            variant="body1"
+                                            color="white"
+                                        >
+                                            Status:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].status
+                                            }
+                                        </Typography>
+                                    </Typography>
+                                )}
+                                {filteredPurchases[purchaseNumber][0].status ===
+                                    "Pending" && (
+                                    <Typography
+                                        variant="h6"
+                                        gutterBottom
+                                        align="center"
+                                        style={{
+                                            backgroundColor: "yellow",
+                                            color: "black",
+                                            padding: "8px",
+                                            borderRadius: "20px",
+                                        }}
+                                    >
+                                        Purchase Number: {purchaseNumber}
+                                        <Typography
+                                            variant="body1"
+                                            color="black"
+                                        >
+                                            Status:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].status
+                                            }
+                                        </Typography>
+                                    </Typography>
+                                )}
+
                                 <Box
                                     sx={{
                                         display: "flex",
@@ -172,14 +294,15 @@ const ViewPurchases = () => {
                                                         "space-between",
                                                 }}
                                             >
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     {purchase.name}
                                                 </Typography>
 
                                                 <Typography
-                                                    variant="body1"
+                                                    variant="body2"
                                                     color="textSecondary"
                                                 >
+                                                    {purchase.measured_in} -{" "}
                                                     {purchase.measurement}
                                                 </Typography>
                                             </Box>
@@ -211,7 +334,12 @@ const ViewPurchases = () => {
                 ))}
             </Grid>
             <Box
-                sx={{ display: "flex", justifyContent: "center", marginTop: 2, marginBottom: 2 }}
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 2,
+                    marginBottom: 2,
+                }}
             >
                 <Pagination
                     count={lastPage ?? 1} // Fix for handling null lastPage value
@@ -227,67 +355,114 @@ const ViewPurchases = () => {
                 />
             </Box>
             {selectedPurchase && (
-            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-                <DialogContent>
-                    {/* Display the selected purchase details here */}
-                    <Typography variant="h4">
-                        Purchase Number: {pNumber}
-                    </Typography>
-                    <Typography
-              variant="h5"
-              gutterBottom
-              textAlign="center"
-            >
-              Status: {status}
-            </Typography>
-                    {selectedPurchase && selectedPurchase.map((purchase, index) => (
-    <Box
-    key={index}
-    sx={{
-        display: "flex",
-        justifyContent:
-            "space-between",
-    }}
->
-    <Typography variant="body1">
-        {purchase.name}
-    </Typography>
+                <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+                    <DialogContent>
+                        {/* Display the selected purchase details here */}
+                        <Typography variant="h4">
+                            Purchase Number: {pNumber}
+                        </Typography>
+                        <Typography
+                            variant="h5"
+                            gutterBottom
+                            textAlign="center"
+                        >
+                            Status: {status}
+                        </Typography>
+                        {selectedPurchase &&
+                            selectedPurchase.map((purchase, index) => (
+                                <Box
+                                    key={index}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <Typography variant="body1">
+                                        {purchase.name}
+                                    </Typography>
 
-    <Typography
-        variant="body1"
-        color="textSecondary"
-    >
-        {purchase.measurement}
-    </Typography>
-</Box>
-))}
-<Grid container spacing={1} marginTop="10px">
-{status === "Pending" && (
-  <>
-    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-      <Button variant="contained" color="error" fullWidth onClick={(e) => handleReject(e)}>Reject</Button>
-    </Grid>
+                                    <Typography
+                                        variant="body1"
+                                        color="textSecondary"
+                                    >
+                                        {purchase.measurement}
+                                    </Typography>
+                                </Box>
+                            ))}
+                        <Grid container spacing={1} marginTop="10px">
+                            {status === "Pending" && (
+                                <>
+                                    <Grid
+                                        item
+                                        xs={6}
+                                        sm={6}
+                                        md={6}
+                                        lg={6}
+                                        xl={6}
+                                    >
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            fullWidth
+                                            onClick={(e) => handleReject(e)}
+                                        >
+                                            Reject
+                                        </Button>
+                                    </Grid>
 
-    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-      <Button variant="contained" color="success" fullWidth onClick={(e) => handleApprove(e)}>Approve</Button>
-    </Grid>
-  </>
-)}
-{status === "Approved" && (
-  <>
-    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-      <Button variant="contained" color="success" onClick={handleOpenPurchase} fullWidth>Open Puchase</Button>
-    </Grid>
-  </>
-)}
-<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-<Button variant="contained" fullWidth onClick={() => setDialogOpen(false)}>Back</Button>
-</Grid>
-
-</Grid>
-                </DialogContent>
-            </Dialog>
-        )}
+                                    <Grid
+                                        item
+                                        xs={6}
+                                        sm={6}
+                                        md={6}
+                                        lg={6}
+                                        xl={6}
+                                    >
+                                        <Button
+                                            variant="contained"
+                                            color="success"
+                                            fullWidth
+                                            onClick={(e) => handleApprove(e)}
+                                        >
+                                            Approve
+                                        </Button>
+                                    </Grid>
+                                </>
+                            )}
+                            {status === "Approved" && (
+                                <>
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={12}
+                                        xl={12}
+                                    >
+                                        <Button
+                                            variant="contained"
+                                            color="success"
+                                            onClick={handleOpenPurchase}
+                                            fullWidth
+                                        >
+                                            Open Puchase
+                                        </Button>
+                                    </Grid>
+                                </>
+                            )}
+                            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    onClick={() => setDialogOpen(false)}
+                                >
+                                    Back
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                </Dialog>
+            )}
         </Container>
     );
 };
