@@ -10,11 +10,13 @@ import {
 } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Receipt } from "@mui/icons-material";
 
 const PurchaseComponent = () => {
     const [purchases, setPurchases] = useState([]);
     const [updatedPurchases, setUpdatedPurchases] = useState([]); // Added state for updated purchases
     const [errors, setErrors] = useState(null);
+    const [reciepts, setReciepts] = useState([]);
 
     const { id } = useParams();
 
@@ -64,6 +66,48 @@ const PurchaseComponent = () => {
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
+
+    const handleAddPurchase = () => {
+        setReciepts([...reciepts, {image: null, supplier: "", description: "", amount: "" }]);
+    };
+
+    const handleRecieptUpdate = (index, field, value) => {
+        const updatedReciept = {
+            ...reciepts[index],
+            [field]: value,
+        };
+        const updatedRecieptList = [...reciepts];
+        updatedRecieptList[index] = updatedReciept;
+        setReciepts(updatedRecieptList);
+    };
+
+    const changeHandler = (index, field, e) => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        let limit = 1024 * 1024 * 10;
+        if (file["size"] > limit) {
+            toast.fire({
+                type: "error",
+                title: "Oops...",
+                text: "Image size is above 10mb",
+            });
+        }
+        reader.onloadend = () => {
+            const value = reader.result;
+            const updatedReciept = {
+                ...reciepts[index],
+                [field]: value,
+            };
+            const updatedRecieptList = [...reciepts];
+            updatedRecieptList[index] = updatedReciept;
+            setReciepts(updatedRecieptList);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleRemove = () => {
+        console.log(reciepts);
+    }
 
     return (
         <div>
@@ -183,76 +227,103 @@ const PurchaseComponent = () => {
                             </div>
                         </Grid>
                         <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
-                            <Button variant="contained">Add Receipt </Button>
+                            <Button
+                                variant="contained"
+                                onClick={handleAddPurchase}
+                            >
+                                Add Receipt{" "}
+                            </Button>
                         </Grid>
                     </Grid>
                 </Box>
+                {reciepts != 0 &&
                 <Typography variant="h5" textAlign="left" marginTop="20px">
                     Reciepts
                 </Typography>
-                <Box padding={1} border={2} borderRadius={1}>
-                    <Grid
-                        container
-                        spacing={1}
-                        justifyContent="center"
-                        alignItems="center"
-                    >
+                }
+                {reciepts.map((reciept, index) => (
+                    <Box key={index} padding={1} border={2} borderRadius={1} marginTop={1}>
                         <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                        ></Grid>
+                            container
+                            spacing={1}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                            ></Grid>
 
-                        <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                            <img
-                                src="https://th.bing.com/th/id/OIP.sOjgU4atF-5W-dyhGNC3kgAAAA?pid=ImgDet&rs=1"
-                                height="150px"
-                            />
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <img
+                                    src={reciepts[index].image}
+                                    width="150px"
+                                    height="150px"
+                                    style={{ border: "2px solid black" }} // Add style property for border
+                                />
+                            </Grid>
+
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <form className="image_item-form">
+                                    <label className="image_item-form--label">
+                                        Add Image
+                                    </label>
+                                    <input
+                                        type="file"
+                                        className="image_item-form--input"
+                                        onChange={(e) =>
+                                            changeHandler(
+                                                index,
+                                                "image",
+                                                e // Pass the entire event object instead of e.target.value
+                                            )
+                                        }
+                                    />
+                                </form>
+                            </Grid>
+
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <TextField
+                                    label="Supplier(Optional)"
+                                    variant="outlined"
+                                    onChange={(e) => handleRecieptUpdate(index,"supplier",e.target.value)}
+                                ></TextField>
+                            </Grid>
+
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <TextField
+                                    label="Description(Optional)"
+                                    variant="outlined"
+                                    onChange={(e) => handleRecieptUpdate(index,"description",e.target.value)}
+                                ></TextField>
+                            </Grid>
+
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <TextField
+                                    label="Amount"
+                                    variant="outlined"
+                                    onChange={(e) => handleRecieptUpdate(index,"amount",e.target.value)}
+                                ></TextField>
+                            </Grid>
+
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <Button
+                                    variant="contained"
+                                    size="small"
+                                    color="error"
+                                    fullWidth
+                                    onClick={handleRemove}
+                                >
+                                    Remove
+                                </Button>
+                            </Grid>
                         </Grid>
-
-                        <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                            <Button variant="contained" size="small" fullWidth>
-                                Add Image
-                            </Button>
-                        </Grid>
-
-                        <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                            <TextField
-                                label="Supplier(Optional)"
-                                variant="outlined"
-                            ></TextField>
-                        </Grid>
-
-                        <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                            <TextField
-                                label="Description(Optional)"
-                                variant="outlined"
-                            ></TextField>
-                        </Grid>
-
-                        <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                            <TextField
-                                label="Amount"
-                                variant="outlined"
-                            ></TextField>
-                        </Grid>
-
-                        <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                            <Button
-                                variant="contained"
-                                size="small"
-                                color="error"
-                                fullWidth
-                            >
-                                Remove
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Box>
-
+                    </Box>
+                ))}
                 <Button
                     variant="contained"
                     color="success"
