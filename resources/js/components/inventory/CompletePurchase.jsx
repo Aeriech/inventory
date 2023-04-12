@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Receipt } from "@mui/icons-material";
+
 
 const PurchaseComponent = () => {
     const [purchases, setPurchases] = useState([]);
     const [updatedPurchases, setUpdatedPurchases] = useState([]); // Added state for updated purchases
     const [errors, setErrors] = useState(null);
-    const [reciepts, setReciepts] = useState([]);
+    const [receipts, setReciepts] = useState([]);
 
     const { id } = useParams();
 
@@ -44,7 +44,7 @@ const PurchaseComponent = () => {
     const savePurchaseUpdates = (event) => {
         event.preventDefault();
         axios
-            .post(`/api/update-purchases`, { updatedPurchases })
+            .post(`/api/update-purchases`, { updatedPurchases, receipts, selectedDate })
             .then((response) => {
                 toast.fire({
                     icon: "success",
@@ -68,15 +68,15 @@ const PurchaseComponent = () => {
     };
 
     const handleAddPurchase = () => {
-        setReciepts([...reciepts, {image: null, supplier: "", description: "", amount: "" }]);
+        setReciepts([...receipts, {image: null, supplier: "", description: "", amount: ""}]);
     };
 
     const handleRecieptUpdate = (index, field, value) => {
         const updatedReciept = {
-            ...reciepts[index],
+            ...receipts[index],
             [field]: value,
         };
-        const updatedRecieptList = [...reciepts];
+        const updatedRecieptList = [...receipts];
         updatedRecieptList[index] = updatedReciept;
         setReciepts(updatedRecieptList);
     };
@@ -95,19 +95,23 @@ const PurchaseComponent = () => {
         reader.onloadend = () => {
             const value = reader.result;
             const updatedReciept = {
-                ...reciepts[index],
+                ...receipts[index],
                 [field]: value,
             };
-            const updatedRecieptList = [...reciepts];
+            const updatedRecieptList = [...receipts];
             updatedRecieptList[index] = updatedReciept;
             setReciepts(updatedRecieptList);
         };
         reader.readAsDataURL(file);
     };
 
-    const handleRemove = () => {
-        console.log(reciepts);
-    }
+    const handleRemove = (index) => {
+        const updatedRecieptsList = [...receipts];
+    updatedRecieptsList.splice(index, 1);
+    setReciepts(updatedRecieptsList);
+    };
+    
+      
 
     return (
         <div>
@@ -236,94 +240,80 @@ const PurchaseComponent = () => {
                         </Grid>
                     </Grid>
                 </Box>
-                {reciepts != 0 &&
+                {receipts != 0 &&
                 <Typography variant="h5" textAlign="left" marginTop="20px">
                     Reciepts
                 </Typography>
                 }
-                {reciepts.map((reciept, index) => (
-                    <Box key={index} padding={1} border={2} borderRadius={1} marginTop={1}>
-                        <Grid
-                            container
-                            spacing={1}
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                xl={12}
-                            ></Grid>
+                {receipts.map((receipt, index) => (
+    <Box key={index} padding={1} border={2} borderRadius={1} marginTop={1}>
+        <Grid container spacing={1} justifyContent="center" alignItems="center">
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}></Grid>
 
-                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                                <img
-                                    src={reciepts[index].image}
-                                    width="150px"
-                                    height="150px"
-                                    style={{ border: "2px solid black" }} // Add style property for border
-                                />
-                            </Grid>
+            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                <img
+                    src={receipt.image}
+                    width="150px"
+                    height="150px"
+                    style={{ border: "2px solid black" }} // Add style property for border
+                />
+            </Grid>
 
-                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                                <form className="image_item-form">
-                                    <label className="image_item-form--label">
-                                        Add Image
-                                    </label>
-                                    <input
-                                        type="file"
-                                        className="image_item-form--input"
-                                        onChange={(e) =>
-                                            changeHandler(
-                                                index,
-                                                "image",
-                                                e // Pass the entire event object instead of e.target.value
-                                            )
-                                        }
-                                    />
-                                </form>
-                            </Grid>
+            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                <form className="image_item-form">
+                    <label className="image_item-form--label">Add Image</label>
+                    <input
+                        type="file"
+                        className="image_item-form--input"
+                        onChange={(e) =>
+                            changeHandler(index, "image", e) // Pass the entire event object instead of e.target.value
+                        }
+                    />
+                </form>
+            </Grid>
 
-                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                                <TextField
-                                    label="Supplier(Optional)"
-                                    variant="outlined"
-                                    onChange={(e) => handleRecieptUpdate(index,"supplier",e.target.value)}
-                                ></TextField>
-                            </Grid>
+            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                <TextField
+                    label="Supplier(Optional)"
+                    variant="outlined"
+                    value={receipt.supplier}
+                    onChange={(e) => handleRecieptUpdate(index, "supplier", e.target.value)}
+                ></TextField>
+            </Grid>
 
-                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                                <TextField
-                                    label="Description(Optional)"
-                                    variant="outlined"
-                                    onChange={(e) => handleRecieptUpdate(index,"description",e.target.value)}
-                                ></TextField>
-                            </Grid>
+            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                <TextField
+                    label="Description(Optional)"
+                    variant="outlined"
+                    value={receipt.description}
+                    onChange={(e) => handleRecieptUpdate(index, "description", e.target.value)}
+                ></TextField>
+            </Grid>
 
-                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                                <TextField
-                                    label="Amount"
-                                    variant="outlined"
-                                    onChange={(e) => handleRecieptUpdate(index,"amount",e.target.value)}
-                                ></TextField>
-                            </Grid>
+            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                <TextField
+                    label="Amount"
+                    variant="outlined"
+                    value={receipt.amount}
+                    onChange={(e) => handleRecieptUpdate(index, "amount", e.target.value)}
+                ></TextField>
+            </Grid>
 
-                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                                <Button
-                                    variant="contained"
-                                    size="small"
-                                    color="error"
-                                    fullWidth
-                                    onClick={handleRemove}
-                                >
-                                    Remove
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                ))}
+            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                <Button
+                    variant="contained"
+                    size="small"
+                    color="error"
+                    fullWidth
+                    onClick={() => handleRemove(index)}
+                >
+                    Remove
+                </Button>
+            </Grid>
+        </Grid>
+    </Box>
+))}
+
                 <Button
                     variant="contained"
                     color="success"

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Purchase;
+use App\Models\Receipt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class PurchaseController extends Controller
 {
@@ -110,6 +112,7 @@ public function getPurchase($purchaseNumber)
         $measured_in = $purchase->measured_in;
         $created_at = $purchase->created_at;
         $item_id = $purchase->item_id;
+        $PNumber = $purchase->purchase_number;
         // ... and so on
 
         // Add the retrieved data to the $purchaseData array
@@ -120,6 +123,8 @@ public function getPurchase($purchaseNumber)
             'measured_in' => $measured_in,
             'created_at' => $created_at,
             'item_id' => $item_id,
+            'purchase_number' => $PNumber,
+
             // ... and so on
         ];
     }
@@ -133,11 +138,13 @@ public function updatePurchases(Request $request)
     $validator = Validator::make($request->all(), [
         'updatedPurchases.*.price' => 'required|numeric|min:0',
         'updatedPurchases.*.itemAdded' => 'required|numeric|min:0',
+        'receipts.*.amount' => 'required|numeric|min:0',
     ]);
 
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()], 422);
     }
+
     // Retrieve the updated purchase data from the request body
     $updatedPurchases = $request->input('updatedPurchases');
 
@@ -158,7 +165,36 @@ public function updatePurchases(Request $request)
         }
     }
 
+    // Process receipts
+    $receipts = $request->input("receipts");
+
+    foreach ($receipts as $receiptData) {
+        $receipt = new Receipt();
+        if ($receipt->image != $receiptData['image']) {
+            $strpos = strpos($receiptData['image'], ";");
+            $sub = substr($receiptData['image'], 0, $strpos);
+            $ex = explode('/', $sub)[1];
+            $name = time() . "." . $ex;
+            $img = Image::make($receiptData['image'])->resize(500, 500);
+            $upload_path = public_path() . "/upload/";
+            $img->save($upload_path . $name);
+            $photo = $upload_path . $receipt->image;
+            $img->save($upload_path . $name);
+            if (file_exists($photo)) {
+                @unlink($photo);
+            }
+        } else {
+            $name = $receipt->image;
+        }
+        $receipt->image = $name;
+        $receipt->purchase_number = $updatedPurchases[0]['purchase_number']; // Assuming the purchase number is same for all updated purchases
+        $receipt->supplier = $receiptData['supplier'];
+        $receipt->description = $receiptData['description'];
+        $receipt->amount = $receiptData['amount'];
+        $receipt->save(); // Save the receipt to the database
+    }
 }
+
 
 
 }
