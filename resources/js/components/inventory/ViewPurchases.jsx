@@ -407,7 +407,7 @@ const ViewPurchases = () => {
                                         variant="body1"
                                         color="textSecondary"
                                     >
-                                        {purchase.measurement}
+                                       {purchase.measured_in} - {purchase.measurement}
                                     </Typography>
                                 </Box>
                             ))}

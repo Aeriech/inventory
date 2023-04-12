@@ -188,6 +188,8 @@ const PurchaseComponent = () => {
                     </Grid>
                 </Box>
 
+                                        
+
                 <Button
                     variant="contained"
                     color="success"
