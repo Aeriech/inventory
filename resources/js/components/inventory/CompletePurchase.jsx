@@ -46,7 +46,7 @@ const PurchaseComponent = () => {
             .then((response) => {
                 toast.fire({
                     icon: "success",
-                    title: "New purchase added successfully",
+                    title: "Purchase updated successfully",
                 });
                 navigate("/");
             })

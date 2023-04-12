@@ -109,6 +109,7 @@ public function getPurchase($purchaseNumber)
         $measurement = $purchase->measurement;
         $measured_in = $purchase->measured_in;
         $created_at = $purchase->created_at;
+        $item_id = $purchase->item_id;
         // ... and so on
 
         // Add the retrieved data to the $purchaseData array
@@ -118,6 +119,7 @@ public function getPurchase($purchaseNumber)
             'measurement' => $measurement,
             'measured_in' => $measured_in,
             'created_at' => $created_at,
+            'item_id' => $item_id,
             // ... and so on
         ];
     }
@@ -141,7 +143,7 @@ public function updatePurchases(Request $request)
 
     // Perform logic to update the purchases in the database
     foreach ($updatedPurchases as $purchaseData) {
-        $item = Item::where('name', $purchaseData['name'])->first();
+        $item = Item::find($purchaseData['item_id']);
         $purchase = Purchase::find($purchaseData['id']); // Assuming 'id' is the primary key column name
         if ($purchase) {
             // Update the purchase data
