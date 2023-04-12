@@ -7,6 +7,11 @@
     font-family: 'Fira Sans', sans-serif;
 }
 
+.custom-datepicker-pop-up {
+    opacity: 1;
+  }
+  
+
 
 .container{
     max-width: 780px;

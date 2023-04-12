@@ -187,8 +187,39 @@ const PurchaseComponent = () => {
                         </Grid>
                     </Grid>
                 </Box>
+                <Typography variant="h5" textAlign="left" marginTop="20px">Reciepts</Typography>
+                <Box padding={1} border={2} borderRadius={1}>
+  <Grid container spacing={1} justifyContent="center" alignItems="center">
+  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+    </Grid>
 
-                                        
+    <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+      <img src="https://th.bing.com/th/id/OIP.OZ1zsHv22owY1dD5qv_fyQHaHa?pid=ImgDet&rs=1" height="150px" />
+    </Grid>
+
+    <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+      <Button variant="contained" size="small" fullWidth>Add Image</Button>
+    </Grid>
+
+    <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+      <TextField label="Supplier(Optional)" variant="outlined"></TextField>
+    </Grid>
+
+    <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+      <TextField label="Description(Optional)" variant="outlined"></TextField>
+    </Grid>
+
+    <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+      <TextField label="Amount" variant="outlined"></TextField>
+    </Grid>
+
+    <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+    <Button variant="contained" size="small" color="error" fullWidth>Remove</Button>
+    </Grid>
+
+  </Grid>
+</Box>
+       
 
                 <Button
                     variant="contained"
