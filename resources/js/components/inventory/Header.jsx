@@ -101,7 +101,7 @@ function Header() {
 
     return (
         <Box>
-            <AppBar position="static">
+            <AppBar position="static" color="error">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography

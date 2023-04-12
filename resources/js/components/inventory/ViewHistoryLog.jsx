@@ -165,7 +165,7 @@ export default function ViewHistoryLog() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" color="error">
                 <Toolbar>
                     <Typography
                         variant="h5"

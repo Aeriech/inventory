@@ -168,7 +168,7 @@ export default function ViewReceipts() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" color="error">
                 <Toolbar>
                     <Typography
                         variant="h5"
