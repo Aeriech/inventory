@@ -558,24 +558,13 @@ export default function ItemPage() {
                     <Typography textAlign="center" variant="h6">
                         {measure}: {measurement}
                     </Typography>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
+                    <div style={{ display: "flex", justifyContent: "center", marginTop: "10px"}}>
                         <Button
-                            variant="outlined"
+                            variant="contained"
                             onClick={editItem}
-                            style={{ width: "75px" }}
+                            fullWidth
                         >
                             Update
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            onClick={handleUse}
-                            style={{
-                                width: "75px",
-                                marginLeft: "5px",
-                                marginRight: "5px",
-                            }}
-                        >
-                            Use
                         </Button>
                     </div>
                 </DialogContent>
