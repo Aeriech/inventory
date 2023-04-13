@@ -19,6 +19,7 @@ import {
     DialogContent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Margin } from "@mui/icons-material";
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -567,29 +568,37 @@ const ViewPurchases = () => {
                     <Dialog open={Open} onClose={() => setOpen(false)} fullWidth>
                         <DialogContent>
                             {/* Display the selected purchase details here */}
-                            <Typography variant="h5" textAlign="center">
-                                Purchase Number: {pNumber}
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                gutterBottom
-                                textAlign="center"
-                            >
-                                Status: {status}
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                gutterBottom
-                                textAlign="center"
-                            >
+                            <Typography variant="h6" textAlign="center" style={{
+                                                backgroundColor: "green",
+                                                color: "white",
+                                                padding: "8px",
+                                                borderRadius: "10px",
+                                            }} >
+                                Purchase Number: {pNumber}<br></br>
+                                Status: {status}<br></br>
                                 Purchased On:{" "}
                                 {new Date(date).toLocaleString("en-US", {
                                     month: "long",
                                     day: "numeric",
                                     year: "numeric",
                                 })}
-                            </Typography>
+                            <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <Typography variant="body1">
+                                            Name
+                                        </Typography>
 
+                                        <Typography
+                                            variant="body1"
+                                        >
+                                            Unit: Req = Add
+                                        </Typography>
+                                    </Box>
+                                    </Typography>
                             {selectedPurchase &&
                                 selectedPurchase.map((purchase, index) => (
                                     <Box
