@@ -71,6 +71,8 @@ const ViewPurchases = () => {
     const [selectedPurchase, setSelectedPurchase] = useState([]);
     const [pNumber, setPNumber] = useState("");
     const [status, setStatus] = useState("");
+    const [date, setDate] = useState("");
+    const [Open, setOpen] = useState(false);
 
     const handleCardClick = (purchase) => {
         setSelectedPurchase(purchase);
@@ -207,6 +209,9 @@ const ViewPurchases = () => {
                                 setPNumber(purchaseNumber);
                                 setStatus(
                                     filteredPurchases[purchaseNumber][0].status
+                                );
+                                setDate(
+                                    filteredPurchases[purchaseNumber][0].purchase_date
                                 );
                             }}
                             // Pass filtered purchases for the given purchaseNumber
@@ -524,10 +529,10 @@ const ViewPurchases = () => {
                                         <Button
                                             variant="contained"
                                             color="success"
-                                            //onClick={handleOpenPurchase}
+                                            onClick={() => {setDialogOpen(false); setOpen(true);}}
                                             fullWidth
                                         >
-                                            View Purchase Details
+                                            View More Details
                                         </Button>
                                     </Grid>
                                 </>
@@ -537,6 +542,63 @@ const ViewPurchases = () => {
                                     variant="contained"
                                     fullWidth
                                     onClick={() => setDialogOpen(false)}
+                                >
+                                    Back
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                </Dialog>
+            )}
+            {selectedPurchase && (
+                <Dialog open={Open} onClose={() => setOpen(false)}>
+                    <DialogContent>
+                        {/* Display the selected purchase details here */}
+                        <Typography variant="h5" textAlign="center">
+                            Purchase Number: {pNumber}
+                        </Typography>
+                        <Typography
+                            variant="h6"
+                            gutterBottom
+                            textAlign="center"
+                        >
+                            Status: {status}
+                        </Typography>
+                        <Typography variant="h6" gutterBottom textAlign="center">
+    Purchased On: {new Date(date).toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+    })}
+</Typography>
+
+                        {selectedPurchase &&
+                            selectedPurchase.map((purchase, index) => (
+                                <Box
+                                    key={index}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <Typography variant="body1">
+                                        {purchase.name}
+                                    </Typography>
+
+                                    <Typography
+                                        variant="body1"
+                                        color="textSecondary"
+                                    >
+                                       {purchase.measured_in}: {purchase.measurement} = {purchase.item_added}
+                                    </Typography>
+                                </Box>
+                            ))}
+                        <Grid container spacing={1} marginTop="10px">
+                            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    onClick={() => setOpen(false)}
                                 >
                                     Back
                                 </Button>
