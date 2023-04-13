@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class PurchaseController extends Controller
 {
@@ -170,34 +171,35 @@ foreach ($updatedPurchases as $purchaseData) {
 }
 
 
-    // Process receipts
-    $receipts = $request->input("receipts");
+// Process receipts
+$receipts = $request->input("receipts");
 
-    foreach ($receipts as $receiptData) {
-        $receipt = new Receipt();
-        if ($receipt->image != $receiptData['image']) {
-            $strpos = strpos($receiptData['image'], ";");
-            $sub = substr($receiptData['image'], 0, $strpos);
-            $ex = explode('/', $sub)[1];
-            $name = time() . "." . $ex;
-            $img = Image::make($receiptData['image'])->resize(500, 500);
-            $upload_path = public_path() . "/upload/";
-            $img->save($upload_path . $name);
-            $photo = $upload_path . $receipt->image;
-            $img->save($upload_path . $name);
-            if (file_exists($photo)) {
-                @unlink($photo);
-            }
-        } else {
-            $name = $receipt->image;
+foreach ($receipts as $receiptData) {
+    $receipt = new Receipt();
+    if (isset($receiptData['image']) && $receiptData['image']) { // Check if image data exists
+        $strpos = strpos($receiptData['image'], ";");
+        $sub = substr($receiptData['image'], 0, $strpos);
+        $ex = explode('/', $sub)[1];
+        $name = time() . "_" . Str::random(10) . "." . $ex; // Use a unique name for each image
+        $img = Image::make($receiptData['image'])->resize(500, 500);
+        $upload_path = public_path() . "/upload/";
+        $img->save($upload_path . $name);
+        $photo = $upload_path . $receipt->image;
+        $img->save($upload_path . $name);
+        if (file_exists($photo)) {
+            @unlink($photo);
         }
         $receipt->image = $name;
-        $receipt->purchase_number = $updatedPurchases[0]['purchase_number']; // Assuming the purchase number is same for all updated purchases
-        $receipt->supplier = $receiptData['supplier'];
-        $receipt->description = $receiptData['description'];
-        $receipt->amount = $receiptData['amount'];
-        $receipt->save(); // Save the receipt to the database
     }
+
+    $receipt->purchase_number = $updatedPurchases[0]['purchase_number']; // Assuming the purchase number is same for all updated purchases
+    $receipt->supplier = $receiptData['supplier'];
+    $receipt->description = $receiptData['description'];
+    $receipt->amount = $receiptData['amount'];
+    $receipt->save(); // Save the receipt to the database
+}
+
+
 }
 
 
