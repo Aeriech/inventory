@@ -62,7 +62,6 @@ function PurchaseForm() {
         axios
             .post("/api/new-purchase", { purchases })
             .then((response) => {
-                console.log(response.data.message);
                 setPurchases([{ name: "", measurement: "" }]);
                 toast.fire({
                     icon: "success",

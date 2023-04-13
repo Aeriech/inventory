@@ -81,7 +81,6 @@ const ViewPurchases = () => {
         axios
             .get(`/api/get-receipt/${pNumber}`)
             .then((response) => {
-                console.log(response.data)
                 setReceipts(response.data)
             })
             .catch((error) => console.error(error));
@@ -565,7 +564,7 @@ const ViewPurchases = () => {
                     </Dialog>
                 )}
                 {selectedPurchase && (
-                    <Dialog open={Open} onClose={() => setOpen(false)}>
+                    <Dialog open={Open} onClose={() => setOpen(false)} fullWidth>
                         <DialogContent>
                             {/* Display the selected purchase details here */}
                             <Typography variant="h5" textAlign="center">
@@ -614,6 +613,7 @@ const ViewPurchases = () => {
                                         </Typography>
                                     </Box>
                                 ))}
+                                <Typography variant="h6" textAlign="center" marginTop={1}>Receipts</Typography>
                             <Grid container spacing={1} marginTop="10px">
                             {receipts && receipts.map((receipt, index)=>(
                             <Grid
@@ -631,11 +631,26 @@ const ViewPurchases = () => {
                                         backgroundSize: "cover",
                                         backgroundPosition: "center",
                                         width: "100%",
-                                        height: "120px",
+                                        height: "300px",
                                         borderRadius: "5px",
                                     }}
                                 />
+                                        {receipt.description != null &&
+                                        <Typography variant="body1" textAlign="center">
+                                            Description: {receipt.description}
+                                        </Typography>
+                                        }
+                                        {receipt.supplier != null &&
+                                        
+                                        <Typography variant="body1" textAlign="center">
+                                            Supplier: {receipt.supplier}
+                                        </Typography>
+                                        }
+                                        <Typography variant="body1" textAlign="center">
+                                            Amount: {receipt.amount}
+                                        </Typography>
                                 </Grid>
+                                
                                 ))}
                                 <Grid
                                     item
