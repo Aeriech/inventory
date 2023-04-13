@@ -11,7 +11,6 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 const PurchaseComponent = () => {
     const [purchases, setPurchases] = useState([]);
     const [updatedPurchases, setUpdatedPurchases] = useState([]); // Added state for updated purchases
@@ -44,7 +43,11 @@ const PurchaseComponent = () => {
     const savePurchaseUpdates = (event) => {
         event.preventDefault();
         axios
-            .post(`/api/update-purchases`, { updatedPurchases, receipts, selectedDate })
+            .post(`/api/update-purchases`, {
+                updatedPurchases,
+                receipts,
+                selectedDate,
+            })
             .then((response) => {
                 toast.fire({
                     icon: "success",
@@ -68,7 +71,10 @@ const PurchaseComponent = () => {
     };
 
     const handleAddPurchase = () => {
-        setReciepts([...receipts, {image: null, supplier: "", description: "", amount: ""}]);
+        setReciepts([
+            ...receipts,
+            { image: null, supplier: "", description: "", amount: "" },
+        ]);
     };
 
     const handleRecieptUpdate = (index, field, value) => {
@@ -107,11 +113,9 @@ const PurchaseComponent = () => {
 
     const handleRemove = (index) => {
         const updatedRecieptsList = [...receipts];
-    updatedRecieptsList.splice(index, 1);
-    setReciepts(updatedRecieptsList);
+        updatedRecieptsList.splice(index, 1);
+        setReciepts(updatedRecieptsList);
     };
-    
-      
 
     return (
         <div>
@@ -175,24 +179,6 @@ const PurchaseComponent = () => {
                                 </Grid>
                                 <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
                                     <TextField
-                                        label="Price"
-                                        variant="outlined"
-                                        name="price"
-                                        value={
-                                            updatedPurchases[index].price || ""
-                                        }
-                                        fullWidth
-                                        onChange={(e) =>
-                                            handlePurchaseUpdate(
-                                                index,
-                                                "price",
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
-                                    <TextField
                                         label="Item Bought"
                                         variant="outlined"
                                         name="itemAdded"
@@ -210,14 +196,27 @@ const PurchaseComponent = () => {
                                         }
                                     />
                                 </Grid>
+                                <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
+                                    <TextField
+                                        label="Price"
+                                        variant="outlined"
+                                        name="price"
+                                        value={
+                                            updatedPurchases[index].price || ""
+                                        }
+                                        fullWidth
+                                        onChange={(e) =>
+                                            handlePurchaseUpdate(
+                                                index,
+                                                "price",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </Grid>
                             </React.Fragment>
                         ))}
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            <Typography variant="h4">
-                                Select Supplier
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                             <div style={{ textAlign: "center" }}>
                                 <h3>Purchased On</h3>
                                 <div style={{ display: "inline-block" }}>
@@ -230,7 +229,7 @@ const PurchaseComponent = () => {
                                 </div>
                             </div>
                         </Grid>
-                        <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                             <Button
                                 variant="contained"
                                 onClick={handleAddPurchase}
@@ -240,79 +239,118 @@ const PurchaseComponent = () => {
                         </Grid>
                     </Grid>
                 </Box>
-                {receipts != 0 &&
-                <Typography variant="h5" textAlign="left" marginTop="20px">
-                    Reciepts
-                </Typography>
-                }
+                {receipts != 0 && (
+                    <Typography variant="h5" textAlign="left" marginTop="20px">
+                        Reciepts
+                    </Typography>
+                )}
                 {receipts.map((receipt, index) => (
-    <Box key={index} padding={1} border={2} borderRadius={1} marginTop={1}>
-        <Grid container spacing={1} justifyContent="center" alignItems="center">
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}></Grid>
+                    <Box
+                        key={index}
+                        padding={1}
+                        border={2}
+                        borderRadius={1}
+                        marginTop={1}
+                    >
+                        <Grid
+                            container
+                            spacing={1}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                            ></Grid>
 
-            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                <img
-                    src={receipt.image}
-                    width="150px"
-                    height="150px"
-                    style={{ border: "2px solid black" }} // Add style property for border
-                />
-            </Grid>
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <img
+                                    src={receipt.image}
+                                    width="150px"
+                                    height="150px"
+                                    style={{ border: "2px solid black" }} // Add style property for border
+                                />
+                            </Grid>
 
-            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                <form className="image_item-form">
-                    <label className="image_item-form--label">Add Image</label>
-                    <input
-                        type="file"
-                        className="image_item-form--input"
-                        onChange={(e) =>
-                            changeHandler(index, "image", e) // Pass the entire event object instead of e.target.value
-                        }
-                    />
-                </form>
-            </Grid>
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <form className="image_item-form">
+                                    <label className="image_item-form--label">
+                                        Add Image
+                                    </label>
+                                    <input
+                                        type="file"
+                                        className="image_item-form--input"
+                                        onChange={
+                                            (e) =>
+                                                changeHandler(index, "image", e) // Pass the entire event object instead of e.target.value
+                                        }
+                                    />
+                                </form>
+                            </Grid>
 
-            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                <TextField
-                    label="Supplier(Optional)"
-                    variant="outlined"
-                    value={receipt.supplier}
-                    onChange={(e) => handleRecieptUpdate(index, "supplier", e.target.value)}
-                ></TextField>
-            </Grid>
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <TextField
+                                    label="Supplier(Optional)"
+                                    variant="outlined"
+                                    value={receipt.supplier}
+                                    onChange={(e) =>
+                                        handleRecieptUpdate(
+                                            index,
+                                            "supplier",
+                                            e.target.value
+                                        )
+                                    }
+                                ></TextField>
+                            </Grid>
 
-            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                <TextField
-                    label="Description(Optional)"
-                    variant="outlined"
-                    value={receipt.description}
-                    onChange={(e) => handleRecieptUpdate(index, "description", e.target.value)}
-                ></TextField>
-            </Grid>
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <TextField
+                                    label="Description(Optional)"
+                                    variant="outlined"
+                                    value={receipt.description}
+                                    onChange={(e) =>
+                                        handleRecieptUpdate(
+                                            index,
+                                            "description",
+                                            e.target.value
+                                        )
+                                    }
+                                ></TextField>
+                            </Grid>
 
-            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                <TextField
-                    label="Amount"
-                    variant="outlined"
-                    value={receipt.amount}
-                    onChange={(e) => handleRecieptUpdate(index, "amount", e.target.value)}
-                ></TextField>
-            </Grid>
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <TextField
+                                    label="Amount"
+                                    variant="outlined"
+                                    value={receipt.amount}
+                                    onChange={(e) =>
+                                        handleRecieptUpdate(
+                                            index,
+                                            "amount",
+                                            e.target.value
+                                        )
+                                    }
+                                ></TextField>
+                            </Grid>
 
-            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
-                <Button
-                    variant="contained"
-                    size="small"
-                    color="error"
-                    fullWidth
-                    onClick={() => handleRemove(index)}
-                >
-                    Remove
-                </Button>
-            </Grid>
-        </Grid>
-    </Box>
-))}
+                            <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
+                                <Button
+                                    variant="contained"
+                                    size="small"
+                                    color="error"
+                                    fullWidth
+                                    onClick={() => handleRemove(index)}
+                                >
+                                    Remove
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                ))}
 
                 <Button
                     variant="contained"

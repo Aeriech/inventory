@@ -20,7 +20,8 @@ class ItemController extends Controller
     return response()->json([
         'id' => $item->id,
         'item_left' => $item->measurement,
-        'measured_in' => $item->measured_in
+        'measured_in' => $item->measured_in,
+        'price' => $item->price,
     ]);
 }
 

@@ -38,6 +38,7 @@ class PurchaseController extends Controller
         $purchase->measured_in = $purchaseData['measurementUnit'];
         $purchase->status = "Pending";
         $purchase->item_id = $purchaseData['item_id'];
+        $purchase->price = $purchaseData['item_price'];
         $purchase->purchase_number = $newPurchaseNumber;
         $purchase->save();
         $savedPurchases[] = $purchase;
@@ -114,6 +115,7 @@ public function getPurchase($purchaseNumber)
         $created_at = $purchase->created_at;
         $item_id = $purchase->item_id;
         $PNumber = $purchase->purchase_number;
+        $price = $purchase->price;
         // ... and so on
 
         // Add the retrieved data to the $purchaseData array
@@ -125,7 +127,7 @@ public function getPurchase($purchaseNumber)
             'created_at' => $created_at,
             'item_id' => $item_id,
             'purchase_number' => $PNumber,
-
+            'price' => $price,
             // ... and so on
         ];
     }

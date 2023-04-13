@@ -106,12 +106,14 @@ function PurchaseForm() {
                 // Update the label of the Measurement TextField with the measurement unit
                 const measurementUnit = response.data.measured_in;
                 const item_id = response.data.id;
+                const item_price = response.data.price;
                 const item_left = response.data.item_left;
                 const newPurchases = [...purchases];
                 newPurchases[index].name = selectedItem;
                 newPurchases[index].measurement = "";
                 newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
                 newPurchases[index].item_id = item_id; // Add the item id to the purchase object
+                newPurchases[index].item_price = item_price;
                 newPurchases[index].item_left = item_left; // Add the item left to the purchase object
                 setPurchases(newPurchases);
               })
