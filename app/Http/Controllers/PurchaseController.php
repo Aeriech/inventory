@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\Receipt;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -149,21 +150,23 @@ public function updatePurchases(Request $request)
     $updatedPurchases = $request->input('updatedPurchases');
 
     // Perform logic to update the purchases in the database
-    foreach ($updatedPurchases as $purchaseData) {
-        $item = Item::find($purchaseData['item_id']);
-        $purchase = Purchase::find($purchaseData['id']); // Assuming 'id' is the primary key column name
-        if ($purchase) {
-            // Update the purchase data
-            $purchase->price = $purchaseData['price'];
-            $purchase->item_added = $purchaseData['itemAdded'];
-            $purchase->status = "Completed";
-            $item->price = $purchaseData['price'];
-            $item->measurement = $item->measurement + $purchaseData['itemAdded'];
-            // Save the updated purchase to the database
-            $item->save();
-            $purchase->save();
-        }
+foreach ($updatedPurchases as $purchaseData) {
+    $item = Item::find($purchaseData['item_id']);
+    $purchase = Purchase::find($purchaseData['id']); // Assuming 'id' is the primary key column name
+    if ($purchase) {
+        // Update the purchase data
+        $purchase->price = $purchaseData['price'];
+        $purchase->item_added = $purchaseData['itemAdded'];
+        $purchase->status = "Completed";
+        $item->price = $purchaseData['price'];
+        $purchase->purchase_date = Carbon::parse($request->input('selectedDate'))->format('Y-m-d'); // Update with selectedDate value
+        $item->measurement = $item->measurement + $purchaseData['itemAdded'];
+        // Save the updated purchase to the database
+        $item->save();
+        $purchase->save();
     }
+}
+
 
     // Process receipts
     $receipts = $request->input("receipts");
