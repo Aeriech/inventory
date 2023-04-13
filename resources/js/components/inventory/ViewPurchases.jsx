@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -69,10 +70,22 @@ const ViewPurchases = () => {
     const [lastPage, setLastPage] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedPurchase, setSelectedPurchase] = useState([]);
-    const [pNumber, setPNumber] = useState("");
+    const [pNumber, setPNumber] = useState(1);
     const [status, setStatus] = useState("");
     const [date, setDate] = useState("");
     const [Open, setOpen] = useState(false);
+
+    const [receipts, setReceipts] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(`/api/get-receipt/${pNumber}`)
+            .then((response) => {
+                console.log(response.data)
+                setReceipts(response.data)
+            })
+            .catch((error) => console.error(error));
+    }, [pNumber]);
 
     const handleCardClick = (purchase, status) => {
         setSelectedPurchase(purchase);
@@ -602,6 +615,28 @@ const ViewPurchases = () => {
                                     </Box>
                                 ))}
                             <Grid container spacing={1} marginTop="10px">
+                            {receipts && receipts.map((receipt, index)=>(
+                            <Grid
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    xl={12}
+                                    key={index}
+                                >
+                                <div
+                                    style={{
+                                        backgroundImage: `url(/upload/${receipt.image})`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        width: "100%",
+                                        height: "120px",
+                                        borderRadius: "5px",
+                                    }}
+                                />
+                                </Grid>
+                                ))}
                                 <Grid
                                     item
                                     xs={12}

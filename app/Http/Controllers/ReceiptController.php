@@ -54,4 +54,16 @@ class ReceiptController extends Controller
         $log->created_by = 1;
         $log->save();
     }
+
+    public function getReceipt($id) {
+        $receipt = Receipt::where('purchase_number', $id)->get();
+    
+        // Convert the collection of Receipt models to an array
+        $receiptData = $receipt->toArray();
+    
+        // Return the $purchaseData array as JSON
+        return response()->json($receiptData);
+    }
+    
+    
 }
