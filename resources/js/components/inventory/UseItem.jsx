@@ -67,7 +67,7 @@ export default function UseItem() {
                 setPurchases([{ name: "", measurement: "" }]);
                 toast.fire({
                     icon: "success",
-                    title: "New purchase added successfully",
+                    title: "Item used successfully",
                 });
                 navigate("/");
             })
