@@ -22,7 +22,6 @@ import { useNavigate } from "react-router-dom";
 
 const pages = [
     "View Items",
-    "New Item",
     "View Purchases",
     "New Purchase",
 ];

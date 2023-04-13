@@ -206,26 +206,25 @@ class ItemController extends Controller
     }
 
 
-    public function useItem(Request $request, $id)
+    public function useItem(Request $request)
     {
-        $item = Item::find($id);
-        $maxValue = $item->measurement;
         $validator = Validator::make($request->all(), [
-            'useItem' => 'required|numeric|min:1|max:' . $maxValue
+            'items.*.measurement' => 'required|numeric|min:1',
         ]);
     
+        
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
-        $item->measurement = $item->measurement - $request->useItem;
-        $item->save();
-
-        $log = new History();
-        $log->type = "Update";
-        $log->description = "[ID = {$item->id}] Updated Item Name:" . $item->name . ", and Qty:" . $request->useItem;
-        $log->created_by = $item->id;
-        $log->save();
+    
+        $items = $request->input('items');
+    
+        foreach ($items as $itemData) {
+            $item = Item::find($itemData['item_id']);
+            $item->measurement = $item->measurement - $itemData['measurement'];
+            $item->save();
+        }
+    
     }
 
     public function addPurchase(Request $request, $id)

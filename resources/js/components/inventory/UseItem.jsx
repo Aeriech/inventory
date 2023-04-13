@@ -5,94 +5,190 @@ import {
     Box,
     Grid,
     Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
+    Autocomplete,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function UseItem() {
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const navigate = useNavigate();
 
     const { id } = useParams();
 
+    const [items, setPurchases] = useState([{ name: "", measurement: "" }]);
+    const [searchValue, setSearchValue] = useState("");
+    const [filteredOptions, setFilteredOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
     useEffect(() => {
-        getItem();
+        async function fetchData() {
+            const response = await axios.get("/api/items");
+            const options = response.data.map((item) => item.name);
+            setFilteredOptions(options);
+        }
+
+        fetchData();
     }, []);
 
-    const getItem = async () => {
-    
-            try {
-                const { data } = await axios.get(`/api/get-item/${id}`);
-                const { name, image, type, measurement, price } = data.item;
-                setItemName(name);
-                setImage(image);
-                setMeasurement(measurement);
-              } catch ({ response: { data }}) {
-                // handle error
-              }
+    const handleAddPurchase = () => {
+        setPurchases([...items, { name: "", measurement: "" }]);
     };
 
-    const [name, setItemName] = useState("");
-    const [image, setImage] = useState(null);
-    const [measurement, setMeasurement] = React.useState("");
-    const [photo, setPhoto] = useState(true);
+    const handleRemovePurchase = (index) => {
+        const removedOption = selectedOptions[index];
+        if (removedOption) {
+            // Add the removed option back to the filteredOptions list
+            const updatedFilteredOptions = [...filteredOptions, removedOption];
+            setFilteredOptions(updatedFilteredOptions);
+        }
 
-    const ourImage = (img) => {
-        return "/upload/" + img;
+        const newPurchases = [...items];
+        newPurchases.splice(index, 1);
+        setPurchases(newPurchases);
+
+        const updatedSelectedOptions = [...selectedOptions];
+        updatedSelectedOptions.splice(index, 1);
+        setSelectedOptions(updatedSelectedOptions);
     };
 
-    const [useItem, setUseItem] = useState(0);
-
-    const add = () => {
-        setUseItem((prevValue) => {
-            const newValue = parseInt(prevValue) + 1;
-            return isNaN(newValue) ? 1 : newValue;
-        });
+    const handleInputChange = (event, index) => {
+        const { name, value } = event.target;
+        const newPurchases = [...items];
+        newPurchases[index][name] = value;
+        setPurchases(newPurchases);
     };
 
-    const sub = () => {
-        setUseItem((prevValue) => parseInt(prevValue) - 1);
-    };
 
-    const use_Item = async () => {
-        const formData = new FormData();
-
-        formData.append("useItem", useItem);
-
-        try {
-            const { data } = await axios.post(`/api/use-item/${id}`, formData);
-            toast.fire({
-                icon: "success",
-                    title: "Item updated successfully",
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axios
+            .post("/api/use-item", { items })
+            .then((response) => {
+                setPurchases([{ name: "", measurement: "" }]);
+                toast.fire({
+                    icon: "success",
+                    title: "New purchase added successfully",
+                });
+                navigate("/");
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 422) {
+                    setErrors(error.response.data.errors);
+                } else {
+                    // handle other errors here
+                }
             });
-            navigate("/");
-          } catch (error) {
-            if (error.response && error.response.status === 422) {
-              setErrors(error.response.data.errors);
+    };
+    
+
+
+    const handleNameChange = (event, value, index) => {
+        // Check if the selected value is not null, which means the user has selected an option
+        if (value !== null) {
+          const selectedItem = filteredOptions.find((option) => option === value);
+      
+          if (selectedItem) {
+            // Remove the selected item from filteredOptions
+            const updatedFilteredOptions = filteredOptions.filter(
+              (option) => option !== selectedItem
+            );
+            setFilteredOptions(updatedFilteredOptions);
+      
+            // Update the selectedOptions with the selected item
+            const updatedSelectedOptions = [...selectedOptions];
+            updatedSelectedOptions[index] = selectedItem;
+            setSelectedOptions(updatedSelectedOptions);
+      
+            // Fetch the item from the database based on the selected name
+            axios
+              .get(`/api/items/${selectedItem}`)
+              .then((response) => {
+                // Update the label of the Measurement TextField with the measurement unit
+                const measurementUnit = response.data.measured_in;
+                const item_id = response.data.id;
+                const item_price = response.data.price;
+                const item_left = response.data.item_left;
+                const newPurchases = [...items];
+                newPurchases[index].name = selectedItem;
+                newPurchases[index].measurement = "";
+                newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
+                newPurchases[index].item_id = item_id; // Add the item id to the purchase object
+                newPurchases[index].item_price = item_price;
+                newPurchases[index].item_left = item_left; // Add the item left to the purchase object
+                setPurchases(newPurchases);
+              })
+              .catch((error) => {
+                console.log(error.response.data.message);
+              });
           } else {
-              // handle other errors here
+            const newPurchases = [...items];
+            newPurchases[index].name = value;
+            newPurchases[index].measurement = "";
+            setPurchases(newPurchases);
           }
-          }
+          setSearchValue(value);
+        } else {
+          // If the value is null, which means the user unselected the option
+          // Add the unselected option back to the filteredOptions list
+          const unselectedOption = items[index].name;
+          const updatedFilteredOptions = [...filteredOptions, unselectedOption];
+          setFilteredOptions(updatedFilteredOptions);
+      
+          // Update the selectedOptions with an empty value
+          const updatedSelectedOptions = [...selectedOptions];
+          updatedSelectedOptions[index] = "";
+          setSelectedOptions(updatedSelectedOptions);
+      
+          // Update the purchase object with an empty value for the name
+          const newPurchases = [...items];
+          newPurchases[index].name = "";
+          setPurchases(newPurchases);
+        }
       };
-  
+
+    const handleMeasurementChange = (event, index) => {
+        const { name, value } = event.target;
+        handleInputChange(
+            {
+                target: {
+                    name: name,
+                    value: value,
+                },
+            },
+            index
+        );
+    };
+
+
       const [errors, setErrors] = useState(null);
 
     return (
         <div>
             <Box sx={{ flexGrow: 1 }} textAlign="center" marginTop="20px">
                 
+            <Box sx={{ marginTop: 1, textAlign: "center", padding: "10px" }}>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginRight: "15px",
+                    marginLeft: "15px",
+                }}
+            >
+                <Typography variant="h5" textAlign="left">
+                    Use Items
+                </Typography>
+                <div>
+                    <Button
+                        variant="outlined"
+                        onClick={handleSubmit}
+                        disabled={items.length === 0}
+                    >
+                        <Typography variant="h6">SUBMIT</Typography>
+                    </Button>
+                </div>
+            </div>
             <Box marginTop="10px">
 {errors && (
                 <div className="alert alert-danger">
@@ -104,129 +200,94 @@ export default function UseItem() {
                 </div>
             )}
             </Box>
-
-                <Box border={2} borderColor="black" padding={5} margin="10px">
-                    <Grid
-                        alignItems="center"
-                        container
-                        spacing={{ xs: 2, md: 3 }}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                    >
-                        <Grid item xs={12} sm={12} md={12}>
-                            <Grid
-                                container
-                                direction="column"
-                                alignItems="center"
-                            >
-                                <Grid item>
-                                    {photo === true ? (
-                                        <img
-                                            src={ourImage(image)}
-                                            width="125px"
-                                            height="100px"
-                                            border={2}
-                                            onClick={handleClickOpen}
-                                        ></img>
-                                    ) : (
-                                        <img
-                                            src={image}
-                                            width="125px"
-                                            height="100px"
-                                            border={2}
-                                            onClick={handleClickOpen}
-                                        ></img>
+            <Box
+                sx={{
+                    border: "2px solid black",
+                    borderRadius: "5px",
+                    p: "10px",
+                    width: "100%",
+                    height: "100%",
+                    marginBottom: "10px",
+                    marginTop: "10px",
+                }}
+            >
+                <Grid container spacing={2}>
+                    {items.map((purchase, index) => (
+                        <React.Fragment key={index}>
+                            <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
+                                <Autocomplete
+                                    options={filteredOptions}
+                                    value={purchase.name}
+                                    onChange={(event, value) =>
+                                        handleNameChange(event, value, index)
+                                    }
+                                    onInputChange={(event, value) =>
+                                        setSearchValue(value)
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Item Name"
+                                            variant="outlined"
+                                        />
                                     )}
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12}>
-                            <Typography variant="h5">{name}</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12}>
-                            <Typography variant="h5">
-                                Item Left: {measurement}
-                            </Typography>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    marginTop: "10px",
-                                }}
-                            >
-                                <TextField
-                                    id="filled-basic"
-                                    size="small"
-                                    variant="filled"
-                                    value={useItem}
-                                    onChange={(e) => setUseItem(e.target.value)}
-                                    style={{
-                                        width: "80px",
-                                        marginRight: "10px",
-                                    }}
                                 />
-
-                                <Button
+                            </Grid>
+                            <Grid item xs={6} sm={4} md={4} lg={4} xl={4}>
+                                <TextField
+                                    label={
+                                        purchase.measurementUnit &&
+                                        purchase.item_left // check if measurementUnit and item_left are truthy
+                                            ? `${purchase.measurementUnit}=${purchase.item_left}` // show measurementUnit and item_left if available
+                                            : "Measurement" // otherwise, show "Measurement"
+                                    }
                                     variant="outlined"
-                                    onClick={add}
-                                    style={{
-                                        width: "30px",
-                                        marginRight: "10px",
-                                    }}
-                                >
-                                    +
-                                </Button>
-
+                                    name="measurement"
+                                    value={purchase.measurement}
+                                    fullWidth
+                                    onChange={(event) =>
+                                        handleMeasurementChange(event, index)
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                                 <Button
-                                    variant="outlined"
-                                    onClick={sub}
-                                    style={{ width: "30px" }}
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => handleRemovePurchase(index)}
+                                    style={{ marginTop: "10px" }}
+                                    disabled={items.length === 1}
+                                    fullWidth
                                 >
-                                    -
+                                    Remove
                                 </Button>
-                            </div>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    marginTop: "10px",
-                                }}
-                            >
-                                <Button variant="outlined" onClick={use_Item}>
-                                    <Typography variant="h5" textAlign="center">
-                                        Use Item
-                       </Typography>
-                                </Button>
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Box>
+                            </Grid>
+                        </React.Fragment>
+                    ))}
+                </Grid>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAddPurchase}
+                    style={{ marginTop: "16px" }}
+                    fullWidth
+                >
+                    Add Use Item
+                </Button>
             </Box>
 
-            <Dialog open={open} onClose={handleClose}>
-                <DialogContent>
-                    {photo === true ? (
-                        <img
-                            src={ourImage(image)}
-                            width="100%"
-                            height="100%"
-                            border={2}
-                            onClick={handleClose}
-                        ></img>
-                    ) : (
-                        <img
-                            src={image}
-                            width="100%"
-                            height="100%"
-                            border={2}
-                            onClick={handleClose}
-                        ></img>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Back</Button>
-                </DialogActions>
-            </Dialog>
+            <Button
+                variant="contained"
+                color="success"
+                onClick={handleSubmit}
+                style={{ marginTop: "16px" }}
+                disabled={items.length === 0}
+                fullWidth
+            >
+                Submit
+            </Button>
+        </Box>
+            </Box>
         </div>
     );
 }

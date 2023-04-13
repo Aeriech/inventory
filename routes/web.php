@@ -37,7 +37,7 @@ Route::get('/get-item/{id}', function () {
     return view('welcome');
 });
 
-Route::get('/use-item/{id}', function () {
+Route::get('/use-item', function () {
     return view('welcome');
 });
 

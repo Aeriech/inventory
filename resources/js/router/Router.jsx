@@ -30,7 +30,7 @@ export default function Router() {
             <Route path='/view-receipts' element={ <ViewReceipts/> } />
             <Route path='/view-archives' element={ <ViewArchives/> } />
             <Route path='/add-purchase/:id' element={ <AddPurchase/> } />
-            <Route path='/use-item/:id' element={ <UseItem/> } />
+            <Route path='/use-item' element={ <UseItem/> } />
             <Route path='/view-logs' element={ <ViewHistoryLog/> } />
             <Route path='/add-category' element={ <AddCategory/> } />
             <Route path='/add-measurement' element={ <AddMeasurement/> } />

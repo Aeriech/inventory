@@ -30,7 +30,7 @@ Route::get('/get-item/{id}',[ItemController::class, 'getItem']);
 Route::post('/update-item/{id}',[ItemController::class, 'updateItem']);
 Route::post('/archive-item/{id}',[ItemController::class, 'archive']);
 Route::post('/unarchive-item/{id}',[ItemController::class, 'unarchive']);
-Route::post('/use-item/{id}',[ItemController::class, 'useItem']);
+Route::post('/use-item',[ItemController::class, 'useItem']);
 Route::post('/add-purchase/{id}',[ItemController::class, 'addPurchase']);
 
 Route::post('/new-receipt',[ReceiptController::class, 'addReceipt']);
