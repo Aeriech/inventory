@@ -127,14 +127,7 @@ const ViewPurchases = () => {
         axios
             .post(`/api/set-approved/${pNumber}`)
             .then((response) => {
-                console.log(response.data.message);
-                toast.fire({
-                    icon: "success",
-                    title: "Set purchase to approved successfully",
-                });
-                setTimeout(() => {
                     window.location.reload();
-                }, 4000);
             })
             .catch((error) => {});
     };
@@ -144,14 +137,7 @@ const ViewPurchases = () => {
         axios
             .post(`/api/set-rejected/${pNumber}`)
             .then((response) => {
-                console.log(response.data.message);
-                toast.fire({
-                    icon: "success",
-                    title: "Set purchase to rejected successfully",
-                });
-                setTimeout(() => {
                     window.location.reload();
-                }, 4000);
             })
             .catch((error) => {
                 // Handle error
