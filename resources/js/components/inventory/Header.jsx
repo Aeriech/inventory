@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 const pages = [
     "View Items",
     "View Purchases",
-    "New Purchase",
 ];
 const settings = [
     "Profile",
@@ -97,6 +96,7 @@ function Header() {
     setOpen(false);
     navigate("/view-logs");
   }
+
 
     return (
         <Box>

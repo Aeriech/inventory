@@ -176,6 +176,10 @@ const ViewPurchases = () => {
         day: "numeric",
     };
 
+    const handleCreatePurchase = () => {
+        navigate("/new-purchase");
+      }
+
     return (
         <>
             <AppBar position="static" color="error">
@@ -201,6 +205,9 @@ const ViewPurchases = () => {
                     </Search>
                 </Toolbar>
             </AppBar>
+            <Box marginTop={1} padding={1}>
+            <Button fullWidth variant="contained" onClick={handleCreatePurchase}>Create New Purchase Request</Button>
+            </Box>
             <Container sx={{ marginTop: 4 }}>
                 <Grid container spacing={1}>
                     {Object.keys(filteredPurchases).map((purchaseNumber) => (

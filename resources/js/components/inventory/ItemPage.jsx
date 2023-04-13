@@ -336,7 +336,7 @@ export default function ItemPage() {
                     </Grid>
 
                     <Grid item xs={6} sm={4} md={2} lg={2} xl={2} marginTop={1}>
-                    <Button variant="contained" size="large" onClick={handleUse}>Use Item</Button>
+                    <Button variant="contained" size="large" onClick={handleUse}>Use Items</Button>
                     </Grid>
                 </Grid>
             </Box>
