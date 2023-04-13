@@ -19,7 +19,7 @@ import {
     DialogContent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Margin } from "@mui/icons-material";
+
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -146,6 +146,7 @@ const ViewPurchases = () => {
         axios
             .post(`/api/set-approved/${pNumber}`)
             .then((response) => {
+                setDialogOpen(false);
                 window.location.reload();
             })
             .catch((error) => {});
@@ -156,6 +157,7 @@ const ViewPurchases = () => {
         axios
             .post(`/api/set-rejected/${pNumber}`)
             .then((response) => {
+                setDialogOpen(false);
                 window.location.reload();
             })
             .catch((error) => {
@@ -642,6 +644,7 @@ const ViewPurchases = () => {
                                         width: "100%",
                                         height: "300px",
                                         borderRadius: "5px",
+                                        marginTop: "10px",
                                     }}
                                 />
                                         {receipt.description != null &&
