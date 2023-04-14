@@ -223,11 +223,7 @@ const ViewPurchases = () => {
                 </Toolbar>
             </AppBar>
             <Grid container spacing={1} marginTop={1} padding={1} alignItems="center" justifyItems="center" textAlign="center">
-                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} marginTop={1}>
-                    <Button variant="outlined" size="large" fullWidth onClick={handleCreatePurchase}>
-                        Create New Purchase Request
-                    </Button>
-                </Grid>
+            
 
                 <Grid item xs={6} sm={6} md={4} lg={4} xl={4}>
                     <Typography variant="body2">Status</Typography>
@@ -263,6 +259,13 @@ const ViewPurchases = () => {
                         </Select>
                     </FormControl>
                 </Grid>
+
+                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} marginTop={1}>
+                    <Button variant="outlined" size="large" fullWidth onClick={handleCreatePurchase}>
+                        Create New Purchase Request
+                    </Button>
+                </Grid>
+                
             </Grid>
             <Container sx={{ marginTop: 4 }}>
                 <Grid container spacing={1}>
