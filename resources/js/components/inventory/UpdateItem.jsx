@@ -250,10 +250,9 @@ export default function UpdateItem() {
         variant="contained"
         color='error'
         onClick={handleArchive}
-        style={{marginRight: '10px'}}
         startIcon={<Delete />}
       >
-        <Typography variant='body2'>Archive</Typography>
+        <Typography variant='body2'>Archive Item</Typography>
       </Button>
   </Grid>
   
