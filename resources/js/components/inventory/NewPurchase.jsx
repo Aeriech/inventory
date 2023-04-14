@@ -10,7 +10,6 @@ import {
     Typography,
 } from "@mui/material";
 
-
 function PurchaseForm() {
     const [purchases, setPurchases] = useState([{ name: "", measurement: "" }]);
     const [searchValue, setSearchValue] = useState("");
@@ -77,73 +76,77 @@ function PurchaseForm() {
                 }
             });
     };
-    
 
     const [errors, setErrors] = useState(null);
 
     const handleNameChange = (event, value, index) => {
         // Check if the selected value is not null, which means the user has selected an option
         if (value !== null) {
-          const selectedItem = filteredOptions.find((option) => option === value);
-      
-          if (selectedItem) {
-            // Remove the selected item from filteredOptions
-            const updatedFilteredOptions = filteredOptions.filter(
-              (option) => option !== selectedItem
+            const selectedItem = filteredOptions.find(
+                (option) => option === value
             );
-            setFilteredOptions(updatedFilteredOptions);
-      
-            // Update the selectedOptions with the selected item
-            const updatedSelectedOptions = [...selectedOptions];
-            updatedSelectedOptions[index] = selectedItem;
-            setSelectedOptions(updatedSelectedOptions);
-      
-            // Fetch the item from the database based on the selected name
-            axios
-              .get(`/api/items/${selectedItem}`)
-              .then((response) => {
-                // Update the label of the Measurement TextField with the measurement unit
-                const measurementUnit = response.data.measured_in;
-                const item_id = response.data.id;
-                const item_price = response.data.price;
-                const item_left = response.data.item_left;
+
+            if (selectedItem) {
+                // Remove the selected item from filteredOptions
+                const updatedFilteredOptions = filteredOptions.filter(
+                    (option) => option !== selectedItem
+                );
+                setFilteredOptions(updatedFilteredOptions);
+
+                // Update the selectedOptions with the selected item
+                const updatedSelectedOptions = [...selectedOptions];
+                updatedSelectedOptions[index] = selectedItem;
+                setSelectedOptions(updatedSelectedOptions);
+
+                // Fetch the item from the database based on the selected name
+                axios
+                    .get(`/api/items/${selectedItem}`)
+                    .then((response) => {
+                        // Update the label of the Measurement TextField with the measurement unit
+                        const measurementUnit = response.data.measured_in;
+                        const item_id = response.data.id;
+                        const item_price = response.data.price;
+                        const item_left = response.data.item_left;
+                        const newPurchases = [...purchases];
+                        newPurchases[index].name = selectedItem;
+                        newPurchases[index].measurement = "";
+                        newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
+                        newPurchases[index].item_id = item_id; // Add the item id to the purchase object
+                        newPurchases[index].item_price = item_price;
+                        newPurchases[index].item_left = item_left; // Add the item left to the purchase object
+                        setPurchases(newPurchases);
+                    })
+                    .catch((error) => {
+                        console.log(error.response.data.message);
+                    });
+            } else {
                 const newPurchases = [...purchases];
-                newPurchases[index].name = selectedItem;
+                newPurchases[index].name = value;
                 newPurchases[index].measurement = "";
-                newPurchases[index].measurementUnit = measurementUnit; // Add the measurement unit to the purchase object
-                newPurchases[index].item_id = item_id; // Add the item id to the purchase object
-                newPurchases[index].item_price = item_price;
-                newPurchases[index].item_left = item_left; // Add the item left to the purchase object
                 setPurchases(newPurchases);
-              })
-              .catch((error) => {
-                console.log(error.response.data.message);
-              });
-          } else {
-            const newPurchases = [...purchases];
-            newPurchases[index].name = value;
-            newPurchases[index].measurement = "";
-            setPurchases(newPurchases);
-          }
-          setSearchValue(value);
+            }
+            setSearchValue(value);
         } else {
-          // If the value is null, which means the user unselected the option
-          // Add the unselected option back to the filteredOptions list
-          const unselectedOption = purchases[index].name;
-          const updatedFilteredOptions = [...filteredOptions, unselectedOption];
-          setFilteredOptions(updatedFilteredOptions);
-      
-          // Update the selectedOptions with an empty value
-          const updatedSelectedOptions = [...selectedOptions];
-          updatedSelectedOptions[index] = "";
-          setSelectedOptions(updatedSelectedOptions);
-      
-          // Update the purchase object with an empty value for the name
-          const newPurchases = [...purchases];
-          newPurchases[index].name = "";
-          setPurchases(newPurchases);
+            // If the value is null, which means the user unselected the option
+            // Add the unselected option back to the filteredOptions list
+            const unselectedOption = purchases[index].name;
+            const updatedFilteredOptions = [
+                ...filteredOptions,
+                unselectedOption,
+            ];
+            setFilteredOptions(updatedFilteredOptions);
+
+            // Update the selectedOptions with an empty value
+            const updatedSelectedOptions = [...selectedOptions];
+            updatedSelectedOptions[index] = "";
+            setSelectedOptions(updatedSelectedOptions);
+
+            // Update the purchase object with an empty value for the name
+            const newPurchases = [...purchases];
+            newPurchases[index].name = "";
+            setPurchases(newPurchases);
         }
-      };
+    };
 
     const handleMeasurementChange = (event, index) => {
         const { name, value } = event.target;
@@ -158,6 +161,9 @@ function PurchaseForm() {
         );
     };
 
+    const handleBack = () => {
+        navigate("/view-purchases");
+    };
     return (
         <Box sx={{ marginTop: 1, textAlign: "center", padding: "10px" }}>
             <div
@@ -174,24 +180,32 @@ function PurchaseForm() {
                 </Typography>
                 <div>
                     <Button
+                        size="large"
+                        variant="outlined"
+                        onClick={handleBack}
+                    >
+                        <Typography variant="h6">BACK</Typography>
+                    </Button>
+                    <Button
+                        size="large"
                         variant="outlined"
                         onClick={handleSubmit}
                         disabled={purchases.length === 0}
                     >
-                        <Typography variant="h6">SUBMIT</Typography>
+                        <Typography variant="h6">SAVE</Typography>
                     </Button>
                 </div>
             </div>
             <Box marginTop="10px">
-{errors && (
-                <div className="alert alert-danger">
-                    <ul>
-                        {Object.values(errors).map((messages, index) => (
-                            <li key={index}>{messages[0]}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+                {errors && (
+                    <div className="alert alert-danger">
+                        <ul>
+                            {Object.values(errors).map((messages, index) => (
+                                <li key={index}>{messages[0]}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </Box>
             <Box
                 sx={{
@@ -277,7 +291,7 @@ function PurchaseForm() {
                 disabled={purchases.length === 0}
                 fullWidth
             >
-                Submit
+                SAVE
             </Button>
         </Box>
     );

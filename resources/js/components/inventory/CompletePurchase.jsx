@@ -117,6 +117,10 @@ const PurchaseComponent = () => {
         setReciepts(updatedRecieptsList);
     };
 
+    const handleBack = () => {
+        navigate("/view-purchases");
+    };
+
     return (
         <div>
             <Box sx={{ marginTop: 1, textAlign: "center", padding: "10px" }}>
@@ -134,6 +138,14 @@ const PurchaseComponent = () => {
                     </Typography>
                     <div>
                         <Button
+                            size="large"
+                            variant="outlined"
+                            onClick={handleBack}
+                        >
+                            <Typography variant="h6">BACK</Typography>
+                        </Button>
+                        <Button
+                            size="large"
                             variant="outlined"
                             onClick={savePurchaseUpdates}
                             disabled={purchases.length === 0}
