@@ -177,14 +177,15 @@ export default function UpdateItem() {
                     }}
                 >
                     <Typography variant="h4" style={{ textAlign: "left" }}>
-                        Update Item
+                        Edit Item
                     </Typography>
 
                     <div>
                         <Button
                             size="large"
                             variant="outlined"
-                            onClick={handleBack}                        >
+                            onClick={handleBack}
+                        >
                             <Typography variant="h6">BACK</Typography>
                         </Button>
                         <Button

@@ -308,8 +308,6 @@ export default function ItemPage() {
                         </FormControl>
                     </Grid>
 
-    
-
                     <Grid item xs={6} sm={4} md={2} lg={2} xl={2}>
                         <Typography variant="body2">Category</Typography>
                         <FormControl sx={{ minWidth: 100 }}>
@@ -332,11 +330,23 @@ export default function ItemPage() {
                     </Grid>
 
                     <Grid item xs={6} sm={4} md={2} lg={2} xl={2} marginTop={1}>
-                        <Button variant="outlined" size="large" onClick={handleAdd} >Add Item</Button>
+                        <Button
+                            variant="outlined"
+                            size="large"
+                            onClick={handleAdd}
+                        >
+                            Add Item
+                        </Button>
                     </Grid>
 
                     <Grid item xs={6} sm={4} md={2} lg={2} xl={2} marginTop={1}>
-                    <Button variant="outlined" size="large" onClick={handleUse}>Use Items</Button>
+                        <Button
+                            variant="outlined"
+                            size="large"
+                            onClick={handleUse}
+                        >
+                            Use Items
+                        </Button>
                     </Grid>
                 </Grid>
             </Box>
@@ -516,23 +526,27 @@ export default function ItemPage() {
                 </Box>
             )}
 
-<Box
-  sx={{ display: "flex", justifyContent: "center", marginTop: 2, marginBottom: 2, }}
->
-  <Pagination
-    count={lastPage ?? 1} // Fix for handling null lastPage value
-    page={currentPage}
-    onChange={(event, page) => handlePageClick(page)}
-    variant="outlined"
-    shape="rounded"
-    color="primary"
-    showFirstButton
-    showLastButton
-    siblingCount={1}
-    boundaryCount={1}
-  />
-</Box>
-
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 2,
+                    marginBottom: 2,
+                }}
+            >
+                <Pagination
+                    count={lastPage ?? 1} // Fix for handling null lastPage value
+                    page={currentPage}
+                    onChange={(event, page) => handlePageClick(page)}
+                    variant="outlined"
+                    shape="rounded"
+                    color="primary"
+                    showFirstButton
+                    showLastButton
+                    siblingCount={1}
+                    boundaryCount={1}
+                />
+            </Box>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
@@ -558,13 +572,19 @@ export default function ItemPage() {
                     <Typography textAlign="center" variant="h6">
                         {measure}: {measurement}
                     </Typography>
-                    <div style={{ display: "flex", justifyContent: "center", marginTop: "10px"}}>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "10px",
+                        }}
+                    >
                         <Button
                             variant="contained"
                             onClick={editItem}
                             fullWidth
                         >
-                            Update
+                            Edit Item
                         </Button>
                     </div>
                 </DialogContent>
