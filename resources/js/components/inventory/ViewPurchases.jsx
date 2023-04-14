@@ -20,8 +20,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-
-
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -82,7 +80,7 @@ const ViewPurchases = () => {
         axios
             .get(`/api/get-receipt/${pNumber}`)
             .then((response) => {
-                setReceipts(response.data)
+                setReceipts(response.data);
             })
             .catch((error) => console.error(error));
     }, [pNumber]);
@@ -100,17 +98,18 @@ const ViewPurchases = () => {
         setCurrentPage(page);
     };
 
+    const[sortOrder, setSortOrder] = useState("desc");
     useEffect(() => {
         // Fetch data from API endpoint for the current page
         axios
-            .get(`/api/view-purchases?page=${currentPage}`) // Pass the current page value to the API endpoint
+            .get(`/api/view-purchases?page=${currentPage}&sortOrder=${sortOrder}`) // Pass the current page value to the API endpoint
             .then((response) => {
                 // Assuming API response includes pagination data in 'pagination' object
                 setGroupedPurchases(response.data.groupedPurchases);
                 setLastPage(response.data.pagination.lastPage);
             })
             .catch((error) => console.error(error));
-    }, [currentPage]); // Add 'currentPage' as a dependency to the useEffect hook
+    }, [currentPage,sortOrder]); // Add 'currentPage' as a dependency to the useEffect hook
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -178,7 +177,7 @@ const ViewPurchases = () => {
 
     const handleCreatePurchase = () => {
         navigate("/new-purchase");
-      }
+    };
 
     return (
         <>
@@ -206,7 +205,13 @@ const ViewPurchases = () => {
                 </Toolbar>
             </AppBar>
             <Box marginTop={1} padding={1}>
-            <Button fullWidth variant="contained" onClick={handleCreatePurchase}>Create New Purchase Request</Button>
+                <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={handleCreatePurchase}
+                >
+                    Create New Purchase Request
+                </Button>
             </Box>
             <Container sx={{ marginTop: 4 }}>
                 <Grid container spacing={1}>
@@ -234,7 +239,10 @@ const ViewPurchases = () => {
                                         filteredPurchases[purchaseNumber][0]
                                             .status
                                     );
-                                    setPNumber(purchaseNumber);
+                                    setPNumber(
+                                        filteredPurchases[purchaseNumber][0]
+                                            .purchase_number
+                                    );
                                     setStatus(
                                         filteredPurchases[purchaseNumber][0]
                                             .status
@@ -261,7 +269,12 @@ const ViewPurchases = () => {
                                                 borderRadius: "20px",
                                             }}
                                         >
-                                            Purchase Number: {purchaseNumber}
+                                            Purchase Number:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].purchase_number
+                                            }{" "}
                                             <Typography
                                                 variant="body1"
                                                 color="white"
@@ -288,7 +301,12 @@ const ViewPurchases = () => {
                                                 borderRadius: "20px",
                                             }}
                                         >
-                                            Purchase Number: {purchaseNumber}
+                                            Purchase Number:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].purchase_number
+                                            }{" "}
                                             <Typography
                                                 variant="body1"
                                                 color="white"
@@ -315,7 +333,12 @@ const ViewPurchases = () => {
                                                 borderRadius: "20px",
                                             }}
                                         >
-                                            Purchase Number: {purchaseNumber}
+                                            Purchase Number:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].purchase_number
+                                            }{" "}
                                             <Typography
                                                 variant="body1"
                                                 color="white"
@@ -342,7 +365,12 @@ const ViewPurchases = () => {
                                                 borderRadius: "20px",
                                             }}
                                         >
-                                            Purchase Number: {purchaseNumber}
+                                            Purchase Number:{" "}
+                                            {
+                                                filteredPurchases[
+                                                    purchaseNumber
+                                                ][0].purchase_number
+                                            }{" "}
                                             <Typography
                                                 variant="body1"
                                                 color="black"
@@ -375,7 +403,10 @@ const ViewPurchases = () => {
                                                     }}
                                                 >
                                                     <Typography variant="body2">
-                                                        {purchase.name}
+                                                        {purchase.name} ={" "}
+                                                        {
+                                                            purchase.purchase_number
+                                                        }
                                                     </Typography>
 
                                                     <Typography
@@ -574,40 +605,48 @@ const ViewPurchases = () => {
                     </Dialog>
                 )}
                 {selectedPurchase && (
-                    <Dialog open={Open} onClose={() => setOpen(false)} fullWidth>
+                    <Dialog
+                        open={Open}
+                        onClose={() => setOpen(false)}
+                        fullWidth
+                    >
                         <DialogContent>
                             {/* Display the selected purchase details here */}
-                            <Typography variant="h6" textAlign="center" style={{
-                                                backgroundColor: "green",
-                                                color: "white",
-                                                padding: "8px",
-                                                borderRadius: "10px",
-                                            }} >
-                                Purchase Number: {pNumber}<br></br>
-                                Status: {status}<br></br>
+                            <Typography
+                                variant="h6"
+                                textAlign="center"
+                                style={{
+                                    backgroundColor: "green",
+                                    color: "white",
+                                    padding: "8px",
+                                    borderRadius: "10px",
+                                }}
+                            >
+                                Purchase Number: {pNumber}
+                                <br></br>
+                                Status: {status}
+                                <br></br>
                                 Purchased On:{" "}
                                 {new Date(date).toLocaleString("en-US", {
                                     month: "long",
                                     day: "numeric",
                                     year: "numeric",
                                 })}
-                            <Box
-                                        sx={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                        }}
-                                    >
-                                        <Typography variant="body1">
-                                            Name = New Price
-                                        </Typography>
-
-                                        <Typography
-                                            variant="body1"
-                                        >
-                                            Unit: Req = Add
-                                        </Typography>
-                                    </Box>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <Typography variant="body1">
+                                        Name = New Price
                                     </Typography>
+
+                                    <Typography variant="body1">
+                                        Unit: Req = Add
+                                    </Typography>
+                                </Box>
+                            </Typography>
                             {selectedPurchase &&
                                 selectedPurchase.map((purchase, index) => (
                                     <Box
@@ -631,46 +670,62 @@ const ViewPurchases = () => {
                                         </Typography>
                                     </Box>
                                 ))}
-                                <Typography variant="h6" textAlign="center" marginTop={1}>Receipts</Typography>
+                            <Typography
+                                variant="h6"
+                                textAlign="center"
+                                marginTop={1}
+                            >
+                                Receipts
+                            </Typography>
                             <Grid container spacing={1} marginTop="10px">
-                            {receipts && receipts.map((receipt, index)=>(
-                            <Grid
-                                    item
-                                    xs={12}
-                                    sm={12}
-                                    md={12}
-                                    lg={12}
-                                    xl={12}
-                                    key={index}
-                                >
-                                <div
-                                    style={{
-                                        backgroundImage: `url(/upload/${receipt.image})`,
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center",
-                                        width: "100%",
-                                        height: "300px",
-                                        borderRadius: "5px",
-                                        marginTop: "10px",
-                                    }}
-                                />
-                                        {receipt.description != null &&
-                                        <Typography variant="body1" textAlign="center">
-                                            Description: {receipt.description}
-                                        </Typography>
-                                        }
-                                        {receipt.supplier != null &&
-                                        
-                                        <Typography variant="body1" textAlign="center">
-                                            Supplier: {receipt.supplier}
-                                        </Typography>
-                                        }
-                                        <Typography variant="body1" textAlign="center">
-                                            Amount: {receipt.amount}
-                                        </Typography>
-                                </Grid>
-                                
-                                ))}
+                                {receipts &&
+                                    receipts.map((receipt, index) => (
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={12}
+                                            md={12}
+                                            lg={12}
+                                            xl={12}
+                                            key={index}
+                                        >
+                                            <div
+                                                style={{
+                                                    backgroundImage: `url(/upload/${receipt.image})`,
+                                                    backgroundSize: "cover",
+                                                    backgroundPosition:
+                                                        "center",
+                                                    width: "100%",
+                                                    height: "300px",
+                                                    borderRadius: "5px",
+                                                    marginTop: "10px",
+                                                }}
+                                            />
+                                            {receipt.description != null && (
+                                                <Typography
+                                                    variant="body1"
+                                                    textAlign="center"
+                                                >
+                                                    Description:{" "}
+                                                    {receipt.description}
+                                                </Typography>
+                                            )}
+                                            {receipt.supplier != null && (
+                                                <Typography
+                                                    variant="body1"
+                                                    textAlign="center"
+                                                >
+                                                    Supplier: {receipt.supplier}
+                                                </Typography>
+                                            )}
+                                            <Typography
+                                                variant="body1"
+                                                textAlign="center"
+                                            >
+                                                Amount: {receipt.amount}
+                                            </Typography>
+                                        </Grid>
+                                    ))}
                                 <Grid
                                     item
                                     xs={12}

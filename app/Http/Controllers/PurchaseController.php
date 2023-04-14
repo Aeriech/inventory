@@ -51,15 +51,28 @@ class PurchaseController extends Controller
 
 public function index()
 {
-    $purchases = Purchase::orderBy('purchase_number')->get();
+    $sortOrder = request()->input('sortOrder');
+    $purchases = Purchase::all(); // Fetch all purchases
+    $groupedPurchases = $purchases->groupBy('purchase_number'); // Group purchases by purchase number
+
+    // Sort the grouped purchases by purchase number based on the sort order
+    $groupedPurchases = $groupedPurchases->sort(function ($a, $b) use ($sortOrder) {
+        $purchaseNumberA = $a->first()->purchase_number;
+        $purchaseNumberB = $b->first()->purchase_number;
+        if ($sortOrder === 'asc') {
+            return $purchaseNumberA <=> $purchaseNumberB;
+        } else {
+            return $purchaseNumberB <=> $purchaseNumberA;
+        }
+    })->values();
+
     $perPage = 30; // Number of items per page
     $currentPage = request()->input('page', 1); // Get the current page from the request
-    $groupedPurchases = $purchases->groupBy('purchase_number');
-    $total = count($groupedPurchases);
+    $total = $groupedPurchases->count();
     $lastPage = ceil($total / $perPage); // Calculate the total number of pages
 
     // Paginate the grouped purchases
-    $groupedPurchases = array_slice($groupedPurchases->toArray(), ($currentPage - 1) * $perPage, $perPage, true);
+    $groupedPurchases = $groupedPurchases->slice(($currentPage - 1) * $perPage, $perPage, true);
 
     // Return the grouped purchases and pagination data as JSON response
     return response()->json([
@@ -70,6 +83,8 @@ public function index()
         ],
     ]);
 }
+
+
 
 public function approve($id)
 {
