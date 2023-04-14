@@ -52,7 +52,16 @@ class PurchaseController extends Controller
 public function index()
 {
     $sortOrder = request()->input('sortOrder');
-    $purchases = Purchase::all(); // Fetch all purchases
+    $status = request()->input('status'); // Get the desired status from the request
+    $statusOptions = ['Completed', 'Pending', 'Rejected', 'Approved']; // Valid status options
+    if (!in_array($status, $statusOptions)) {
+        // If the status is not in the available options, fetch all purchases
+        $purchases = Purchase::all();
+    } else {
+        // Otherwise, fetch purchases with the desired status
+        $purchases = Purchase::where('status', $status)->get();
+    }
+
     $groupedPurchases = $purchases->groupBy('purchase_number'); // Group purchases by purchase number
 
     // Sort the grouped purchases by purchase number based on the sort order
@@ -83,6 +92,7 @@ public function index()
         ],
     ]);
 }
+
 
 
 

@@ -17,6 +17,9 @@ import {
     Toolbar,
     InputBase,
     DialogContent,
+    FormControl,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -98,18 +101,33 @@ const ViewPurchases = () => {
         setCurrentPage(page);
     };
 
-    const[sortOrder, setSortOrder] = useState("desc");
+    const handleDirection = (direction) => {
+        if (direction === "asc") {
+            setSortOrder("asc");
+        } else if (direction === "desc") {
+            setSortOrder("desc");
+        }
+    };
+
+    const handleSort = (status) => {
+       setSortStatus(status);
+    };
+
+    const [sortOrder, setSortOrder] = useState("desc");
+    const [sortStatus, setSortStatus] = useState("All Purchase");
     useEffect(() => {
         // Fetch data from API endpoint for the current page
         axios
-            .get(`/api/view-purchases?page=${currentPage}&sortOrder=${sortOrder}`) // Pass the current page value to the API endpoint
+            .get(
+                `/api/view-purchases?page=${currentPage}&sortOrder=${sortOrder}&status=${sortStatus}`
+            ) // Pass the current page value to the API endpoint
             .then((response) => {
                 // Assuming API response includes pagination data in 'pagination' object
                 setGroupedPurchases(response.data.groupedPurchases);
                 setLastPage(response.data.pagination.lastPage);
             })
             .catch((error) => console.error(error));
-    }, [currentPage,sortOrder]); // Add 'currentPage' as a dependency to the useEffect hook
+    }, [currentPage, sortOrder, sortStatus]); // Add 'currentPage' as a dependency to the useEffect hook
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -204,15 +222,48 @@ const ViewPurchases = () => {
                     </Search>
                 </Toolbar>
             </AppBar>
-            <Box marginTop={1} padding={1}>
-                <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={handleCreatePurchase}
-                >
-                    Create New Purchase Request
-                </Button>
-            </Box>
+            <Grid container spacing={1} marginTop={1} padding={1} alignItems="center" justifyItems="center" textAlign="center">
+                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} marginTop={1}>
+                    <Button variant="contained" size="large" fullWidth onClick={handleCreatePurchase}>
+                        Create New Purchase Request
+                    </Button>
+                </Grid>
+
+                <Grid item xs={6} sm={6} md={4} lg={4} xl={4}>
+                    <Typography variant="body2">Sort Direction</Typography>
+                    <FormControl fullWidth >
+                        <Select
+                            size="small"
+                            value={sortStatus}
+                            onChange={(event) =>
+                                handleSort(event.target.value)
+                            }
+                        >
+                            <MenuItem value="All Purchase">All Purchase</MenuItem>
+                            <MenuItem value="Completed">Completed</MenuItem>
+                            <MenuItem value="Approved">Approved</MenuItem>
+                            <MenuItem value="Rejected">Rejected</MenuItem>
+                            <MenuItem value="Pending">Pending</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+
+                <Grid item xs={6} sm={6} md={4} lg={4} xl={4}>
+                    <Typography variant="body2">Sort Direction</Typography>
+                    <FormControl fullWidth>
+                        <Select
+                            size="small"
+                            value={sortOrder}
+                            onChange={(event) =>
+                                handleDirection(event.target.value)
+                            }
+                        >
+                            <MenuItem value="asc">Ascending</MenuItem>
+                            <MenuItem value="desc">Descending</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid>
             <Container sx={{ marginTop: 4 }}>
                 <Grid container spacing={1}>
                     {Object.keys(filteredPurchases).map((purchaseNumber) => (
