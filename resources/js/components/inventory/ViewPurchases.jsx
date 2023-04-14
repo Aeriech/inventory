@@ -598,7 +598,7 @@ const ViewPurchases = () => {
                                         }}
                                     >
                                         <Typography variant="body1">
-                                            Name
+                                            Name = New Price
                                         </Typography>
 
                                         <Typography
@@ -618,7 +618,7 @@ const ViewPurchases = () => {
                                         }}
                                     >
                                         <Typography variant="body1">
-                                            {purchase.name}
+                                            {purchase.name} = {purchase.price}
                                         </Typography>
 
                                         <Typography
