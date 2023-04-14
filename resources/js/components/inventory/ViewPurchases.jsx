@@ -224,13 +224,13 @@ const ViewPurchases = () => {
             </AppBar>
             <Grid container spacing={1} marginTop={1} padding={1} alignItems="center" justifyItems="center" textAlign="center">
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4} marginTop={1}>
-                    <Button variant="contained" size="large" fullWidth onClick={handleCreatePurchase}>
+                    <Button variant="outlined" size="large" fullWidth onClick={handleCreatePurchase}>
                         Create New Purchase Request
                     </Button>
                 </Grid>
 
                 <Grid item xs={6} sm={6} md={4} lg={4} xl={4}>
-                    <Typography variant="body2">Sort Direction</Typography>
+                    <Typography variant="body2">Status</Typography>
                     <FormControl fullWidth >
                         <Select
                             size="small"
@@ -454,10 +454,7 @@ const ViewPurchases = () => {
                                                     }}
                                                 >
                                                     <Typography variant="body2">
-                                                        {purchase.name} ={" "}
-                                                        {
-                                                            purchase.purchase_number
-                                                        }
+                                                        {purchase.name}
                                                     </Typography>
 
                                                     <Typography
