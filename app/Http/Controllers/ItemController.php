@@ -162,7 +162,7 @@ class ItemController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:items',
+            'name' => 'required',
             'category' => 'required',
             'measure' => 'required',
             'measurement' => 'required|numeric',
