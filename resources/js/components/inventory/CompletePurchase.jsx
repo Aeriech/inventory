@@ -134,7 +134,7 @@ const PurchaseComponent = () => {
                     }}
                 >
                     <Typography variant="h5" textAlign="left">
-                        Complete Purchase
+                        Purchase Order
                     </Typography>
                     <div>
                         <Button

@@ -110,7 +110,7 @@ const ViewPurchases = () => {
     };
 
     const handleSort = (status) => {
-       setSortStatus(status);
+        setSortStatus(status);
     };
 
     const [sortOrder, setSortOrder] = useState("desc");
@@ -169,7 +169,14 @@ const ViewPurchases = () => {
             .catch((error) => {});
     };
 
+    const handleConfirmation = (event) => {
+        setConfirmation(true);
+    };
+
+    const [confirmation, setConfirmation] = useState(false);
+
     const handleReject = (event) => {
+        setConfirmation(false);
         event.preventDefault();
         axios
             .post(`/api/set-rejected/${pNumber}`)
@@ -222,20 +229,26 @@ const ViewPurchases = () => {
                     </Search>
                 </Toolbar>
             </AppBar>
-            <Grid container spacing={1} marginTop={1} padding={1} alignItems="center" justifyItems="center" textAlign="center">
-            
-
+            <Grid
+                container
+                spacing={1}
+                marginTop={1}
+                padding={1}
+                alignItems="center"
+                justifyItems="center"
+                textAlign="center"
+            >
                 <Grid item xs={6} sm={6} md={4} lg={4} xl={4}>
                     <Typography variant="body2">Status</Typography>
-                    <FormControl fullWidth >
+                    <FormControl fullWidth>
                         <Select
                             size="small"
                             value={sortStatus}
-                            onChange={(event) =>
-                                handleSort(event.target.value)
-                            }
+                            onChange={(event) => handleSort(event.target.value)}
                         >
-                            <MenuItem value="All Purchase">All Purchase</MenuItem>
+                            <MenuItem value="All Purchase">
+                                All Purchase
+                            </MenuItem>
                             <MenuItem value="Completed">Completed</MenuItem>
                             <MenuItem value="Approved">Approved</MenuItem>
                             <MenuItem value="Rejected">Rejected</MenuItem>
@@ -261,11 +274,15 @@ const ViewPurchases = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4} marginTop={1}>
-                    <Button variant="outlined" size="large" fullWidth onClick={handleCreatePurchase}>
+                    <Button
+                        variant="outlined"
+                        size="large"
+                        fullWidth
+                        onClick={handleCreatePurchase}
+                    >
                         Create New Purchase Request
                     </Button>
                 </Grid>
-                
             </Grid>
             <Container sx={{ marginTop: 4 }}>
                 <Grid container spacing={1}>
@@ -587,7 +604,7 @@ const ViewPurchases = () => {
                                                 variant="contained"
                                                 color="error"
                                                 fullWidth
-                                                onClick={(e) => handleReject(e)}
+                                                onClick={(e) => handleConfirmation(e)}
                                             >
                                                 Reject
                                             </Button>
@@ -630,7 +647,7 @@ const ViewPurchases = () => {
                                                 onClick={handleOpenPurchase}
                                                 fullWidth
                                             >
-                                                Open Purchase
+                                                Open Purchase Order
                                             </Button>
                                         </Grid>
                                     </>
@@ -797,6 +814,42 @@ const ViewPurchases = () => {
                         </DialogContent>
                     </Dialog>
                 )}
+
+                <Dialog
+                    open={confirmation}
+                    onClose={() => setConfirmation(false)}
+                >
+                    <DialogContent>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                        >
+                            <Typography variant="h5" textAlign="center"> Are you sure? </Typography>
+                        </Grid>
+                        <Grid container spacing={1} marginTop="10px">
+                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <Button
+                                    variant="contained"
+                                    onClick={(e) => handleReject(e)}
+                                >
+                                    Yes
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setConfirmation(false)}
+                                >
+                                    No
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                </Dialog>
             </Container>
         </>
     );

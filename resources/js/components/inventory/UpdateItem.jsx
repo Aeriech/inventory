@@ -123,6 +123,12 @@ export default function UpdateItem() {
         return "/upload/" + img;
     };
 
+    const handleConfirmation = (event) => {
+        setConfirmation(true);
+    };
+
+    const [confirmation, setConfirmation] = useState(false);
+
     const handleArchive = async () => {
         try {
             const { data } = await axios.post(`/api/archive-item/${id}`);
@@ -336,7 +342,7 @@ export default function UpdateItem() {
                             <Button
                                 variant="contained"
                                 color="error"
-                                onClick={handleArchive}
+                                onClick={handleConfirmation}
                                 startIcon={<Delete />}
                             >
                                 <Typography variant="body2">
@@ -347,6 +353,42 @@ export default function UpdateItem() {
                     </Grid>
                 </Box>
             </Box>
+
+            <Dialog
+                    open={confirmation}
+                    onClose={() => setConfirmation(false)}
+                >
+                    <DialogContent>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                        >
+                            <Typography variant="h5" textAlign="center"> Are you sure? </Typography>
+                        </Grid>
+                        <Grid container spacing={1} marginTop="10px">
+                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <Button
+                                    variant="contained"
+                                    onClick={(e) => handleArchive(e)}
+                                >
+                                    Yes
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setConfirmation(false)}
+                                >
+                                    No
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                </Dialog>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
