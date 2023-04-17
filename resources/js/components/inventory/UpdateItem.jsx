@@ -378,7 +378,7 @@ export default function UpdateItem() {
                                     Yes
                                 </Button>
                             </Grid>
-                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}> 
                                 <Button
                                     variant="contained"
                                     onClick={() => setConfirmation(false)}
